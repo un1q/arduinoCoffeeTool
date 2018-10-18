@@ -3,18 +3,22 @@
 
 #include <Arduino.h>
 
-Melody::Melody(int buzz_pin) : buzz_pin(buzz_pin) {
-    notesCount = 8;
-    
-    notes = new int[8] {
-      NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
-    };
-
-    notesDuration = new int[8] {
-      4, 8, 8, 4, 4, 4, 4, 4
-    };
-
+Melody::Melody(int buzz_pin) : 
+  Melody(
+    buzz_pin, 
+    new int[8] {NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4},
+    new int[8] {4, 8, 8, 4, 4, 4, 4, 4},
+    8) {
 }
+
+Melody::Melody(int buzz_pin, int* notes, int* notesDuration, int notesCount) : 
+  buzz_pin(buzz_pin),
+  notes(notes), 
+  notesDuration(notesDuration), 
+  notesCount(notesCount)
+  {
+}
+
 
 Melody::~Melody() {
   if (notesCount > 0) {

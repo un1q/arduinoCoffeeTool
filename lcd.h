@@ -18,6 +18,7 @@ public:
   void init();
   void music();
   void timer(Timer *timer);
+  void printChar(char);
 };
 
 #endif

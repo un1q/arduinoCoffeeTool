@@ -32,3 +32,10 @@ void Lcd::timer(Timer *timer) {
   lcd->setCursor(0,1);
   lcd->print(secToStr(sec));
 }
+
+void Lcd::printChar(char c) {
+  lcd->setCursor(0,1);
+  lcd->print("   ");
+  lcd->print(c);
+
+}

@@ -9,6 +9,7 @@ class Melody {
 
   public:
     Melody(int);
+    Melody::Melody(int buzz_pin, int* notes, int* notesDuration, int notesCount);
     ~Melody();
     void play();
 };
