@@ -1,5 +1,5 @@
-#ifndef Melody_H_
-#define Melody_H_
+#ifndef MELODY_H_
+#define MELODY_H_
 
 class Melody {
     int buzz_pin;
