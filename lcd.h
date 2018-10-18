@@ -1,6 +1,7 @@
 #ifndef LCD_H_
 #define LCD_H_
 
+#include "timer.h";
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -16,7 +17,7 @@ public:
   ~Lcd();
   void init();
   void music();
-  void timer(int sec);
+  void timer(Timer *timer);
 };
 
 #endif

@@ -27,7 +27,8 @@ char* Lcd::secToStr(int sec) {
   return txtBuffer;
 }
 
-void Lcd::timer(int sec) {
+void Lcd::timer(Timer *timer) {
+  int sec = timer->getSeconds();
   lcd->setCursor(0,1);
   lcd->print(secToStr(sec));
 }

@@ -2,6 +2,9 @@
 #include "timer.h"
 #include "lcd.h"
 
+//  LCM 1602 PINs:
+//    SCL -> A5
+//    SDA -> A4 
 #define PIN_BUZZ    A0
 #define PIN_BTN     A1
 
@@ -25,7 +28,7 @@ void loop() {
     lcd.music();
     melody.play();
   }
-  lcd.timer(timer.getSeconds());
+  lcd.timer(&timer);
   delay(100);
 }
 
