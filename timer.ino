@@ -13,6 +13,9 @@ Melody melody(PIN_BUZZ);
 Timer  timer;
 Lcd    lcd;
 
+int* dripTiming = new int[4] {3, 33, 33+60, 33+60+60};
+int  dripTimingCount = 4;
+
 void setup() {
   pinMode(PIN_BUZZ, OUTPUT);
   pinMode(PIN_BTN, INPUT);
@@ -21,12 +24,12 @@ void setup() {
 
 void loop() {
   if (btnState()) {
-    timer.setSeconds(5);
+    timer.setSeconds(dripTiming, dripTimingCount);
   }
   if (timer.getSeconds() == 0) {
-    timer.off();
     lcd.music();
     melody.play();
+    timer.nextAlarm();
   }
   lcd.timer(&timer);
   delay(100);
