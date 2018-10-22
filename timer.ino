@@ -11,7 +11,6 @@
 //    SCL -> A5
 //    SDA -> A4 
 #define PIN_BUZZ    A0
-#define PIN_BTN     A1
 
 byte rowPins[4] = {3, 2, 1, 0}; //4x3 keypad PINs
 byte colPins[3] = {6, 5, 4};    //4x3 keypad PINs
@@ -26,7 +25,6 @@ CoreTemp  coreTemp  = CoreTemp();
 
 void setup() {
   pinMode(PIN_BUZZ, OUTPUT);
-  pinMode(PIN_BTN, INPUT);
   lcd.setup(&coreTimer, &coreTemp);
 }
 
@@ -38,8 +36,4 @@ void loop()
   coreTimer.loop();
   coreTemp.loop();
   lcd.loop();
-}
-
-bool btnState() {
-  return digitalRead(PIN_BTN) == HIGH  || keyboard.getKey() == 'D';
 }
