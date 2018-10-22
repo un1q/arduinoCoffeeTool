@@ -8,14 +8,24 @@ Lcd::~Lcd() {
   delete(lcd);
 }
 
-void Lcd::init() {
+void Lcd::setup(CoreTimer *timer, CoreTemp *temp) {
+  this->timer = timer;
+  this->temp  = temp;
   lcd->begin(16,2);
   lcd->backlight();
 }
 
-void Lcd::music() {
-  lcd->setCursor(0,1);
-  lcd->print("!!!!");
+void Lcd::loop() {
+  lcd->setCursor(0, 1);
+  int secTotal = timer->getSecondsTotal();
+  int sec = 0;
+  int min = 0;
+  if (secTotal > 0) {
+    sec = secTotal % 60;
+    min = secTotal / 60;
+  }
+  snprintf(txtBuffer, TXT_BUFFER_COUNT,"% 3dC  000g % 2d:%02d",temp->temp,min,sec);
+  lcd->print(txtBuffer);
 }
 
 char* Lcd::secToStr(int sec) {
@@ -28,12 +38,6 @@ char* Lcd::secToStr(int sec) {
 char* Lcd::tempToStr(int temp) {
   snprintf(txtBuffer, TXT_BUFFER_COUNT, "%03d C           ", temp);
   return txtBuffer;
-}
-
-void Lcd::setHeader(char* header) {
-  clearLine(1);
-  clearLine(0);
-  lcd->print(header);
 }
 
 void Lcd::printTimer(Timer *timer) {

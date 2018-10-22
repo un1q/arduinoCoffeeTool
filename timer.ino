@@ -2,7 +2,6 @@
 #include "lcd.h"
 #include "pitches.h"
 #include "keyboard.h"
-#include "core.h"
 #include "core_timer.h"
 #include "core_temp.h"
 
@@ -14,8 +13,8 @@
 #define PIN_BUZZ    A0
 #define PIN_BTN     A1
 
-byte rowPins[4] = {3, 2, 1, 0}; //4x4 keypad PINs
-byte colPins[4] = {7, 6, 5, 4}; //4x4 keypad PINs
+byte rowPins[4] = {3, 2, 1, 0}; //4x3 keypad PINs
+byte colPins[3] = {6, 5, 4};    //4x3 keypad PINs
 
 Melody   melody(PIN_BUZZ);
 Melody   buzz(PIN_BUZZ, new int[2] {NOTE_C4, NOTE_C4}, new int[2] {4,4}, 2);
@@ -24,30 +23,21 @@ Keyboard keyboard = Keyboard(rowPins, colPins);
 
 CoreTimer coreTimer = CoreTimer(&melody, &buzz);
 CoreTemp  coreTemp  = CoreTemp();
-Core      *core;
 
 void setup() {
   pinMode(PIN_BUZZ, OUTPUT);
   pinMode(PIN_BTN, INPUT);
-  lcd.init();
-  coreTimer.setup(&lcd);
-  coreTemp.setup(&lcd);
-  setCore(&coreTemp);
+  lcd.setup(&coreTimer, &coreTemp);
 }
 
 void loop()
 {
-  char key = keyboard.getKey();
-  if (key == 'A') 
-    setCore(&coreTimer);
-  else if (key == 'B')
-    setCore(&coreTemp);
-  core->loop(key);
-}
-
-void setCore(Core *newCore) {
-  newCore->start();
-  core = newCore;
+  keyboard.loop();
+  if (keyboard.getKey() == '#')
+    coreTimer.startDrip();
+  coreTimer.loop();
+  coreTemp.loop();
+  lcd.loop();
 }
 
 bool btnState() {

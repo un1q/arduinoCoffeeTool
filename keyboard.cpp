@@ -3,7 +3,9 @@
 Keyboard::Keyboard(byte* rowPins, byte* colPins) :
     rowPins(rowPins),
     colPins(colPins) {
-  keypad = new Keypad( makeKeymap(keys), rowPins, colPins, rows, cols );
+  keymap        = makeKeymap(keys);
+  keymapShifted = makeKeymap(keysShifted);
+  keypad        = new Keypad( keymap, rowPins, colPins, rows, cols );
 }
 
 Keyboard::~Keyboard() {
@@ -11,5 +13,13 @@ Keyboard::~Keyboard() {
 }
 
 char Keyboard::getKey() {
-  return keypad->getKey();
+  return key;
+}
+
+void Keyboard::loop() {
+  key = keypad->getKey();
+  if (key == '*') {
+    shifted = !shifted;
+    keypad->begin(shifted ? keymapShifted : keymap);
+  }
 }

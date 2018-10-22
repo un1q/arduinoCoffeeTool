@@ -4,27 +4,23 @@ CoreTimer::CoreTimer(Melody *melody, Melody *buzz):
   melody(melody), buzz(buzz)
 {}
 
-void CoreTimer::start() {
-  lcd->setHeader("Timer");
-}
-
-void CoreTimer::loop(char key)  {
-  static bool buzzed = false;
-  if (key == 'D') {
-    timer.setSeconds(dripTiming, dripTimingCount);
-    buzzed = false;
-  }
-  int sec = timer.getSeconds();
+void CoreTimer::loop() {
+  int sec = getSecondsTotal();
   if (sec == 0) {
-    lcd->music();
     melody->play();
     timer.nextAlarm();
     buzzed = false;
   } else if (!buzzed && sec>5 && sec <= 10) {
-    lcd->music();
     buzz->play();
     buzzed = true;
   }
-  lcd->printTimer(&timer);
-  delay(50);
+}
+
+int CoreTimer::getSecondsTotal() {
+  return timer.getSeconds();
+}
+
+void CoreTimer::startDrip() {
+  timer.setSeconds(dripTiming, dripTimingCount);
+  buzzed = false;
 }

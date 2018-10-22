@@ -5,13 +5,7 @@ CoreTemp::CoreTemp() {
   sensors = new DallasTemperature(oneWire);
 }
 
-void CoreTemp::start() {
-  lcd->setHeader("Temperature");
-}
-
-void CoreTemp::loop(char key) {
+void CoreTemp::loop() {
   sensors->requestTemperatures();
-  int temp = sensors->getTempCByIndex(0);
-  lcd->printTemp(temp);
-  delay(50);
+  temp = sensors->getTempCByIndex(0);
 }
