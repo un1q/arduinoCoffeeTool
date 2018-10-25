@@ -25,7 +25,10 @@ void Lcd::loop() {
     sec = secTotal % 60;
     min = secTotal / 60;
   }
-  snprintf(txtBuffer, TXT_BUFFER_COUNT,"% 3dC  000g % 2d:%02d",temp->temp,min,sec);
+  int t = temp->getTemp();
+  if (t < -100)
+    t = -99;
+  snprintf(txtBuffer, TXT_BUFFER_COUNT,"% 3dC  000g % 2d:%02d",t,min,sec);
   lcd->print(txtBuffer);
   lcd->setCursor(0, 0);
   lcd->print(keyboard->shifted ? '^' : ' ');

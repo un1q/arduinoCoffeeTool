@@ -10,10 +10,12 @@
 class CoreTemp {
     OneWire           *oneWire;
     DallasTemperature *sensors;
-  public:
     int temp;
+  public:
     CoreTemp();
     void loop();
+    int  getTemp();
 };
+
 
 #endif

@@ -9,3 +9,7 @@ void CoreTemp::loop() {
   sensors->requestTemperatures();
   temp = sensors->getTempCByIndex(0);
 }
+
+int CoreTemp::getTemp() {
+  return temp;
+}
