@@ -16,6 +16,7 @@ class CoreTimer {
     void loop();
     int  getSecondsTotal();
     void startDrip();
+    void stop();
 };
 
 #endif

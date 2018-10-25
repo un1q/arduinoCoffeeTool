@@ -24,3 +24,7 @@ void CoreTimer::startDrip() {
   timer.setSeconds(dripTiming, dripTimingCount);
   buzzed = false;
 }
+
+void CoreTimer::stop() {
+  timer.off();
+}

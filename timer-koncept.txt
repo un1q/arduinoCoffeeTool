@@ -1,0 +1,43 @@
+ekran główny prezentuje wszystkie alarmy i odczyt wszystkich czujników:
+****************
+ 80C  500g 15:00  <-- alarm
+ 75C  250g  4:00  <-- wartość
+****************
+jeżeli korzystami z multitimera, to używamy nazwy, zamiast wartości
+(jeżeli na jedno pole jest ustawione wiele alarmów, to pokazujemy nazwę presetu
+a w przeciwnym razie pokazujemy wartość alarmu):
+****************
+ 80C  500g  drip  <-- alarm ustawiony na preset
+ 73C  223g  1:08  <-- wartość
+****************
+po kliknięciu w 0, 5, albo w dowolną strzałkę
+****************
+>80C  500g 15:00
+ preset    back 
+****************
+strzałkami wybieramy który alarm chcemy zmienić,
+mamy do wyboru temperaturę, wagę, czas, albo wszystko na raz (preset)
+****************
+ 80C  500g>15:00
+ preset    back 
+****************
+po kliknięciu 5, albo # możemy wybrać preset, z którego ma być wzięta wartość (lub wszystkie wartości, jeżeli wybraliśmy "use preset"). Jeżeli wybraliśmy "use preset", to nie ma opcji "other". Zawsze jest też możliwość wybrania "none", co oznacza brak alarmu. "back" jest opcją domyślną, "other" jest zaraz za nim.
+****************
+>other          
+ drip           <-- mamy do wyboru całą listę presetów, "other", "none" oraz "back"
+****************
+jeżeli wybierzemy "other", to możemy wpisać sami wartość:
+****************
+ set timer      
+ 00:00            <-- wybierając 0-9 tutaj się wszystko shiftuje o 1 w lewo
+****************
+po kliknięciu w # zatwierdzamy wybór
+Zamiast "back" można wszędzie użyć "home".
+
+Jeżeli na ekranie głównym klikniemy F1-F5, to od razu wybieramy jeden z presetów.
+Na ekranie głównym # uruchamia timer, a (*,#) go zatrzymuje. Po wciśnięciu * czas na alarmie zmienia się w napis "stop?":
+****************
+ 80C  500g stop?
+ 75C  250g  2:38
+****************
+po wybraniu # alarm się zatrzymuje, a po wybraniu * wraca do normalnego stanu

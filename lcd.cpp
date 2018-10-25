@@ -8,9 +8,10 @@ Lcd::~Lcd() {
   delete(lcd);
 }
 
-void Lcd::setup(CoreTimer *timer, CoreTemp *temp) {
-  this->timer = timer;
-  this->temp  = temp;
+void Lcd::setup(CoreTimer *timer, CoreTemp *temp, Keyboard *keyboard) {
+  this->timer    = timer;
+  this->temp     = temp;
+  this->keyboard = keyboard;
   lcd->begin(16,2);
   lcd->backlight();
 }
@@ -26,6 +27,8 @@ void Lcd::loop() {
   }
   snprintf(txtBuffer, TXT_BUFFER_COUNT,"% 3dC  000g % 2d:%02d",temp->temp,min,sec);
   lcd->print(txtBuffer);
+  lcd->setCursor(0, 0);
+  lcd->print(keyboard->shifted ? '^' : ' ');
 }
 
 char* Lcd::secToStr(int sec) {

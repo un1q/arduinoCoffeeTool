@@ -21,5 +21,7 @@ void Keyboard::loop() {
   if (key == '*') {
     shifted = !shifted;
     keypad->begin(shifted ? keymapShifted : keymap);
+  } else if(shifted) {
+    shifted = false;
   }
 }
