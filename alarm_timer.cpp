@@ -1,10 +1,10 @@
-#include "core_timer.h"
+#include "alarm_timer.h"
 
-CoreTimer::CoreTimer(Melody *melody, Melody *buzz):
+AlarmTimer::AlarmTimer(Melody *melody, Melody *buzz):
   melody(melody), buzz(buzz)
 {}
 
-void CoreTimer::loop() {
+void AlarmTimer::loop() {
   int sec = getSecondsTotal();
   if (sec == 0) {
     melody->play();
@@ -16,15 +16,15 @@ void CoreTimer::loop() {
   }
 }
 
-int CoreTimer::getSecondsTotal() {
+int AlarmTimer::getSecondsTotal() {
   return timer.getSeconds();
 }
 
-void CoreTimer::startDrip() {
+void AlarmTimer::startDrip() {
   timer.setSeconds(dripTiming, dripTimingCount);
   buzzed = false;
 }
 
-void CoreTimer::stop() {
+void AlarmTimer::stop() {
   timer.off();
 }

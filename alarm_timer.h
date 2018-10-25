@@ -1,10 +1,10 @@
-#ifndef CORE_TIMER_H_
-#define CORE_TIMER_H_
+#ifndef ALARM_TIMER_H_
+#define ALARM_TIMER_H_
 
 #include "melody.h"
 #include "timer.h"
 
-class CoreTimer {
+class AlarmTimer {
     Timer  timer;
     Melody *melody;
     Melody *buzz;
@@ -12,7 +12,7 @@ class CoreTimer {
     int    dripTimingCount = 4;
     bool   buzzed          = false;
   public:
-    CoreTimer(Melody *melody, Melody *buzz);
+    AlarmTimer(Melody *melody, Melody *buzz);
     void loop();
     int  getSecondsTotal();
     void startDrip();

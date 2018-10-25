@@ -1,15 +1,15 @@
-#include "core_temp.h"
+#include "temperature.h"
 
-CoreTemp::CoreTemp() {
+Temperature::Temperature() {
   oneWire = new OneWire(TEMP_PIN);
   sensors = new DallasTemperature(oneWire);
 }
 
-void CoreTemp::loop() {
+void Temperature::loop() {
   sensors->requestTemperatures();
   temp = sensors->getTempCByIndex(0);
 }
 
-int CoreTemp::getTemp() {
+int Temperature::getTemp() {
   return temp;
 }

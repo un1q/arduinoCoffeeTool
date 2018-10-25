@@ -18,10 +18,25 @@ char Keyboard::getKey() {
 
 void Keyboard::loop() {
   key = keypad->getKey();
-  if (key == '*') {
-    shifted = !shifted;
-    keypad->begin(shifted ? keymapShifted : keymap);
-  } else if(shifted) {
-    shifted = false;
+  if (key == '*' && shiftMode != shift_off) {
+    setShiftState(!shifted);
+  } else if(shifted && shiftMode == shift_normal) {
+    setShiftState(false);
+  }
+}
+
+void Keyboard::setShiftState(bool state) {
+  if (state == shifted)
+    return;
+  shifted = state;
+  keypad->begin(shifted ? keymapShifted : keymap);
+}
+
+void Keyboard::setShiftMode(ShiftMode shiftMode) {
+  if (shiftMode == this->shiftMode)
+    return;
+  this->shiftMode = shiftMode;
+  if (shiftMode == shift_off && shifted) {
+    setShiftState(false);
   }
 }
