@@ -24,9 +24,6 @@ byte colPins[3] = {6, 5, 4};
 
 //temperature sensor is on PIN 10, use 4.7R)
 
-enum MultiTimer {DRIP, AEROPRESS, CHEMEX, TEA};
-enum Mode       {MULTITIMER, TIMER, TEMP, WEIGHT};
-
 Melody     melody(PIN_BUZZ);
 Melody     buzz(PIN_BUZZ, new int[2] {NOTE_C4, NOTE_C4}, new int[2] {4,4}, 2);
 Lcd        lcd;
@@ -34,12 +31,10 @@ Keyboard   keyboard = Keyboard(rowPins, colPins);
 CoreTimer  coreTimer = CoreTimer(&melody, &buzz);
 CoreTemp   coreTemp  = CoreTemp();
 Core       core      = Core(&coreTimer, &coreTemp, &keyboard, &lcd);
-MultiTimer multiTimerMode;
-Mode       mode;
 
 void setup() {
   pinMode(PIN_BUZZ, OUTPUT);
-  lcd.setup(&coreTimer, &coreTemp, &keyboard);
+  lcd.setup();
 }
 
 void loop() {

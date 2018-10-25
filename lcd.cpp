@@ -8,68 +8,20 @@ Lcd::~Lcd() {
   delete(lcd);
 }
 
-void Lcd::setup(CoreTimer *timer, CoreTemp *temp, Keyboard *keyboard) {
-  this->timer    = timer;
-  this->temp     = temp;
-  this->keyboard = keyboard;
+void Lcd::setup() {
   lcd->begin(16,2);
   lcd->backlight();
+  lcd->clear();
 }
 
-void Lcd::loop() {
-  lcd->setCursor(0, 1);
-  int secTotal = timer->getSecondsTotal();
-  int sec = 0;
-  int min = 0;
-  if (secTotal > 0) {
-    sec = secTotal % 60;
-    min = secTotal / 60;
-  }
-  int t = temp->getTemp();
-  if (t < -100)
-    t = -99;
-  snprintf(txtBuffer, TXT_BUFFER_COUNT,"% 3dC  000g % 2d:%02d",t,min,sec);
-  lcd->print(txtBuffer);
-  lcd->setCursor(0, 0);
-  lcd->print(keyboard->shifted ? '^' : ' ');
+void Lcd::print(Position position, char* text) {
+  lcd->setCursor(position[0], position[1]);
+  lcd->print(text);
 }
 
-char* Lcd::secToStr(int sec) {
-  if (sec < 0)
-    return " off";
-  snprintf(txtBuffer, TXT_BUFFER_COUNT, "%04d            ", sec);
-  return txtBuffer;
-}
-
-char* Lcd::tempToStr(int temp) {
-  snprintf(txtBuffer, TXT_BUFFER_COUNT, "%03d C           ", temp);
-  return txtBuffer;
-}
-
-void Lcd::printTimer(Timer *timer) {
-  int sec = timer->getSeconds();
-  lcd->setCursor(0,1);
-  lcd->print(secToStr(sec));
-}
-
-void Lcd::printTemp(int temp) {
-  lcd->setCursor(0,1);
-  lcd->print(tempToStr(temp));
-}
-
-void Lcd::print(char* txt) {
-  clearLine(1);
-  lcd->print(txt);
-}
-
-void Lcd::printChar(char c) {
-  clearLine(1);
-  lcd->print(c);
-
-}
-
-void Lcd::clearLine(int lineNr) {
-  lcd->setCursor(0,lineNr);
+void Lcd::clear() {
+  lcd->setCursor(0,0);
   lcd->print("                ");
-  lcd->setCursor(0,lineNr);
+  lcd->setCursor(0,1);
+  lcd->print("                ");
 }
