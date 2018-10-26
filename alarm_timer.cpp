@@ -28,3 +28,7 @@ void AlarmTimer::startDrip() {
 void AlarmTimer::stop() {
   timer.off();
 }
+
+char* AlarmTimer::toString() {
+  return "drip";
+}

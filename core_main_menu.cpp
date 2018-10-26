@@ -14,14 +14,16 @@ CoreMainMenu::~CoreMainMenu() {
 void CoreMainMenu::start() {
   screen->start();
   keyboard->setShiftMode(shift_off);
+  screen->startMainMenuSelection();
 }
 
 void CoreMainMenu::update(char key) {
   switch (key) {
-    case '#':
-    case '0':
-      goBack();
-      return;
+    case '4': screen->selectLeft (); break;
+    case '6': screen->selectRight(); break;
+    case '2': screen->selectUp   (); break;
+    case '8': screen->selectDown (); break;
+    case '0': goBack(); return;
   }
   timer->loop();
   temp ->loop();
@@ -29,10 +31,9 @@ void CoreMainMenu::update(char key) {
 }
 
 void CoreMainMenu::printMainScreen() {
-  screen->printTemp(temp->getTemp());
-  screen->printTimer(timer->getSecondsTotal());
-  screen->printWeight("   0g");
-  screen->printAlarmTemp("????");
-  screen->printAlarmTimer("????");
-  screen->printAlarmWeight("????");
+  screen->printPresetOption();
+  screen->printBackOption();
+  screen->printAlarmTemp("none");
+  screen->printAlarmTimer(timer->toString());
+  screen->printAlarmWeight("none");
 }

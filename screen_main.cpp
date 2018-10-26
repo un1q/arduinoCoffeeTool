@@ -62,3 +62,35 @@ void ScreenMain::printAlarmTimer(char* time) {
   lcd->print(lcd->POS_ALARM_TIMER, time);
 }
 
+void ScreenMain::printPresetOption() {
+  lcd->print(lcd->POS_PRESET_OPTION, "preset");
+}
+
+void ScreenMain::printBackOption() {
+  lcd->print(lcd->POS_BACK_OPTION, "back");
+}
+
+void ScreenMain::selectUp() {
+  lcd->selectUp();
+}
+
+void ScreenMain::selectDown() {
+  lcd->selectDown();
+}
+
+void ScreenMain::selectLeft() {
+  lcd->selectLeft();
+}
+
+void ScreenMain::selectRight() {
+  lcd->selectRight();
+}
+
+MainMenuPosition ScreenMain::getSelectedPosition() {
+  return lcd->getSelectedPosition();
+}
+
+void ScreenMain::startMainMenuSelection() {
+  lcd->startSelection();
+}
+

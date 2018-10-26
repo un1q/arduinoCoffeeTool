@@ -6,14 +6,14 @@ Core         *MainLoop::core;
 
     
 MainLoop::MainLoop(AlarmTimer* timer, Temperature* temp, Keyboard* keyboard, Lcd* lcd) {
-  this->timer        = timer;
-  this->temp         = temp ;
-  this->keyboard     = keyboard;
-  this->lcd          = lcd;
-  this->screen       = new ScreenMain(lcd);
-  this->coreMain     = new CoreMain(timer, temp, keyboard, screen);
-  this->coreMainMenu = new CoreMainMenu(timer, temp, keyboard, screen);
-  coreMain->gotoMenu = [](){ changeCore(coreMainMenu); };
+  this->timer          = timer;
+  this->temp           = temp ;
+  this->keyboard       = keyboard;
+  this->lcd            = lcd;
+  this->screen         = new ScreenMain(lcd);
+  this->coreMain       = new CoreMain(timer, temp, keyboard, screen);
+  this->coreMainMenu   = new CoreMainMenu(timer, temp, keyboard, screen);
+  coreMain->gotoMenu   = [](){ changeCore(coreMainMenu); };
   coreMainMenu->goBack = [](){ changeCore(coreMain); };
 }
 

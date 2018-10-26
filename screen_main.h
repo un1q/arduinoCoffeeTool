@@ -4,6 +4,14 @@
 #include <LiquidCrystal_I2C.h>
 #include "Lcd.h"
 
+enum MainMenuPosition {
+  ALARM_TEMP    = 3,
+  ALARM_WEIGHT  = 4,
+  ALARM_TIMER   = 5,
+  PRESET_OPTION = 6,
+  BACK_OPTION   = 7
+};
+
 class ScreenMain {
     const static int txtBufferSize = 8;
     char txtBuffer[txtBufferSize];
@@ -23,6 +31,14 @@ class ScreenMain {
     void printAlarmWeight(char* weight);
     void printAlarmTimer(int   time);
     void printAlarmTimer(char* time);
+    void printPresetOption();
+    void printBackOption();
+    void selectUp();
+    void selectDown();
+    void selectLeft();
+    void selectRight();
+    MainMenuPosition getSelectedPosition();
+    void startMainMenuSelection();
 };
 
 #endif

@@ -17,6 +17,7 @@ class AlarmTimer {
     int  getSecondsTotal();
     void startDrip();
     void stop();
+    char* toString();
 };
 
 #endif

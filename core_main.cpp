@@ -39,6 +39,6 @@ void CoreMain::printMainScreen() {
   screen->printTimer(timer->getSecondsTotal());
   screen->printWeight("   0g");
   screen->printAlarmTemp("none");
-  screen->printAlarmTimer("drip");
+  screen->printAlarmTimer(timer->toString());
   screen->printAlarmWeight("none");
 }
