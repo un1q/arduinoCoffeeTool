@@ -1,6 +1,9 @@
 #ifndef MELODY_H_
 #define MELODY_H_
 
+// Plays melody.
+// Be aware, it's not async and it starves main thread
+
 class Melody {
     int buzz_pin;
     int notesCount = 0;

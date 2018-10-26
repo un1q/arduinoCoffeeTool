@@ -1,6 +1,13 @@
 #ifndef SCREEN_MAIN_H_
 #define SCREEN_MAIN_H_
 
+//main screen is screen with 6 elements:
+//  temperature, weight, timer, temperature alarm, weight alarm, timer alarm
+//or with main menu with 5 options (one is selected):
+//  set temperature alarm, set weight alarm, set timer alarm, use preset, back
+//the reason of putting those 2 screens in one class is similarity,
+//since some elements should be in the same places on both screens
+
 #include <LiquidCrystal_I2C.h>
 #include "Lcd.h"
 

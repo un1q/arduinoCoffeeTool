@@ -1,6 +1,10 @@
 #ifndef ALARM_TIMER_H_
 #define ALARM_TIMER_H_
 
+// Setting and checking timer alarm.
+// Alarm can be complex, for example: play melody after 30,90 and 120 seconds
+// Alarm also buzzes 10 seconds before each alarm
+
 #include "melody.h"
 #include "timer.h"
 

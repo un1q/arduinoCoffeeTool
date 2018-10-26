@@ -1,6 +1,8 @@
 #ifndef TEMPERATURE_H_
 #define TEMPERATURE_H_
 
+// temperature sensor
+
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
