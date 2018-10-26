@@ -20,8 +20,8 @@
 #define PIN_BUZZ    A0
 
 //4x3 keypad PINs:
-byte rowPins[4] = {3, 2, 1, 0};
-byte colPins[3] = {6, 5, 4};
+byte rowPins[4] = {5, 4, 3, 2};
+byte colPins[3] = {8, 7, 6};
 
 //temperature sensor is on PIN 10, use 4.7R)
 
