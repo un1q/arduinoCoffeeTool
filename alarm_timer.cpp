@@ -1,4 +1,5 @@
 #include "alarm_timer.h"
+#include "global_string_buffer.h"
 
 AlarmTimer::AlarmTimer(Melody *melody, Melody *buzz) {
   //int*   dripTiming      = new int[4] {3, 33, 33+60, 33+60+90};
@@ -17,9 +18,6 @@ AlarmTimer::AlarmTimer(Melody *melody, Melody *buzz) {
 }
 
 AlarmTimer::~AlarmTimer() {
-  //for (int i=0; i<multiAlarm.alarmsCount; i++) {
-  //  delete(multiAlarm.alarms[i]);
-  //}
   delete(multiAlarm.alarms);
   delete(playMelody);
   delete(playBuzz  );
@@ -28,12 +26,14 @@ AlarmTimer::~AlarmTimer() {
 void AlarmTimer::loop() {
   if (!isOn)
     return;
-  int sec = timer.getSecondsTotal();
-  multiAlarm.check(sec);
+  int sec = measureTime.getSecondsTotal();
+  if (sec > 0)
+    multiAlarm.check(sec);
 }
 
 void AlarmTimer::startDrip() {
-  timer.start();
+  measureTime.start();
+  multiAlarm.reset();
   isOn = true;
 }
 
@@ -44,9 +44,15 @@ void AlarmTimer::stop() {
 int AlarmTimer::getSecondsTotal() {
   if (!isOn)
     return 0;
-  return timer.getSecondsTotal();
+  return measureTime.getSecondsTotal();
 }
 
 char* AlarmTimer::toString() {
-  return "drip";
+  if (!isOn)
+    return "drip";
+  //return GlobalStringBuffer::intToString(multiAlarm.difference(measureTime.getSecondsTotal()), "% 4d");
+  Alarm* alarm = multiAlarm.getNext(measureTime.getSecondsTotal());
+  if (alarm == nullptr)
+    return "null";
+  return GlobalStringBuffer::secondsToString(alarm->alarmValue);
 }

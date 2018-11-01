@@ -10,6 +10,7 @@ class Alarm {
     Action *alarmAction;
     
     Alarm(Action *alarmAction, int alarmValue);
+    void reset();
     bool check(int value);
     int  difference(int value);
 };

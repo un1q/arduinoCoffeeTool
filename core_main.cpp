@@ -1,7 +1,7 @@
 #include "core_main.h"
 
-CoreMain::CoreMain(AlarmTimer* timer, Temperature* temp, Keyboard* keyboard, ScreenMain* screen) {
-  this->timer      = timer;
+CoreMain::CoreMain(AlarmTimer* alarmTimer, Temperature* temp, Keyboard* keyboard, ScreenMain* screen) {
+  this->alarmTimer = alarmTimer;
   this->temp       = temp ;
   this->keyboard   = keyboard;
   this->screen     = screen;
@@ -18,9 +18,9 @@ void CoreMain::start() {
 
 void CoreMain::update(char key) {
   switch (key) {
-    case '#': timer->startDrip();
+    case '#': alarmTimer->startDrip();
       break;
-    case '0': timer->stop();
+    case '0': alarmTimer->stop();
       break;
     case '4': // left
     case '6': // right
@@ -29,16 +29,16 @@ void CoreMain::update(char key) {
       gotoMenu();
       return;
   }
-  timer->loop();
+  alarmTimer->loop();
   temp ->loop();
   printMainScreen();
 }
 
 void CoreMain::printMainScreen() {
   screen->printTemp(temp->getTemp());
-  screen->printTimer(timer->getSecondsTotal());
+  screen->printTimer(alarmTimer->getSecondsTotal());
   screen->printWeight("   0g");
   screen->printAlarmTemp("none");
-  screen->printAlarmTimer(timer->toString());
+  screen->printAlarmTimer(alarmTimer->toString());
   screen->printAlarmWeight("none");
 }

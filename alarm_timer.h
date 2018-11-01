@@ -11,7 +11,7 @@
 #include "action_melody.h"
 
 class AlarmTimer {
-    MeasureTime  timer;
+    MeasureTime  measureTime;
     MultiAlarm   multiAlarm;
     ActionMelody *playMelody;
     ActionMelody *playBuzz;

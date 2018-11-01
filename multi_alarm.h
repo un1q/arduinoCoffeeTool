@@ -8,7 +8,10 @@ class MultiAlarm {
     Alarm *alarms     = nullptr; //array
     int   alarmsCount = 0;
     
-    bool check(int value);
+    void   reset();
+    bool   check(int value);
+    int    difference(int value);
+    Alarm* getNext(int value);
 };
 
 #endif

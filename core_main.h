@@ -13,7 +13,7 @@
 #include "core.h"
 
 class CoreMain : public Core {
-    AlarmTimer    *timer;
+    AlarmTimer    *alarmTimer;
     Temperature   *temp;
     Keyboard      *keyboard;
     ScreenMain    *screen;
