@@ -2,17 +2,19 @@
 #define ALARM_H_
 
 #include "action.h"
+#include "alarm_abstract.h"
 
-class Alarm {
+class Alarm : public AlarmAbstract {
     int    direction = 0;
   public:
     int    alarmValue;
     Action *alarmAction;
     
     Alarm(Action *alarmAction, int alarmValue);
-    void reset();
-    bool check(int value);
-    int  difference(int value);
+    virtual ~Alarm();
+    virtual void reset();
+    virtual bool check(int value);
+    virtual int  remains(int value);
 };
 
 #endif

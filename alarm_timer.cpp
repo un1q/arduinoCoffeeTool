@@ -7,17 +7,20 @@ AlarmTimer::AlarmTimer(Melody *melody, Melody *buzz) {
   playMelody = new ActionMelody(melody);
   playBuzz   = new ActionMelody(buzz);
   multiAlarm.alarmsCount = 6;
-  multiAlarm.alarms = new Alarm[6] {
-    Alarm(playMelody, 3  ),
-    Alarm(playBuzz  , 23 ),
-    Alarm(playMelody, 33 ),
-    Alarm(playBuzz  , 83 ),
-    Alarm(playMelody, 93 ),
-    Alarm(playMelody, 183)
+  multiAlarm.alarms = new AlarmAbstract*[6] {
+    new Alarm(playMelody, 0  ),
+    new Alarm(playBuzz  , 20 ),
+    new Alarm(playMelody, 30 ),
+    new Alarm(playBuzz  , 80 ),
+    new Alarm(playMelody, 90 ),
+    new Alarm(playMelody, 180)
   };
 }
 
 AlarmTimer::~AlarmTimer() {
+  for (int i=0; i<multiAlarm.alarmsCount; i++) {
+    delete(multiAlarm.alarms[i]);
+  }
   delete(multiAlarm.alarms);
   delete(playMelody);
   delete(playBuzz  );
@@ -27,12 +30,11 @@ void AlarmTimer::loop() {
   if (!isOn)
     return;
   int sec = measureTime.getSecondsTotal();
-  if (sec > 0)
-    multiAlarm.check(sec);
+  multiAlarm.check(sec);
 }
 
 void AlarmTimer::startDrip() {
-  measureTime.start();
+  measureTime.start(-3);
   multiAlarm.reset();
   isOn = true;
 }

@@ -32,8 +32,10 @@ void ScreenMain::printTimer(int   secTotal) {
   if (secTotal > 0) {
     sec = secTotal % 60;
     min = secTotal / 60;
+    snprintf(txtBuffer, txtBufferSize,"%2d:%02d",min,sec);
+  } else {
+    snprintf(txtBuffer, txtBufferSize,"%5d",secTotal);
   }
-  snprintf(txtBuffer, txtBufferSize,"% 2d:%02d",min,sec);
   printTimer(txtBuffer);
 }
 

@@ -13,6 +13,8 @@
 class AlarmTimer {
     MeasureTime  measureTime;
     MultiAlarm   multiAlarm;
+    MultiAlarm   multiAlarmBuzz;
+    MultiAlarm   multiAlarmMusic;
     ActionMelody *playMelody;
     ActionMelody *playBuzz;
     bool         isOn = false;

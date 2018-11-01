@@ -21,13 +21,6 @@ bool Alarm::check(int value) {
     return false;
   }
   if (direction * (alarmValue - value) <= 0) {
-  //if ((direction > 0 && value >= alarmValue) || (direction < 0 && value <= alarmValue)) {
-    //Serial.print("alarmValue:");
-    //Serial.print(alarmValue);
-    //Serial.print(" value:");
-    //Serial.print(value);
-    //Serial.print(" direction:");
-    //Serial.println(direction);
     direction = 0;
     alarmAction->doIt();
     return true;
@@ -35,6 +28,8 @@ bool Alarm::check(int value) {
   return false;
 }
 
-int Alarm::difference(int value) {
+int Alarm::remains(int value) {
   return value - alarmValue;
 }
+
+Alarm::~Alarm() {}

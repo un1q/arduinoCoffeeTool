@@ -6,9 +6,16 @@ void MeasureTime::start() {
   time = millis();
 }
 
+void MeasureTime::start(int initSeconds) {
+  time = millis() - initSeconds * 1000ul;
+}
+
 int MeasureTime::getSecondsTotal() {
   if (time == 0)
     return 0;
   unsigned long now = millis();
-  return (int)((now - time)/1000ul);
+  if (now > time)
+    return (int)((now - time)/1000ul);
+  else
+    return -(int)((time - now)/1000ul);
 }
