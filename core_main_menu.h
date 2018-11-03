@@ -12,18 +12,19 @@
 #include "alarm_timer.h"
 #include "temperature.h"
 #include "keyboard.h"
-#include "screen_main.h"
+#include "lcd.h"
 #include "core.h"
 
 class CoreMainMenu : public Core {
     AlarmTimer    *timer;
     Temperature   *temp;
     Keyboard      *keyboard;
-    ScreenMain    *screen;
+    Lcd           *lcd;
+    Lcd::Menu     menu;
     void printMainScreen();
   public:
     void (*goBack)() = {};
-    CoreMainMenu(AlarmTimer*, Temperature*, Keyboard*, ScreenMain*);
+    CoreMainMenu(AlarmTimer*, Temperature*, Keyboard*, Lcd*);
     ~CoreMainMenu();
     void update(char key);
     void start();

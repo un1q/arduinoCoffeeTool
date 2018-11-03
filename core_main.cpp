@@ -1,18 +1,16 @@
 #include "core_main.h"
 
-CoreMain::CoreMain(AlarmTimer* alarmTimer, Temperature* temp, Keyboard* keyboard, ScreenMain* screen) {
+CoreMain::CoreMain(AlarmTimer* alarmTimer, Temperature* temp, Keyboard* keyboard, Lcd* lcd) {
   this->alarmTimer = alarmTimer;
   this->temp       = temp ;
   this->keyboard   = keyboard;
-  this->screen     = screen;
+  this->lcd        = lcd;
 }
 
 CoreMain::~CoreMain() {
-  delete(screen);
 }
 
 void CoreMain::start() {
-  screen->start();
   keyboard->setShiftMode(shift_off);
 }
 
@@ -35,10 +33,11 @@ void CoreMain::update(char key) {
 }
 
 void CoreMain::printMainScreen() {
-  screen->printTemp(temp->getTemp());
-  screen->printTimer(alarmTimer->getSecondsTotal());
-  screen->printWeight("   0g");
-  screen->printAlarmTemp("none");
-  screen->printAlarmTimer(alarmTimer->toString());
-  screen->printAlarmWeight("none");
+  lcdInfo.temp        = temp->getTemp();
+  lcdInfo.time        = alarmTimer->measureTime->getSecondsTotal();
+  lcdInfo.weight      = 0;
+  lcdInfo.tempAlarm   = "none";
+  lcdInfo.timeAlarm   = alarmTimer->toString();
+  lcdInfo.weightAlarm = "none";
+  lcd->print(&lcdInfo);
 }

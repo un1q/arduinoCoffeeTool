@@ -9,17 +9,20 @@
 #include "multi_alarm.h"
 #include "measure_time.h"
 #include "action_melody.h"
+#include "string_buffer.h"
 
 class AlarmTimer {
-    MeasureTime  measureTime;
     MultiAlarm   multiAlarm;
     MultiAlarm   multiAlarmBuzz;
     MultiAlarm   multiAlarmMusic;
     ActionMelody *playMelody;
     ActionMelody *playBuzz;
     bool         isOn = false;
+    StringBuffer stringBuffer;
   public:
-    AlarmTimer(Melody *melody, Melody *buzz);
+    MeasureTime  *measureTime;
+    
+    AlarmTimer(MeasureTime *measureTime, Melody *melody, Melody *buzz);
     ~AlarmTimer();
     void  loop();
     void  startDrip();

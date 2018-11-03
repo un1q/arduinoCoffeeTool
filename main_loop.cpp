@@ -10,16 +10,15 @@ MainLoop::MainLoop(AlarmTimer* timer, Temperature* temp, Keyboard* keyboard, Lcd
   this->temp           = temp ;
   this->keyboard       = keyboard;
   this->lcd            = lcd;
-  this->screen         = new ScreenMain(lcd);
-  this->coreMain       = new CoreMain(timer, temp, keyboard, screen);
-  this->coreMainMenu   = new CoreMainMenu(timer, temp, keyboard, screen);
+  this->coreMain       = new CoreMain    (timer, temp, keyboard, lcd);
+  this->coreMainMenu   = new CoreMainMenu(timer, temp, keyboard, lcd);
   coreMain->gotoMenu   = [](){ changeCore(coreMainMenu); };
   coreMainMenu->goBack = [](){ changeCore(coreMain); };
 }
 
 MainLoop::~MainLoop() {
   delete(coreMain);
-  delete(screen);
+  delete(coreMainMenu);
 }
 
 void MainLoop::startup() {
@@ -38,4 +37,5 @@ void MainLoop::changeCore(Core *core) {
     return;
   MainLoop::core = core;
   core->start();
+  delay(50);
 }
