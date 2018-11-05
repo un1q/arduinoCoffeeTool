@@ -1,8 +1,8 @@
 #include "main_loop.h"
 
-CoreMain     *MainLoop::coreMain;
-CoreMainMenu *MainLoop::coreMainMenu;
-Core         *MainLoop::core;
+CoreMain     *MainLoop::coreMain     = nullptr;
+CoreMainMenu *MainLoop::coreMainMenu = nullptr;
+Core         *MainLoop::core         = nullptr;
 
 MainLoop::MainLoop(Keyboard* keyboard, Lcd* lcd, Melody* alarmMelody, Melody* buzzMelody) {
   this->alarmAction    = new ActionMelody(alarmMelody);

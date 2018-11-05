@@ -12,11 +12,13 @@
 #include "string_buffer.h"
 
 class AlarmTimer {
-    bool         on = false;
+    bool         on           = false;
     StringBuffer stringBuffer;
-    MultiAlarm   *multiAlarm;
-    Action       *alarmAction;
-    Action       *buzzAction;
+    MultiAlarm   *multiAlarm  = nullptr;
+    Action       *alarmAction = nullptr;
+    Action       *buzzAction  = nullptr;
+    char*        name         = nullptr;
+    int          startAt      = 0;
     
     void destroyMultiAlarm();
   public:

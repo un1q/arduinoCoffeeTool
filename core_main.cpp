@@ -11,22 +11,32 @@ CoreMain::~CoreMain() {
 }
 
 void CoreMain::start() {
-  keyboard->setShiftMode(shift_off);
+  keyboard->setShiftMode(shift_always);
 }
 
 void CoreMain::update(char key) {
   switch (key) {
-    case '#': alarmTimer->start();
+    case k_ENTER:
+    case k_CLEAR:
+      alarmTimer->start();
       break;
-    case '0': alarmTimer->stop();
+    case '0': 
+    case '.': 
+      alarmTimer->stop();
       break;
-    case '4': // left
-    case '6': // right
-    case '2': // up
-    case '8': // bottom
-      gotoMenu();
-      return;
+    case k_F1:
+      alarmTimer->usePreset(&TimerPreset::drip);
+      break;
+    case k_F2:
+      alarmTimer->usePreset(&TimerPreset::chemex);
+      break;
+    case k_F3:
+      alarmTimer->usePreset(&TimerPreset::tea);
+      break;
+//      gotoMenu();
+//      return;
   }
+  Serial.println(key);
   alarmTimer->loop();
   temp ->loop();
   printMainScreen();

@@ -27,7 +27,7 @@ void AlarmTimer::loop() {
 }
 
 void AlarmTimer::start() {
-  measureTime->start(-3);
+  measureTime->start(startAt);
   multiAlarm->reset();
   on = true;
 }
@@ -39,13 +39,13 @@ void AlarmTimer::stop() {
 
 char* AlarmTimer::toString() {
   if (multiAlarm == nullptr)
-    return "none";
+    return "none ";
   if (!isOn())
-    return "drip";
+    return name == nullptr ? "?????" : name;
   Alarm* alarm = multiAlarm->getNext(measureTime->getSecondsTotal());
   if (alarm == nullptr)
-    return "drip";
-  return stringBuffer.secondsToString(alarm->alarmValue);
+    return "null ";
+  return stringBuffer.secondsToString(alarm->alarmValue, 5);
 }
 
 void AlarmTimer::usePreset(TimerPreset *timerPreset) {
@@ -61,6 +61,8 @@ void AlarmTimer::usePreset(TimerPreset *timerPreset) {
   for (int i=0; i<alarmsCount; i++) {
     multiAlarm->alarms[buzzersCount + i] = new Alarm(alarmAction, timerPreset->alarms[i]);
   }
+  name = timerPreset->name;
+  startAt = timerPreset->startAt;
 }
 
 void AlarmTimer::destroyMultiAlarm() {
