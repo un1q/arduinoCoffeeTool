@@ -30,19 +30,17 @@ Melody       melody(PIN_BUZZ);
 Melody       buzz(PIN_BUZZ, new int[2] {NOTE_C4, NOTE_C4}, new int[2] {4,4}, 2);
 Lcd_16x2     lcd          = Lcd_16x2();
 Keyboard     keyboard     = Keyboard(rowPins, colPins);
-MeasureTime  measureTime  = MeasureTime();
-AlarmTimer   timer        = AlarmTimer(&measureTime, &melody, &buzz);
-Temperature  temperature  = Temperature();
-MainLoop     mainLoop     = MainLoop(&timer, &temperature, &keyboard, &lcd);
+MainLoop     *mainLoop;
 
 void setup() {
   Serial.begin(9600);
   Serial.println("SETUP");
   pinMode(PIN_BUZZ, OUTPUT);
   lcd.setup();
-  mainLoop.startup();
+  mainLoop = new MainLoop(&keyboard, &lcd, &melody, &buzz);
+  mainLoop->startup();
 }
 
 void loop() {
-  mainLoop.loop();
+  mainLoop->loop();
 }

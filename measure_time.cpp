@@ -10,6 +10,10 @@ void MeasureTime::start(int initSeconds) {
   time = millis() - initSeconds * 1000ul;
 }
 
+void MeasureTime::stop() {
+  time = 0;
+}
+
 int MeasureTime::getSecondsTotal() {
   if (time == 0)
     return 0;

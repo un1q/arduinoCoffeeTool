@@ -9,7 +9,7 @@ class MultiAlarm : public AlarmAbstract {
     AlarmAbstract **alarms     = nullptr; //array of AlarmAbstract*
     int           alarmsCount = 0;
     
-    virtual        ~MultiAlarm();
+    virtual ~MultiAlarm();
     void           reset();
     bool           check(int value);
     int            remains(int value);

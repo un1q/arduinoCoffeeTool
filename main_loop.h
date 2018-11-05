@@ -13,19 +13,23 @@
 #include "core_main.h"
 #include "core_main_menu.h"
 #include "core.h"
+#include "action_melody.h"
 
 class MainLoop {
-    AlarmTimer   *timer;
+    MeasureTime  *measureTime;
+    AlarmTimer   *alarmTimer;
     Temperature  *temp;
     Lcd          *lcd;
     Keyboard     *keyboard;
+    ActionMelody *alarmAction;
+    ActionMelody *buzzAction;
     static CoreMain     *coreMain;
     static CoreMainMenu *coreMainMenu;
     static Core         *core;
     
     static void changeCore(Core *core);
   public:
-    MainLoop(AlarmTimer*, Temperature*, Keyboard*, Lcd*);
+    MainLoop(Keyboard* keyboard, Lcd* lcd, Melody* alarmMelody, Melody* buzzMelody);
     ~MainLoop();
     void startup();
     void loop();

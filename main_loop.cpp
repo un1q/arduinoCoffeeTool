@@ -4,20 +4,29 @@ CoreMain     *MainLoop::coreMain;
 CoreMainMenu *MainLoop::coreMainMenu;
 Core         *MainLoop::core;
 
-    
-MainLoop::MainLoop(AlarmTimer* timer, Temperature* temp, Keyboard* keyboard, Lcd* lcd) {
-  this->timer          = timer;
-  this->temp           = temp ;
+MainLoop::MainLoop(Keyboard* keyboard, Lcd* lcd, Melody* alarmMelody, Melody* buzzMelody) {
+  this->alarmAction    = new ActionMelody(alarmMelody);
+  this->buzzAction     = new ActionMelody(buzzMelody);
+  this->measureTime    = new MeasureTime();
+  this->alarmTimer     = new AlarmTimer(measureTime, &TimerPreset::drip, alarmAction, buzzAction);
+  this->temp           = new Temperature();
   this->keyboard       = keyboard;
   this->lcd            = lcd;
-  this->coreMain       = new CoreMain    (timer, temp, keyboard, lcd);
-  this->coreMainMenu   = new CoreMainMenu(timer, temp, keyboard, lcd);
+  this->coreMain       = new CoreMain    (alarmTimer, temp, keyboard, lcd);
+  this->coreMainMenu   = new CoreMainMenu(alarmTimer, temp, keyboard, lcd);
   coreMain->gotoMenu   = [](){ changeCore(coreMainMenu); };
   coreMainMenu->goBack = [](){ changeCore(coreMain); };
 }
 
 MainLoop::~MainLoop() {
-  delete(coreMain);
+  delete(alarmAction );
+  delete(buzzAction  );
+  delete(measureTime );
+  delete(alarmTimer  );
+  delete(temp        );
+  delete(keyboard    );
+  delete(lcd         );
+  delete(coreMain    );
   delete(coreMainMenu);
 }
 

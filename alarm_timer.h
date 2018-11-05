@@ -5,30 +5,32 @@
 // Alarm can be complex, for example:
 // play melody after 30,90 and 120 seconds and buzz 10 seconds before each alarm
 
-#include "melody.h"
 #include "multi_alarm.h"
 #include "measure_time.h"
-#include "action_melody.h"
+#include "timer_preset.h"
+#include "action.h"
 #include "string_buffer.h"
 
 class AlarmTimer {
-    MultiAlarm   multiAlarm;
-    MultiAlarm   multiAlarmBuzz;
-    MultiAlarm   multiAlarmMusic;
-    ActionMelody *playMelody;
-    ActionMelody *playBuzz;
-    bool         isOn = false;
+    bool         on = false;
     StringBuffer stringBuffer;
+    MultiAlarm   *multiAlarm;
+    Action       *alarmAction;
+    Action       *buzzAction;
+    
+    void destroyMultiAlarm();
   public:
     MeasureTime  *measureTime;
     
-    AlarmTimer(MeasureTime *measureTime, Melody *melody, Melody *buzz);
+    AlarmTimer(MeasureTime *measureTime, TimerPreset *preset, Action *alarmAction, Action *buzzAction);
     ~AlarmTimer();
+    bool  isOn();
     void  loop();
-    void  startDrip();
+    void  start();
     void  stop();
     int   getSecondsTotal();
     char* toString();
+    void  usePreset(TimerPreset *timerPreset);
 };
 
 #endif

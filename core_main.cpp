@@ -1,10 +1,10 @@
 #include "core_main.h"
 
 CoreMain::CoreMain(AlarmTimer* alarmTimer, Temperature* temp, Keyboard* keyboard, Lcd* lcd) {
-  this->alarmTimer = alarmTimer;
-  this->temp       = temp ;
-  this->keyboard   = keyboard;
-  this->lcd        = lcd;
+  this->alarmTimer       = alarmTimer;
+  this->temp             = temp ;
+  this->keyboard         = keyboard;
+  this->lcd              = lcd;
 }
 
 CoreMain::~CoreMain() {
@@ -16,7 +16,7 @@ void CoreMain::start() {
 
 void CoreMain::update(char key) {
   switch (key) {
-    case '#': alarmTimer->startDrip();
+    case '#': alarmTimer->start();
       break;
     case '0': alarmTimer->stop();
       break;

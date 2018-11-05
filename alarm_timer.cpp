@@ -1,54 +1,75 @@
 #include "alarm_timer.h"
 #include "string_buffer.h"
 
-AlarmTimer::AlarmTimer(MeasureTime *measureTime, Melody *melody, Melody *buzz) {
-  //int*   dripTiming      = new int[4] {3, 33, 33+60, 33+60+90};
-  //int    dripTimingCount = 4;
+#include <Arduino.h>
+
+AlarmTimer::AlarmTimer(MeasureTime *measureTime, TimerPreset *preset, Action *alarmAction, Action *buzzAction) {
+  this->alarmAction = alarmAction;
+  this->buzzAction  = buzzAction ;
   this->measureTime = measureTime;
-  playMelody = new ActionMelody(melody);
-  playBuzz   = new ActionMelody(buzz);
-  multiAlarm.alarmsCount = 6;
-  multiAlarm.alarms = new AlarmAbstract*[6] {
-    new Alarm(playMelody, 0  ),
-    new Alarm(playBuzz  , 20 ),
-    new Alarm(playMelody, 30 ),
-    new Alarm(playBuzz  , 80 ),
-    new Alarm(playMelody, 90 ),
-    new Alarm(playMelody, 180)
-  };
+  this->multiAlarm  = nullptr;
+  usePreset(preset);
 }
 
 AlarmTimer::~AlarmTimer() {
-  for (int i=0; i<multiAlarm.alarmsCount; i++) {
-    delete(multiAlarm.alarms[i]);
-  }
-  delete(multiAlarm.alarms);
-  delete(playMelody);
-  delete(playBuzz  );
+  destroyMultiAlarm();
+}
+
+bool AlarmTimer::isOn() {
+  return on && multiAlarm != nullptr;
 }
 
 void AlarmTimer::loop() {
-  if (!isOn)
+  if (!isOn())
     return;
   int sec = measureTime->getSecondsTotal();
-  multiAlarm.check(sec);
+  multiAlarm->check(sec);
 }
 
-void AlarmTimer::startDrip() {
+void AlarmTimer::start() {
   measureTime->start(-3);
-  multiAlarm.reset();
-  isOn = true;
+  multiAlarm->reset();
+  on = true;
 }
 
 void AlarmTimer::stop() {
-  isOn = false;
+  on = false;
+  measureTime->stop();
 }
 
 char* AlarmTimer::toString() {
-  if (!isOn)
+  if (multiAlarm == nullptr)
+    return "none";
+  if (!isOn())
     return "drip";
-  Alarm* alarm = multiAlarm.getNext(measureTime->getSecondsTotal());
+  Alarm* alarm = multiAlarm->getNext(measureTime->getSecondsTotal());
   if (alarm == nullptr)
     return "drip";
   return stringBuffer.secondsToString(alarm->alarmValue);
+}
+
+void AlarmTimer::usePreset(TimerPreset *timerPreset) {
+  int alarmsCount  = timerPreset->alarmsCount;
+  int buzzersCount = timerPreset->buzzersCount;
+  destroyMultiAlarm();
+  multiAlarm = new MultiAlarm();
+  multiAlarm->alarmsCount = buzzersCount + alarmsCount;
+  multiAlarm->alarms = new AlarmAbstract*[multiAlarm->alarmsCount];
+  for (int i=0; i<buzzersCount; i++) {
+    multiAlarm->alarms[i] = new Alarm(buzzAction, timerPreset->buzzers[i]);
+  }
+  for (int i=0; i<alarmsCount; i++) {
+    multiAlarm->alarms[buzzersCount + i] = new Alarm(alarmAction, timerPreset->alarms[i]);
+  }
+}
+
+void AlarmTimer::destroyMultiAlarm() {
+  if (multiAlarm == nullptr)
+    return;
+  for (int i=0; i<multiAlarm->alarmsCount; i++) {
+    delete(multiAlarm->alarms[i]);
+  }
+  delete(multiAlarm->alarms);
+  multiAlarm = nullptr;
+
 }
