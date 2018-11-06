@@ -1,10 +1,11 @@
 #include "core_main.h"
 
-CoreMain::CoreMain(AlarmTimer* alarmTimer, Temperature* temp, Keyboard* keyboard, Lcd* lcd) {
-  this->alarmTimer       = alarmTimer;
-  this->temp             = temp ;
-  this->keyboard         = keyboard;
-  this->lcd              = lcd;
+CoreMain::CoreMain(AlarmTimer* alarmTimer, Temperature* temp, MeasureWeight *measureWeight, Keyboard* keyboard, Lcd* lcd) {
+  this->alarmTimer    = alarmTimer;
+  this->temp          = temp ;
+  this->keyboard      = keyboard;
+  this->lcd           = lcd;
+  this->measureWeight = measureWeight;
 }
 
 CoreMain::~CoreMain() {
@@ -23,6 +24,7 @@ void CoreMain::update(char key) {
     case '0': 
     case '.': 
       alarmTimer->stop();
+      measureWeight->tare();
       break;
     case k_F1:
       alarmTimer->usePreset(&TimerPreset::drip);
@@ -48,7 +50,7 @@ void CoreMain::update(char key) {
 void CoreMain::printMainScreen() {
   lcdInfo.temp        = temp->getTemp();
   lcdInfo.time        = alarmTimer->measureTime->getSecondsTotal();
-  lcdInfo.weight      = 0;
+  lcdInfo.weight      = measureWeight->get();
   lcdInfo.tempAlarm   = "none";
   lcdInfo.timeAlarm   = alarmTimer->toString();
   lcdInfo.weightAlarm = "none";

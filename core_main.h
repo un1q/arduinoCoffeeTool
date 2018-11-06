@@ -11,17 +11,19 @@
 #include "keyboard.h"
 #include "lcd.h"
 #include "core.h"
+#include "measure_weight.h"
 
 class CoreMain : public Core {
     AlarmTimer    *alarmTimer;
     Temperature   *temp;
+    MeasureWeight *measureWeight;
     Keyboard      *keyboard;
     Lcd           *lcd;
     Lcd::Info     lcdInfo;
     void printMainScreen();
   public:
     void (*gotoMenu)() = {};
-    CoreMain(AlarmTimer*, Temperature*, Keyboard*, Lcd*);
+    CoreMain(AlarmTimer*, Temperature*, MeasureWeight*, Keyboard*, Lcd*);
     ~CoreMain();
     void update(char key);
     void start();

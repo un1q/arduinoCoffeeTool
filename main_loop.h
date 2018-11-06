@@ -14,22 +14,24 @@
 #include "core_main_menu.h"
 #include "core.h"
 #include "action_melody.h"
+#include "measure_weight.h"
 
 class MainLoop {
-    MeasureTime  *measureTime;
-    AlarmTimer   *alarmTimer;
-    Temperature  *temp;
-    Lcd          *lcd;
-    Keyboard     *keyboard;
-    ActionMelody *alarmAction;
-    ActionMelody *buzzAction;
+    MeasureTime   *measureTime;
+    AlarmTimer    *alarmTimer;
+    Temperature   *temp;
+    MeasureWeight *measureWeight;
+    Lcd           *lcd;
+    Keyboard      *keyboard;
+    ActionMelody  *alarmAction;
+    ActionMelody  *buzzAction;
     static CoreMain     *coreMain;
     static CoreMainMenu *coreMainMenu;
     static Core         *core;
     
     static void changeCore(Core *core);
   public:
-    MainLoop(Keyboard* keyboard, Lcd* lcd, Melody* alarmMelody, Melody* buzzMelody);
+    MainLoop(MeasureWeight* measureWeight, Keyboard* keyboard, Lcd* lcd, Melody* alarmMelody, Melody* buzzMelody);
     ~MainLoop();
     void startup();
     void loop();

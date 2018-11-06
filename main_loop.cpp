@@ -4,15 +4,16 @@ CoreMain     *MainLoop::coreMain     = nullptr;
 CoreMainMenu *MainLoop::coreMainMenu = nullptr;
 Core         *MainLoop::core         = nullptr;
 
-MainLoop::MainLoop(Keyboard* keyboard, Lcd* lcd, Melody* alarmMelody, Melody* buzzMelody) {
+MainLoop::MainLoop(MeasureWeight* measureWeight, Keyboard* keyboard, Lcd* lcd, Melody* alarmMelody, Melody* buzzMelody) {
   this->alarmAction    = new ActionMelody(alarmMelody);
   this->buzzAction     = new ActionMelody(buzzMelody);
   this->measureTime    = new MeasureTime();
   this->alarmTimer     = new AlarmTimer(measureTime, &TimerPreset::drip, alarmAction, buzzAction);
   this->temp           = new Temperature();
+  this->measureWeight  = measureWeight;
   this->keyboard       = keyboard;
   this->lcd            = lcd;
-  this->coreMain       = new CoreMain    (alarmTimer, temp, keyboard, lcd);
+  this->coreMain       = new CoreMain    (alarmTimer, temp, measureWeight, keyboard, lcd);
   this->coreMainMenu   = new CoreMainMenu(alarmTimer, temp, keyboard, lcd);
   coreMain->gotoMenu   = [](){ changeCore(coreMainMenu); };
   coreMainMenu->goBack = [](){ changeCore(coreMain); };
