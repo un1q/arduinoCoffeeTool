@@ -61,7 +61,7 @@ void AlarmTimer::usePreset(TimerPreset *timerPreset) {
   for (int i=0; i<alarmsCount; i++) {
     multiAlarm->alarms[buzzersCount + i] = new Alarm(alarmAction, timerPreset->alarms[i]);
   }
-  name = timerPreset->name;
+  name    = timerPreset->name;
   startAt = timerPreset->startAt;
 }
 

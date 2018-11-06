@@ -33,6 +33,9 @@ void CoreMain::update(char key) {
     case k_F3:
       alarmTimer->usePreset(&TimerPreset::tea);
       break;
+    case k_F4:
+      alarmTimer->usePreset(&TimerPreset::fellow);
+      break;
 //      gotoMenu();
 //      return;
   }

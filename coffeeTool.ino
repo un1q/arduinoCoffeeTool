@@ -9,7 +9,8 @@
 #include "melody.h"
 #include "pitches.h"
 #include "main_loop.h"
-#include "lcd_16x2.h"
+//#include "lcd_16x2.h"
+#include "lcd_N5110.h"
 
 #include <Keypad.h>
 
@@ -28,7 +29,8 @@ byte colPins[3] = {8, 7, 6};
 
 Melody       melody(PIN_BUZZ);
 Melody       buzz(PIN_BUZZ, new int[2] {NOTE_C4, NOTE_C4}, new int[2] {4,4}, 2);
-Lcd_16x2     lcd          = Lcd_16x2();
+//Lcd_16x2     lcd          = Lcd_16x2();
+Lcd_N5110    lcd          = Lcd_N5110(A1,A2,A3,A4,-1);
 Keyboard     keyboard     = Keyboard(rowPins, colPins);
 MainLoop     *mainLoop;
 
