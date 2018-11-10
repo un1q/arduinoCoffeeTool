@@ -47,5 +47,5 @@ void MainLoop::changeCore(Core *core) {
     return;
   MainLoop::core = core;
   core->start();
-  delay(50);
+  //delay(50);
 }
