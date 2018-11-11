@@ -8,19 +8,15 @@
 
 #include "globals.h"
 #include "alarm_timer.h"
-#include "temperature.h"
 #include "core.h"
-#include "measure_weight.h"
 
 class CoreMain : public Core {
     AlarmTimer    *alarmTimer;
-    Temperature   *temp;
-    MeasureWeight *measureWeight;
     Lcd::Info     lcdInfo;
     void printMainScreen();
   public:
     void (*gotoMenu)() = {};
-    CoreMain(AlarmTimer*, Temperature*, MeasureWeight*);
+    CoreMain(AlarmTimer*);
     ~CoreMain();
     void update(char key);
     void start();

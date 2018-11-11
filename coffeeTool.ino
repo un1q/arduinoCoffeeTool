@@ -11,7 +11,6 @@
 #include "melody.h"
 #include "pitches.h"
 #include "main_loop.h"
-#include "measure_weight.h"
 #include "globals.h"
 
 #include <Keypad.h>
@@ -34,20 +33,23 @@ byte colPins[3] = {8, 7, 6};
 
 //temperature sensor is on PIN 10, use 4.7R)
 
-Melody        melody(PIN_BUZZ, new int[8] {NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4}, new int[8] {4, 8, 8, 4, 4, 4, 4, 4}, 8);
-Melody        buzz(PIN_BUZZ, new int[2] {NOTE_C4, NOTE_C4}, new int[2] {4,4}, 2);
-Lcd           *lcd          = new Lcd_N5110(A1,A2,A3,A4,-1);
-Keyboard      keyboard     = Keyboard(rowPins, colPins);
-MeasureWeight scale        = MeasureWeight(SCALE_DOUT, SCALE_CLK, scaleCalibrationFactor);
+Melody               melody(PIN_BUZZ, new int[8] {NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4}, new int[8] {4, 8, 8, 4, 4, 4, 4, 4}, 8);
+Melody               buzz(PIN_BUZZ, new int[2] {NOTE_C4, NOTE_C4}, new int[2] {4,4}, 2);
+Lcd                  *lcd          = new Lcd_N5110(A1,A2,A3,A4,-1);
+Keyboard             keyboard      = Keyboard(rowPins, colPins);
+MeasureWeight        measureWeight = MeasureWeight(SCALE_DOUT, SCALE_CLK, scaleCalibrationFactor);
+MeasureTemperature   measureTemp   = MeasureTemperature();
+MeasureTime          measureTime   = MeasureTime();
 MainLoop      *mainLoop;
+
 
 void setup() {
   Serial.begin(9600);
   Serial.println("SETUP");
   pinMode(PIN_BUZZ, OUTPUT);
   lcd->setup();
-  scale.setup();
-  mainLoop = new MainLoop(&scale, &melody, &buzz);
+  measureWeight.setup();
+  mainLoop = new MainLoop(&melody, &buzz);
   mainLoop->startup();
 }
 

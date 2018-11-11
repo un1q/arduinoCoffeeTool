@@ -8,18 +8,13 @@
 
 #include "globals.h"
 #include "alarm_timer.h"
-#include "temperature.h"
 #include "core_main.h"
 #include "core_main_menu.h"
 #include "core.h"
 #include "action_melody.h"
-#include "measure_weight.h"
 
 class MainLoop {
-    MeasureTime   *measureTime;
     AlarmTimer    *alarmTimer;
-    Temperature   *temp;
-    MeasureWeight *measureWeight;
     ActionMelody  *alarmAction;
     ActionMelody  *buzzAction;
     static CoreMain     *coreMain;
@@ -28,7 +23,7 @@ class MainLoop {
     
     static void changeCore(Core *core);
   public:
-    MainLoop(MeasureWeight* measureWeight, Melody* alarmMelody, Melody* buzzMelody);
+    MainLoop(Melody* alarmMelody, Melody* buzzMelody);
     ~MainLoop();
     void startup();
     void loop();

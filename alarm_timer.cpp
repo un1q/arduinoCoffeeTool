@@ -3,10 +3,9 @@
 
 #include <Arduino.h>
 
-AlarmTimer::AlarmTimer(MeasureTime *measureTime, TimerPreset *preset, Action *alarmAction, Action *buzzAction) {
+AlarmTimer::AlarmTimer(TimerPreset *preset, Action *alarmAction, Action *buzzAction) {
   this->alarmAction = alarmAction;
   this->buzzAction  = buzzAction ;
-  this->measureTime = measureTime;
   this->multiAlarm  = nullptr;
   usePreset(preset);
 }
@@ -23,15 +22,13 @@ void AlarmTimer::loop() {
   if (!isOn())
     return;
   int sec = 0;
-  if (measureTime != nullptr)
-    sec = measureTime->getSecondsTotal();
+  sec = measureTime.getSecondsTotal();
   if (multiAlarm != nullptr)
     multiAlarm->check(sec);
 }
 
 void AlarmTimer::start() {
-  if (measureTime != nullptr)
-    measureTime->start(startAt);
+  measureTime.start(startAt);
   if (multiAlarm != nullptr)
     multiAlarm->reset();
   on = true;
@@ -39,8 +36,7 @@ void AlarmTimer::start() {
 
 void AlarmTimer::stop() {
   on = false;
-  if (measureTime != nullptr)
-    measureTime->stop();
+  measureTime.stop();
 }
 
 char* AlarmTimer::toString() {
@@ -48,7 +44,7 @@ char* AlarmTimer::toString() {
     return "none ";
   if (!isOn())
     return name == nullptr ? "?????" : name;
-  Alarm* alarm = multiAlarm->getNext(measureTime->getSecondsTotal());
+  Alarm* alarm = multiAlarm->getNext(measureTime.getSecondsTotal());
   if (alarm == nullptr)
     return "null ";
   return stringBuffer.secondsToString(alarm->alarmValue, 5);

@@ -1,9 +1,7 @@
 #include "core_main.h"
 
-CoreMain::CoreMain(AlarmTimer* alarmTimer, Temperature* temp, MeasureWeight *measureWeight) {
+CoreMain::CoreMain(AlarmTimer* alarmTimer) {
   this->alarmTimer    = alarmTimer;
-  this->temp          = temp ;
-  this->measureWeight = measureWeight;
 }
 
 CoreMain::~CoreMain() {
@@ -23,18 +21,18 @@ void CoreMain::update(char key) {
     case '0': 
     case '.': 
       alarmTimer->stop();
-      measureWeight->tare();
+      measureWeight.tare();
       break;
     case k_F1: usePreset(0); break;
     case k_F2: usePreset(1); break;
     case k_F3: usePreset(2); break;
     case k_F4: usePreset(3); break;
     case k_F5: usePreset(4); break;
-    case k_LEFT: gotoMenu(); return;
+    case k_LEFT: alarmTimer->stop(); gotoMenu(); return;
   }
   Serial.println(key);
   alarmTimer->loop();
-  temp ->loop();
+  measureTemp.loop();
   printMainScreen();
 }
 
@@ -47,9 +45,9 @@ void CoreMain::usePreset(int i) {
 }
 
 void CoreMain::printMainScreen() {
-  lcdInfo.temp        = temp->getTemp();
-  lcdInfo.time        = alarmTimer->measureTime->getSecondsTotal();
-  lcdInfo.weight      = measureWeight->get();
+  lcdInfo.temp        = measureTemp.getTemp();
+  lcdInfo.time        = measureTime.getSecondsTotal();
+  lcdInfo.weight      = measureWeight.get();
   lcdInfo.tempAlarm   = "none";
   lcdInfo.timeAlarm   = alarmTimer->toString();
   lcdInfo.weightAlarm = "none";

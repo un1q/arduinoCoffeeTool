@@ -4,15 +4,12 @@ CoreMain     *MainLoop::coreMain     = nullptr;
 CoreMainMenu *MainLoop::coreMainMenu = nullptr;
 Core         *MainLoop::core         = nullptr;
 
-MainLoop::MainLoop(MeasureWeight* measureWeight, Melody* alarmMelody, Melody* buzzMelody) {
+MainLoop::MainLoop(Melody* alarmMelody, Melody* buzzMelody) {
   this->alarmAction    = new ActionMelody(alarmMelody);
   this->buzzAction     = new ActionMelody(buzzMelody);
-  this->measureTime    = new MeasureTime();
-  this->alarmTimer     = new AlarmTimer(measureTime, nullptr, alarmAction, buzzAction);
-  this->temp           = new Temperature();
-  this->measureWeight  = measureWeight;
-  this->coreMain       = new CoreMain    (alarmTimer, temp, measureWeight);
-  this->coreMainMenu   = new CoreMainMenu(alarmTimer, temp);
+  this->alarmTimer     = new AlarmTimer(nullptr, alarmAction, buzzAction); //nullptr = no preset
+  this->coreMain       = new CoreMain    (alarmTimer);
+  this->coreMainMenu   = new CoreMainMenu();
   coreMain->gotoMenu     = [](){ changeCore(coreMainMenu); };
   coreMainMenu->selected = [](int i){
     changeCore(coreMain);
@@ -23,9 +20,7 @@ MainLoop::MainLoop(MeasureWeight* measureWeight, Melody* alarmMelody, Melody* bu
 MainLoop::~MainLoop() {
   delete(alarmAction );
   delete(buzzAction  );
-  delete(measureTime );
   delete(alarmTimer  );
-  delete(temp        );
   delete(coreMain    );
   delete(coreMainMenu);
 }

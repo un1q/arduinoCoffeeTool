@@ -1,8 +1,7 @@
 #include "core_main_menu.h"
+#include "timer_preset.h"
 
-CoreMainMenu::CoreMainMenu(AlarmTimer* timer, Temperature* temp) {
-  this->timer      = timer;
-  this->temp       = temp ;
+CoreMainMenu::CoreMainMenu() {
   menu.size     = TimerPreset::PRESETS_COUNT;
   menu.selected = 0;
   menu.options  = new char*[menu.size];

@@ -1,5 +1,5 @@
-#ifndef TEMPERATURE_H_
-#define TEMPERATURE_H_
+#ifndef MEASURE_TEMPERATURE_H_
+#define MEASURE_TEMPERATURE_H_
 
 // temperature sensor
 
@@ -9,12 +9,12 @@
 #define TEMP_PIN 10
 //(a 4.7K resistor is necessary)
 
-class Temperature {
+class MeasureTemperature {
     OneWire           *oneWire;
     DallasTemperature *sensors;
     int temp;
   public:
-    Temperature();
+    MeasureTemperature();
     void loop();
     int  getTemp();
 };

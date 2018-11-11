@@ -5,8 +5,8 @@
 // Alarm can be complex, for example:
 // play melody after 30,90 and 120 seconds and buzz 10 seconds before each alarm
 
+#include "globals.h"
 #include "multi_alarm.h"
-#include "measure_time.h"
 #include "timer_preset.h"
 #include "action.h"
 #include "string_buffer.h"
@@ -22,9 +22,7 @@ class AlarmTimer {
     
     void destroyMultiAlarm();
   public:
-    MeasureTime  *measureTime;
-    
-    AlarmTimer(MeasureTime *measureTime, TimerPreset *preset, Action *alarmAction, Action *buzzAction);
+    AlarmTimer(TimerPreset *preset, Action *alarmAction, Action *buzzAction);
     ~AlarmTimer();
     bool  isOn();
     void  loop();
