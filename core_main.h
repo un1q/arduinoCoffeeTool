@@ -27,6 +27,7 @@ class CoreMain : public Core {
     ~CoreMain();
     void update(char key);
     void start();
+    void usePreset(int i);
 };
 
 #endif

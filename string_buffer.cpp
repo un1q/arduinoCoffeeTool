@@ -26,7 +26,7 @@ char* StringBuffer::secondsToString(int secTotal, int length) {
   int n = nSecondsToString(secTotal);
   if (n < length && n >= 0) {
     memset(buffer+n, ' ', length-n);
-    buffer[length] = 0;
+    buffer[length] = '\0';
   }
   return buffer;
 }

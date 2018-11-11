@@ -5,37 +5,35 @@ CoreMainMenu::CoreMainMenu(AlarmTimer* timer, Temperature* temp, Keyboard* keybo
   this->temp       = temp ;
   this->keyboard   = keyboard;
   this->lcd        = lcd;
+  menu.size     = TimerPreset::PRESETS_COUNT;
+  menu.selected = 0;
+  menu.options  = new char*[menu.size];
+  for (int i=0; i<menu.size; i++) {
+    menu.options[i] = TimerPreset::all[i]->name;
+  }
 }
 
 CoreMainMenu::~CoreMainMenu() {
+  delete(menu.options);
+  menu.size = 0;
 }
 
 void CoreMainMenu::start() {
-  keyboard->setShiftMode(shift_off);
-  //screen->startMainMenuSelection();
-  menu.options  = nullptr;
-  menu.size     = 0;
-  menu.selected = 0;
+  keyboard->setShiftMode(shift_always);
+  lcd->clear();
 }
 
 void CoreMainMenu::update(char key) {
   switch (key) {
-    //case '4': screen->selectLeft (); break;
-    //case '6': screen->selectRight(); break;
-    //case '2': screen->selectUp   (); break;
-    //case '8': screen->selectDown (); break;
-    case '0': goBack(); return;
+    case k_UP   : menu.selected = menu.selected == 0 ? menu.size-1 : menu.selected-1 ; break;
+    case k_DOWN : menu.selected = menu.selected == menu.size-1 ? 0 : menu.selected+1 ; break;
+    case k_LEFT : ; break;
+    case k_RIGHT:
+    case k_ENTER: selected(menu.selected); return;
   }
-  timer->loop();
-  temp ->loop();
   printMainScreen();
 }
 
 void CoreMainMenu::printMainScreen() {
   lcd->print(&menu);
-  //screen->printPresetOption();
-  //screen->printBackOption();
-  //screen->printAlarmTemp("none");
-  //screen->printAlarmTimer(timer->toString());
-  //screen->printAlarmWeight("none");
 }

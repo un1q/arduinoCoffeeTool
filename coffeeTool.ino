@@ -11,7 +11,6 @@
 #include "melody.h"
 #include "pitches.h"
 #include "main_loop.h"
-//#include "lcd_16x2.h"
 #include "lcd_N5110.h"
 #include "measure_weight.h"
 
@@ -35,12 +34,11 @@ byte colPins[3] = {8, 7, 6};
 
 //temperature sensor is on PIN 10, use 4.7R)
 
-Melody        melody(PIN_BUZZ);
+Melody        melody(PIN_BUZZ, new int[8] {NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4}, new int[8] {4, 8, 8, 4, 4, 4, 4, 4}, 8);
 Melody        buzz(PIN_BUZZ, new int[2] {NOTE_C4, NOTE_C4}, new int[2] {4,4}, 2);
-//Lcd_16x2     lcd          = Lcd_16x2();
 Lcd_N5110     lcd          = Lcd_N5110(A1,A2,A3,A4,-1);
 Keyboard      keyboard     = Keyboard(rowPins, colPins);
-MeasureWeight scale       = MeasureWeight(SCALE_DOUT, SCALE_CLK, scaleCalibrationFactor);
+MeasureWeight scale        = MeasureWeight(SCALE_DOUT, SCALE_CLK, scaleCalibrationFactor);
 MainLoop      *mainLoop;
 
 void setup() {

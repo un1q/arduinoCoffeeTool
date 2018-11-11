@@ -3,14 +3,6 @@
 
 #include <Arduino.h>
 
-Melody::Melody(int buzz_pin) : 
-  Melody(
-    buzz_pin, 
-    new int[8] {NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4},
-    new int[8] {4, 8, 8, 4, 4, 4, 4, 4},
-    8) {
-}
-
 Melody::Melody(int buzz_pin, int* notes, int* notesDuration, int notesCount) : 
   buzz_pin(buzz_pin),
   notes(notes), 
@@ -21,10 +13,6 @@ Melody::Melody(int buzz_pin, int* notes, int* notesDuration, int notesCount) :
 
 
 Melody::~Melody() {
-  if (notesCount > 0) {
-    delete(notes);
-    delete(notesDuration);
-  }
 }
 
 void Melody::play() {

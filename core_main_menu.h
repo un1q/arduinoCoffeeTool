@@ -23,7 +23,7 @@ class CoreMainMenu : public Core {
     Lcd::Menu     menu;
     void printMainScreen();
   public:
-    void (*goBack)() = {};
+    void (*selected)(int) = {};
     CoreMainMenu(AlarmTimer*, Temperature*, Keyboard*, Lcd*);
     ~CoreMainMenu();
     void update(char key);

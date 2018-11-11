@@ -16,6 +16,8 @@ struct TimerPreset {
     const static TimerPreset chemex;
     const static TimerPreset tea;
     const static TimerPreset fellow;
+    const static int PRESETS_COUNT = 4;
+    const static TimerPreset* all[PRESETS_COUNT];
     
     TimerPreset(int startAt, char* name, int alarms[], int alarmsCount);
     TimerPreset(int startAt, char* name, int alarms[], int alarmsCount, int buzzers[], int buzzersCount);

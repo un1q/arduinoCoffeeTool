@@ -6,7 +6,7 @@
 
 class MultiAlarm : public AlarmAbstract {
   public:
-    AlarmAbstract **alarms     = nullptr; //array of AlarmAbstract*
+    AlarmAbstract **alarms    = nullptr; //array of AlarmAbstract*
     int           alarmsCount = 0;
     
     virtual ~MultiAlarm();

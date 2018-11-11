@@ -16,15 +16,9 @@ void Lcd_N5110::setup() {
   display->clearDisplay();
   display->setTextSize(1);
   display->setTextColor(BLACK,WHITE);
-  //display->setRotation(1);
 }
 
-#include <Arduino.h>
-
 void Lcd_N5110::print(Lcd::Info *info) {
-  Serial.println("TEST!");
-  //display->clearDisplay();
-  //display->setCursor(0,0);
   print(POS_TEMP        , tempStringBuffer  .intToString(info->temp < -99 ? -99 : info->temp, "%03dC"));
   print(POS_WEIGHT      , weightStringBuffer.intToString(info->weight, "%03dg"));
   print(POS_TIMER       , timeStringBuffer  .secondsToString(info->time, 5));
@@ -34,11 +28,35 @@ void Lcd_N5110::print(Lcd::Info *info) {
   display->display();
 }
 
-void Lcd_N5110::print(Lcd::Menu *menu) {}
+void Lcd_N5110::print(Lcd::Menu *menu) {
+  char s[3];
+  s[0]='F';
+  s[2]='\0';
+  for (int i=0; i<menu->size; i++) {
+    int y = i*rowHeight;
+    if (i == menu->selected) {
+      print(0, y, ">>");
+    } else if (i<=5) {
+      s[1]=i+'1';
+      print(0, y, s);
+    }
+    print(menuPadding, y, menu->options[i]);
+  }
+}
 
 void Lcd_N5110::print(int positionIndex, char* text) {
   int* pos = positions[positionIndex];
-  display->setCursor(pos[0], pos[1]);
+  print(pos[0], pos[1], text);
+}
+
+void Lcd_N5110::print(int x, int y, char* text) {
+  if (text == nullptr)
+    return;
+  display->setCursor(x, y);
   display->print(text);
   display->display();
+}
+
+void Lcd_N5110::clear() {
+  display->clearDisplay();
 }

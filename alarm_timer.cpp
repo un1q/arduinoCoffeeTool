@@ -22,19 +22,25 @@ bool AlarmTimer::isOn() {
 void AlarmTimer::loop() {
   if (!isOn())
     return;
-  int sec = measureTime->getSecondsTotal();
-  multiAlarm->check(sec);
+  int sec = 0;
+  if (measureTime != nullptr)
+    sec = measureTime->getSecondsTotal();
+  if (multiAlarm != nullptr)
+    multiAlarm->check(sec);
 }
 
 void AlarmTimer::start() {
-  measureTime->start(startAt);
-  multiAlarm->reset();
+  if (measureTime != nullptr)
+    measureTime->start(startAt);
+  if (multiAlarm != nullptr)
+    multiAlarm->reset();
   on = true;
 }
 
 void AlarmTimer::stop() {
   on = false;
-  measureTime->stop();
+  if (measureTime != nullptr)
+    measureTime->stop();
 }
 
 char* AlarmTimer::toString() {
@@ -49,9 +55,11 @@ char* AlarmTimer::toString() {
 }
 
 void AlarmTimer::usePreset(TimerPreset *timerPreset) {
+  destroyMultiAlarm();
+  if (timerPreset == nullptr)
+    return;
   int alarmsCount  = timerPreset->alarmsCount;
   int buzzersCount = timerPreset->buzzersCount;
-  destroyMultiAlarm();
   multiAlarm = new MultiAlarm();
   multiAlarm->alarmsCount = buzzersCount + alarmsCount;
   multiAlarm->alarms = new AlarmAbstract*[multiAlarm->alarmsCount];
@@ -72,6 +80,6 @@ void AlarmTimer::destroyMultiAlarm() {
     delete(multiAlarm->alarms[i]);
   }
   delete(multiAlarm->alarms);
+  delete(multiAlarm);
   multiAlarm = nullptr;
-
 }

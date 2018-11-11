@@ -18,12 +18,12 @@
 
 class Lcd_N5110 : public Lcd {
     int positions[6][2] = { //some important positions (x,y)
-      {00,01},
-      {00,15},
-      {00,30},
-      {48,00},
-      {48,15},
-      {48,30}
+      { 0, 1},
+      { 0, 9},
+      { 0,18},
+      {48, 0},
+      {48, 9},
+      {48,18}
     };
     const int POS_TEMP          = 0; // position index of temperature
     const int POS_WEIGHT        = 1; // position index
@@ -31,6 +31,8 @@ class Lcd_N5110 : public Lcd {
     const int POS_ALARM_TEMP    = 3; // position index
     const int POS_ALARM_WEIGHT  = 4; // position index
     const int POS_ALARM_TIMER   = 5; // position index
+    const int rowHeight         = 8;
+    const int menuPadding       = 16;
     StringBuffer tempStringBuffer  ;
     StringBuffer weightStringBuffer;
     StringBuffer timeStringBuffer  ;
@@ -42,8 +44,10 @@ class Lcd_N5110 : public Lcd {
     void print(Lcd::Info *info);
     void print(Lcd::Menu *menu);
     void setup();
+    void clear();
   private:
     void print(int positionIndex, char* text);
+    void print(int x, int y, char* text);
 };
 
 #endif

@@ -16,13 +16,12 @@ class Lcd {
       char** options  = nullptr;
       int    size     = 0;
       int    selected = -1;
-      int SelectNext();
-      int SelectPrev();
     };
     
     virtual void setup();
     virtual void print(Info *info) = 0;
     virtual void print(Menu *menu) = 0;
+    virtual void clear()           = 0;
 };
 
 #endif

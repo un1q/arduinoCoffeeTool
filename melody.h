@@ -11,7 +11,6 @@ class Melody {
     int *notesDuration; // note durations: 4 = quarter note, 8 = eighth note, etc.:
 
   public:
-    Melody(int);
     Melody::Melody(int buzz_pin, int* notes, int* notesDuration, int notesCount);
     ~Melody();
     void play();
