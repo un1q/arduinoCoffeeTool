@@ -1,10 +1,8 @@
 #include "core_main.h"
 
-CoreMain::CoreMain(AlarmTimer* alarmTimer, Temperature* temp, MeasureWeight *measureWeight, Keyboard* keyboard, Lcd* lcd) {
+CoreMain::CoreMain(AlarmTimer* alarmTimer, Temperature* temp, MeasureWeight *measureWeight) {
   this->alarmTimer    = alarmTimer;
   this->temp          = temp ;
-  this->keyboard      = keyboard;
-  this->lcd           = lcd;
   this->measureWeight = measureWeight;
 }
 
@@ -12,7 +10,7 @@ CoreMain::~CoreMain() {
 }
 
 void CoreMain::start() {
-  keyboard->setShiftMode(shift_always);
+  keyboard.setShiftMode(shift_always);
   lcd->clear();
 }
 

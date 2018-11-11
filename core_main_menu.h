@@ -9,22 +9,19 @@
 //  - use preset
 //  - go back to main screen
 
+#include "globals.h"
 #include "alarm_timer.h"
 #include "temperature.h"
-#include "keyboard.h"
-#include "lcd.h"
 #include "core.h"
 
 class CoreMainMenu : public Core {
     AlarmTimer    *timer;
     Temperature   *temp;
-    Keyboard      *keyboard;
-    Lcd           *lcd;
     Lcd::Menu     menu;
     void printMainScreen();
   public:
     void (*selected)(int) = {};
-    CoreMainMenu(AlarmTimer*, Temperature*, Keyboard*, Lcd*);
+    CoreMainMenu(AlarmTimer*, Temperature*);
     ~CoreMainMenu();
     void update(char key);
     void start();

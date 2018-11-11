@@ -6,10 +6,9 @@
 // Knows with screen is active (main screen, main menu screen, etc) and
 // calls right Core class (CoreMain, CoreMainMenu, etc)
 
+#include "globals.h"
 #include "alarm_timer.h"
 #include "temperature.h"
-#include "keyboard.h"
-#include "lcd.h"
 #include "core_main.h"
 #include "core_main_menu.h"
 #include "core.h"
@@ -21,8 +20,6 @@ class MainLoop {
     AlarmTimer    *alarmTimer;
     Temperature   *temp;
     MeasureWeight *measureWeight;
-    Lcd           *lcd;
-    Keyboard      *keyboard;
     ActionMelody  *alarmAction;
     ActionMelody  *buzzAction;
     static CoreMain     *coreMain;
@@ -31,7 +28,7 @@ class MainLoop {
     
     static void changeCore(Core *core);
   public:
-    MainLoop(MeasureWeight* measureWeight, Keyboard* keyboard, Lcd* lcd, Melody* alarmMelody, Melody* buzzMelody);
+    MainLoop(MeasureWeight* measureWeight, Melody* alarmMelody, Melody* buzzMelody);
     ~MainLoop();
     void startup();
     void loop();

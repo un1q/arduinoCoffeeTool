@@ -1,10 +1,8 @@
 #include "core_main_menu.h"
 
-CoreMainMenu::CoreMainMenu(AlarmTimer* timer, Temperature* temp, Keyboard* keyboard, Lcd* lcd) {
+CoreMainMenu::CoreMainMenu(AlarmTimer* timer, Temperature* temp) {
   this->timer      = timer;
   this->temp       = temp ;
-  this->keyboard   = keyboard;
-  this->lcd        = lcd;
   menu.size     = TimerPreset::PRESETS_COUNT;
   menu.selected = 0;
   menu.options  = new char*[menu.size];
@@ -19,7 +17,7 @@ CoreMainMenu::~CoreMainMenu() {
 }
 
 void CoreMainMenu::start() {
-  keyboard->setShiftMode(shift_always);
+  keyboard.setShiftMode(shift_always);
   lcd->clear();
 }
 
