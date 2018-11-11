@@ -26,7 +26,7 @@ void CoreMainMenu::update(char key) {
     case k_DOWN : menu.selected = menu.selected == menu.size-1 ? 0 : menu.selected+1 ; break;
     case k_LEFT : ; break;
     case k_RIGHT:
-    case k_ENTER: selected(menu.selected); return;
+    case k_CLEAR: selected(menu.selected); return; //k_CLEAR is shifted k_ENTER
   }
   printMainScreen();
 }

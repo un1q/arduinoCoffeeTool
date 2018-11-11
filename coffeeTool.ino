@@ -40,7 +40,7 @@ Keyboard             keyboard      = Keyboard(rowPins, colPins);
 MeasureWeight        measureWeight = MeasureWeight(SCALE_DOUT, SCALE_CLK, scaleCalibrationFactor);
 MeasureTemperature   measureTemp   = MeasureTemperature();
 MeasureTime          measureTime   = MeasureTime();
-MainLoop      *mainLoop;
+MainLoop             *mainLoop     = nullptr;
 
 
 void setup() {

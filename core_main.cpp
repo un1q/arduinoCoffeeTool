@@ -14,8 +14,7 @@ void CoreMain::start() {
 
 void CoreMain::update(char key) {
   switch (key) {
-    case k_ENTER:
-    case k_CLEAR:
+    case k_CLEAR: //k_CLEAR is shifted k_ENTER
       alarmTimer->start();
       break;
     case '0': 
