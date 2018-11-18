@@ -22,3 +22,7 @@ int  MeasureWeight::get() {
   float weight = scale->get_units();
   return (int)(weight+0.5); //round
 }
+
+bool MeasureWeight::active() {
+  return false;
+}

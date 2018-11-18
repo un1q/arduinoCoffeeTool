@@ -7,9 +7,11 @@ class Lcd {
       int temp   = 0;
       int time   = 0;
       int weight = 0;
-      char* tempAlarm   = "";
-      char* timeAlarm   = "";
-      char* weightAlarm = "";
+      char* tempAlarm   = nullptr;
+      char* timeAlarm   = nullptr;
+      char* weightAlarm = nullptr;
+      char* step        = nullptr;
+      char* nextStep    = nullptr;
     };
 
     struct Menu {

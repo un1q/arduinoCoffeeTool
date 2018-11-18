@@ -1,7 +1,6 @@
 #include "core_main.h"
 
-CoreMain::CoreMain(AlarmTimer* alarmTimer) {
-  this->alarmTimer    = alarmTimer;
+CoreMain::CoreMain() {
 }
 
 CoreMain::~CoreMain() {
@@ -15,40 +14,44 @@ void CoreMain::start() {
 void CoreMain::update(char key) {
   switch (key) {
     case k_CLEAR: //k_CLEAR is shifted k_ENTER
-      alarmTimer->start();
+      followRecipe.start();
       break;
     case '0': 
     case '.': 
-      alarmTimer->stop();
+      followRecipe.stop();
       measureWeight.tare();
       break;
-    case k_F1: usePreset(0); break;
-    case k_F2: usePreset(1); break;
-    case k_F3: usePreset(2); break;
-    case k_F4: usePreset(3); break;
-    case k_F5: usePreset(4); break;
-    case k_LEFT: alarmTimer->stop(); gotoMenu(); return;
+    case k_F1: useRecipe(0); break;
+    case k_F2: useRecipe(1); break;
+    case k_F3: useRecipe(2); break;
+    case k_F4: useRecipe(3); break;
+    case k_F5: useRecipe(4); break;
+    case k_DOWN: followRecipe.foreward(); break;
+    case k_UP  : followRecipe.backward(); break;
+    case k_LEFT: followRecipe.stop(); gotoMenu(); return;
   }
-  Serial.println(key);
-  alarmTimer->loop();
   measureTemp.loop();
+  followRecipe.check();
   printMainScreen();
 }
 
-void CoreMain::usePreset(int i) {
-  if (i < 0 || i >= TimerPreset::PRESETS_COUNT)
+void CoreMain::useRecipe(int i) {
+  if (i < 0 || i >= Recipe::allCount)
     return;
-  TimerPreset* p = TimerPreset::all[i];
+  Recipe* p = Recipe::all[i];
   if (p != nullptr)
-    alarmTimer->usePreset(p);
+    followRecipe.prepare(p);
 }
 
 void CoreMain::printMainScreen() {
-  lcdInfo.temp        = measureTemp.getTemp();
-  lcdInfo.time        = measureTime.getSecondsTotal();
+  SensorAlarm *alarm = followRecipe.getAlarm();
+  lcdInfo.temp        = measureTemp.get();
+  lcdInfo.time        = measureTime.get();
   lcdInfo.weight      = measureWeight.get();
-  lcdInfo.tempAlarm   = "none";
-  lcdInfo.timeAlarm   = alarmTimer->toString();
-  lcdInfo.weightAlarm = "none";
+  lcdInfo.tempAlarm   = nullptr;
+  lcdInfo.timeAlarm   = alarm ? alarmBuffer.intToString(alarm->alarmValue) : nullptr;
+  lcdInfo.weightAlarm = nullptr;
+  lcdInfo.step        = followRecipe.getText(&stepTextBuffer);
+  lcdInfo.nextStep    = followRecipe.getTextNext(&nextStepTextBuffer);
   lcd->print(&lcdInfo);
 }

@@ -14,7 +14,7 @@ void MeasureTime::stop() {
   time = 0;
 }
 
-int MeasureTime::getSecondsTotal() {
+int MeasureTime::get() {
   if (time == 0)
     return 0;
   unsigned long now = millis();
@@ -22,4 +22,8 @@ int MeasureTime::getSecondsTotal() {
     return (int)((now - time)/1000ul);
   else
     return -(int)((time - now)/1000ul);
+}
+
+bool MeasureTime::active() {
+  return true;
 }

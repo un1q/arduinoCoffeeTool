@@ -17,13 +17,16 @@
 #include <Adafruit_PCD8544.h>
 
 class Lcd_N5110 : public Lcd {
-    int positions[6][2] = { //some important positions (x,y)
-      { 0, 1},
+    unsigned long lastRefreshTime = 0;
+    int positions[8][2] = { //some important positions (x,y)
+      { 0, 0},
       { 0, 9},
       { 0,18},
       {48, 0},
       {48, 9},
-      {48,18}
+      {48,18},
+      {0 ,27},
+      {0 ,36}
     };
     const int POS_TEMP          = 0; // position index of temperature
     const int POS_WEIGHT        = 1; // position index
@@ -31,6 +34,8 @@ class Lcd_N5110 : public Lcd {
     const int POS_ALARM_TEMP    = 3; // position index
     const int POS_ALARM_WEIGHT  = 4; // position index
     const int POS_ALARM_TIMER   = 5; // position index
+    const int POS_STEP          = 6; // position index
+    const int POS_NEXT_STEP     = 7; // position index
     const int rowHeight         = 8;
     const int menuPadding       = 16;
     StringBuffer tempStringBuffer  ;
@@ -46,8 +51,8 @@ class Lcd_N5110 : public Lcd {
     void setup();
     void clear();
   private:
-    void print(int positionIndex, char* text);
-    void print(int x, int y, char* text);
+    void print(int positionIndex, char* text, bool refresh);
+    void print(int x, int y, char* text, bool refresh);
 };
 
 #endif

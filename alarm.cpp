@@ -22,7 +22,8 @@ bool Alarm::check(int value) {
   }
   if (direction * (alarmValue - value) <= 0) {
     direction = 0;
-    alarmAction->doIt();
+    if (alarmAction)
+      alarmAction->doIt();
     return true;
   }
   return false;

@@ -10,6 +10,10 @@ void MeasureTemperature::loop() {
   temp = sensors->getTempCByIndex(0);
 }
 
-int MeasureTemperature::getTemp() {
+int MeasureTemperature::get() {
   return temp;
+}
+
+bool MeasureTemperature::active() {
+  return get() > -99;
 }

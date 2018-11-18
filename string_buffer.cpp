@@ -2,6 +2,8 @@
 
 #include <Arduino.h>
 
+StringBuffer StringBuffer::global;
+
 char* StringBuffer::secondsToString(int secTotal) {
   nSecondsToString(secTotal);
   return buffer;
@@ -31,11 +33,18 @@ char* StringBuffer::secondsToString(int secTotal, int length) {
   return buffer;
 }
 
-char* StringBuffer::intToString(int value, char* format) {
+char* StringBuffer::intToString(int value, const char* format) {
   snprintf(buffer, bufferSize,format,value);
   return buffer;
 }
 
 char* StringBuffer::intToString(int value) {
   return intToString(value, "%d");
+}
+
+char* StringBuffer::flashToString(FlashAddr flashAddr) {
+  strncpy_P(buffer, flashAddr, bufferSize);
+  //memcpy_P(buffer, flashAddr, bufferSize);
+  buffer[bufferSize-1] = '\0'; //just in case buffer is to small: I'd rather get truncated string, then trash
+  return buffer;
 }

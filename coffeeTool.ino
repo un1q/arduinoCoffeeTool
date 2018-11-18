@@ -1,5 +1,5 @@
 //Libraries:
-//https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads/
+//https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads/ <- no more, since we changed display
 //https://playground.arduino.cc/code/keypad#Download
 //https://github.com/milesburton/Arduino-Temperature-Control-Library/releases
 //  Arduino-Temperature-Control-Library contains OneWire, but 
@@ -33,14 +33,18 @@ byte colPins[3] = {8, 7, 6};
 
 //temperature sensor is on PIN 10, use 4.7R)
 
-Melody               melody(PIN_BUZZ, new int[8] {NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4}, new int[8] {4, 8, 8, 4, 4, 4, 4, 4}, 8);
-Melody               buzz(PIN_BUZZ, new int[2] {NOTE_C4, NOTE_C4}, new int[2] {4,4}, 2);
-Lcd                  *lcd          = new Lcd_N5110(A1,A2,A3,A4,-1);
-Keyboard             keyboard      = Keyboard(rowPins, colPins);
-MeasureWeight        measureWeight = MeasureWeight(SCALE_DOUT, SCALE_CLK, scaleCalibrationFactor);
-MeasureTemperature   measureTemp   = MeasureTemperature();
-MeasureTime          measureTime   = MeasureTime();
-MainLoop             *mainLoop     = nullptr;
+Melody               alarmMelody(PIN_BUZZ, new int[8] {NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4}, new int[8] {4, 8, 8, 4, 4, 4, 4, 4}, 8);
+Melody               buzzMelody(PIN_BUZZ, new int[2] {NOTE_C4, NOTE_C4}, new int[2] {4,4}, 2);
+Melody               timeoutMelody(PIN_BUZZ, new int[1] {NOTE_G3}, new int[1] {8}, 1);
+Lcd                  *lcd           = new Lcd_N5110(A1,A2,A3,A4,-1);
+Keyboard             keyboard       = Keyboard(rowPins, colPins);
+MeasureWeight        measureWeight  = MeasureWeight(SCALE_DOUT, SCALE_CLK, scaleCalibrationFactor);
+MeasureTemperature   measureTemp    = MeasureTemperature();
+MeasureTime          measureTime    = MeasureTime();
+ActionMelody         alarmAction    = ActionMelody(&alarmMelody);
+ActionMelody         buzzAction     = ActionMelody(&buzzMelody);
+ActionMelody         timeoutAction  = ActionMelody(&timeoutMelody);
+MeasureTime          measureTimeout = MeasureTime();
 
 
 void setup() {
@@ -49,10 +53,9 @@ void setup() {
   pinMode(PIN_BUZZ, OUTPUT);
   lcd->setup();
   measureWeight.setup();
-  mainLoop = new MainLoop(&melody, &buzz);
-  mainLoop->startup();
+  mainLoopStartup();
 }
 
 void loop() {
-  mainLoop->loop();
+  mainLoop();
 }

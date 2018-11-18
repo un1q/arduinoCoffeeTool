@@ -2,21 +2,24 @@
 #define MEASURE_TEMPERATURE_H_
 
 // temperature sensor
+#include "sensor.h"
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
+
 #define TEMP_PIN 10
 //(a 4.7K resistor is necessary)
 
-class MeasureTemperature {
+class MeasureTemperature : public Sensor {
     OneWire           *oneWire;
     DallasTemperature *sensors;
     int temp;
   public:
     MeasureTemperature();
     void loop();
-    int  getTemp();
+    int  get();
+    bool active();
 };
 
 

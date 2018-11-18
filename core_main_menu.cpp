@@ -1,12 +1,12 @@
 #include "core_main_menu.h"
-#include "timer_preset.h"
+#include "recipe.h"
 
 CoreMainMenu::CoreMainMenu() {
-  menu.size     = TimerPreset::PRESETS_COUNT;
+  menu.size     = Recipe::allCount;
   menu.selected = 0;
   menu.options  = new char*[menu.size];
   for (int i=0; i<menu.size; i++) {
-    menu.options[i] = TimerPreset::all[i]->name;
+    menu.options[i] = Recipe::all[i]->name;
   }
 }
 

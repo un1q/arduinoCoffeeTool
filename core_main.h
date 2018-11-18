@@ -7,20 +7,24 @@
 // User can also start timer in this mode
 
 #include "globals.h"
-#include "alarm_timer.h"
 #include "core.h"
+#include "recipe.h"
 
 class CoreMain : public Core {
-    AlarmTimer    *alarmTimer;
+    FollowRecipe  followRecipe;
     Lcd::Info     lcdInfo;
+    
     void printMainScreen();
+    StringBuffer stepTextBuffer;
+    StringBuffer nextStepTextBuffer;
+    StringBuffer alarmBuffer;
   public:
     void (*gotoMenu)() = {};
-    CoreMain(AlarmTimer*);
+    CoreMain();
     ~CoreMain();
     void update(char key);
     void start();
-    void usePreset(int i);
+    void useRecipe(int i);
 };
 
 #endif

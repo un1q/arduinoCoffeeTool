@@ -19,12 +19,21 @@ void Lcd_N5110::setup() {
 }
 
 void Lcd_N5110::print(Lcd::Info *info) {
-  print(POS_TEMP        , tempStringBuffer  .intToString(info->temp < -99 ? -99 : info->temp, "%03dC"));
-  print(POS_WEIGHT      , weightStringBuffer.intToString(info->weight, "%03dg"));
-  print(POS_TIMER       , timeStringBuffer  .secondsToString(info->time, 5));
-  print(POS_ALARM_TEMP  , info->tempAlarm);
-  print(POS_ALARM_WEIGHT, info->weightAlarm);
-  print(POS_ALARM_TIMER , info->timeAlarm);
+  unsigned long time = millis();
+  if (time > lastRefreshTime && time - lastRefreshTime < 200)
+    return;
+  lastRefreshTime = time;
+  display->clearDisplay();
+  print(POS_TEMP        , tempStringBuffer  .intToString(info->temp < -99 ? -99 : info->temp, "%03dC"), false);
+  print(POS_WEIGHT      , weightStringBuffer.intToString(info->weight, "%03dg"), false);
+  print(POS_TIMER       , timeStringBuffer  .secondsToString(info->time, 5), false);
+  print(POS_ALARM_TEMP  , info->tempAlarm, false);
+  print(POS_ALARM_WEIGHT, info->weightAlarm, false);
+  print(POS_ALARM_TIMER , info->timeAlarm, false);
+  display->setTextColor(WHITE,BLACK);
+  print(POS_STEP        , info->step, false);
+  display->setTextColor(BLACK,WHITE);
+  print(POS_NEXT_STEP   , info->nextStep, false);
   display->display();
 }
 
@@ -35,26 +44,28 @@ void Lcd_N5110::print(Lcd::Menu *menu) {
   for (int i=0; i<menu->size; i++) {
     int y = i*rowHeight;
     if (i == menu->selected) {
-      print(0, y, ">>");
+      print(0, y, ">>", false);
     } else if (i<=5) {
       s[1]=i+'1';
-      print(0, y, s);
+      print(0, y, s, false);
     }
-    print(menuPadding, y, menu->options[i]);
+    print(menuPadding, y, menu->options[i], false);
   }
+  display->display();
 }
 
-void Lcd_N5110::print(int positionIndex, char* text) {
+void Lcd_N5110::print(int positionIndex, char* text, bool refresh) {
   int* pos = positions[positionIndex];
-  print(pos[0], pos[1], text);
+  print(pos[0], pos[1], text, refresh);
 }
 
-void Lcd_N5110::print(int x, int y, char* text) {
+void Lcd_N5110::print(int x, int y, char* text, bool refresh) {
   if (text == nullptr)
     return;
   display->setCursor(x, y);
   display->print(text);
-  display->display();
+  if (refresh)
+    display->display();
 }
 
 void Lcd_N5110::clear() {
