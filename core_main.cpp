@@ -14,7 +14,7 @@ void CoreMain::start() {
 void CoreMain::update(char key) {
   switch (key) {
     case k_CLEAR: //k_CLEAR is shifted k_ENTER
-      followRecipe.start();
+      followRecipe.foreward();
       break;
     case '0': 
     case '.': 
@@ -39,8 +39,10 @@ void CoreMain::useRecipe(int i) {
   if (i < 0 || i >= Recipe::allCount)
     return;
   Recipe* p = Recipe::all[i];
-  if (p != nullptr)
+  if (p != nullptr) {
     followRecipe.prepare(p);
+    followRecipe.start();
+  }
 }
 
 void CoreMain::printMainScreen() {
