@@ -67,6 +67,15 @@ Sensor* RecipeStep::getSensor() {
   return nullptr;
 }
 
+Alarm::Mode RecipeStep::getAlarmMode() {
+  switch (sensorType) {
+    case MEASURE_TEMP  : return Alarm::crossing;
+    case MEASURE_TIME  : return Alarm::crossingUp;
+    case MEASURE_WEIGHT: return Alarm::crossing;
+  }
+  return Alarm::crossing;
+}
+
 //FollowRecipe
 
 FollowRecipe::FollowRecipe() {}
@@ -108,16 +117,9 @@ void FollowRecipe::foreward(){
   Serial.print(F("step: ")); Serial.println(StringBuffer::global.flashToString(s->text)); Serial.flush();
   Sensor* sensor       = s->getSensor();
   bool    sensorActive = sensor && sensor->active();
-  
-  Serial.print(F("sensor type:")); Serial.println(s->sensorType);
-  if (sensor == &measureWeight)    {Serial.println(F("sensor: weight"));}
-  if (sensor == &measureTemp)      {Serial.println(F("sensor: temp"  ));}
-  if (sensor == &measureTime)      {Serial.println(F("sensor: time"  ));}
-  if (sensor == nullptr)           {Serial.println(F("sensor: null"  ));}
-  
   if (sensorActive) {
     Serial.println(F("sensor is active"));  Serial.flush();
-    alarm = new SensorAlarm(&alarmAction, s->buzz ? &buzzAction : nullptr, sensor, s->value, s->buzzValue);
+    alarm = new SensorAlarm(&alarmAction, s->buzz ? &buzzAction : nullptr, sensor, s->value, s->buzzValue, s->getAlarmMode());
   } else if (s->timeoutIfNoSensor > 0) {
     Serial.print(F("sensor is not active, timeout=")); Serial.println(s->timeoutIfNoSensor);  Serial.flush();
     alarm = new SensorAlarm(&timeoutAction, nullptr, &measureTimeout, s->timeoutIfNoSensor, -1);

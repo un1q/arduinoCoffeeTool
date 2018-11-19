@@ -19,7 +19,8 @@ struct RecipeStep {
   
   RecipeStep(OnStart onStart, FlashAddr text, SensorType sensorType, int value, int buzzValue, bool buzz, int timeoutIfNoSensor, bool autoNext);
   ~RecipeStep();
-  Sensor* getSensor();
+  Sensor*     getSensor();
+  Alarm::Mode getAlarmMode();
 };
 
 struct Recipe {

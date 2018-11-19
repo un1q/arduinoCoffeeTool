@@ -2,11 +2,11 @@
 
 #include <Arduino.h>
 
-SensorAlarm::SensorAlarm(Action *alarmAction, Action *buzzAction, Sensor *sensor, int value, int buzzValue) 
-: Alarm(alarmAction, value) {
+SensorAlarm::SensorAlarm(Action *alarmAction, Action *buzzAction, Sensor *sensor, int value, int buzzValue, Alarm::Mode mode) 
+: Alarm(alarmAction, value, mode) {
   this->sensor = sensor;
   if (buzzAction)
-    buzzAlarm =  new Alarm(buzzAction, buzzValue);
+    buzzAlarm =  new Alarm(buzzAction, buzzValue, mode);
 }
 
 SensorAlarm::~SensorAlarm() {

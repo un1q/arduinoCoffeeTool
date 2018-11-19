@@ -11,7 +11,7 @@ class SensorAlarm : public Alarm {
     Alarm  *buzzAlarm = nullptr;
     Sensor *sensor    = nullptr;
   public:
-    SensorAlarm(Action *alarmAction, Action *buzzAction, Sensor *sensor, int value, int buzz);
+    SensorAlarm(Action *alarmAction, Action *buzzAction, Sensor *sensor, int value, int buzz, Alarm::Mode mode = Alarm::crossing);
     ~SensorAlarm();
     void reset();
     bool check();

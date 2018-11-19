@@ -5,12 +5,16 @@
 #include "alarm_abstract.h"
 
 class Alarm : public AlarmAbstract {
-    int    direction = 0;
+  public:
+    enum Mode {crossing, crossingUp, crossingDown};
+  private:
+    int  direction = 0;
+    Mode mode      = crossing;
   public:
     int    alarmValue;
     Action *alarmAction;
     
-    Alarm(Action *alarmAction, int alarmValue);
+    Alarm(Action *alarmAction, int alarmValue, Mode mode);
     virtual ~Alarm();
     virtual void reset();
     virtual bool check(int value);
