@@ -18,16 +18,16 @@ const char str_gotowe[]         PROGMEM = "gotowe"        ;
 
 const Recipe Recipe::drip = Recipe("drip", 10, 
   new RecipeStep[10] { //it's like 160 bytes, so maybe we should keep it in flash memory?
-    RecipeStep(ONSTART_TARE       , str_odmierz_kawe  , MEASURE_WEIGHT , 18 , -1 , false, 2 , false),
-    RecipeStep(ONSTART_NOTHING    , str_podgrzej_wode , MEASURE_TEMP   , 85 , 75 , true , 2 , false),
-    RecipeStep(ONSTART_NOTHING    , str_przygotuj_drip, PRESS_BUTTON   , -1 , -1 , false, -1, false),
-    RecipeStep(ONSTART_TARE       , str_zacznij_lac   , MEASURE_WEIGHT , 2  , -1 , false, 2 , true ),
-    RecipeStep(ONSTART_START_TIMER, str_preinfuzja    , MEASURE_WEIGHT , 40 , -1 , false, 2 , true ),
-    RecipeStep(ONSTART_NOTHING    , str_czekaj        , MEASURE_TIME   , 30 , 20 , true , -1, true ),
-    RecipeStep(ONSTART_NOTHING    , str_dolej         , MEASURE_WEIGHT , 150, -1 , false, 10, true ),
-    RecipeStep(ONSTART_NOTHING    , str_czekaj        , MEASURE_TIME   , 90 , 80 , true , -1, true ),
-    RecipeStep(ONSTART_NOTHING    , str_dolej         , MEASURE_WEIGHT , 250, -1 , false, 10, true ),
-    RecipeStep(ONSTART_NOTHING    , str_gotowe        , MEASURE_TIME   , 210, 200, true , -1, false)
+    RecipeStep(ONSTART_TARE       , str_odmierz_kawe  , MEASURE_WEIGHT , 18 , -1 , 2 , false),
+    RecipeStep(ONSTART_NOTHING    , str_podgrzej_wode , MEASURE_TEMP   , 85 , 10 , 2 , false),
+    RecipeStep(ONSTART_NOTHING    , str_przygotuj_drip, PRESS_BUTTON   , -1 , -1 , -1, false),
+    RecipeStep(ONSTART_TARE       , str_zacznij_lac   , MEASURE_WEIGHT , 2  , -1 , 2 , true ),
+    RecipeStep(ONSTART_START_TIMER, str_preinfuzja    , MEASURE_WEIGHT , 40 , -1 , 2 , true ),
+    RecipeStep(ONSTART_NOTHING    , str_czekaj        , MEASURE_TIME   , 30 , 10 , -1, true ),
+    RecipeStep(ONSTART_NOTHING    , str_dolej         , MEASURE_WEIGHT , 150, -1 , 10, true ),
+    RecipeStep(ONSTART_NOTHING    , str_czekaj        , MEASURE_TIME   , 90 , 10 , -1, true ),
+    RecipeStep(ONSTART_NOTHING    , str_dolej         , MEASURE_WEIGHT , 250, -1 , 10, true ),
+    RecipeStep(ONSTART_NOTHING    , str_gotowe        , MEASURE_TIME   , 210, 10 , -1, false)
   }
 );
 
@@ -45,13 +45,12 @@ Recipe::~Recipe() {}
 
 //RecipeStep
 
-RecipeStep::RecipeStep(OnStart onStart, FlashAddr text, SensorType sensorType, int value, int buzzValue, bool buzz, int timeoutIfNoSensor, bool autoNext) {
+RecipeStep::RecipeStep(OnStart onStart, FlashAddr text, SensorType sensorType, int value, int buzzMargin, int timeoutIfNoSensor, bool autoNext) {
   this->onStart           = onStart          ;
   this->text              = text             ;
-  this->buzz              = buzz             ;
   this->sensorType        = sensorType       ;
   this->value             = value            ;
-  this->buzzValue         = buzzValue        ;
+  this->buzzMargin        = buzzMargin        ;
   this->timeoutIfNoSensor = timeoutIfNoSensor;
   this->autoNext          = autoNext         ;
 }
@@ -130,7 +129,7 @@ void FollowRecipe::update() {
   Sensor* sensor       = s->getSensor();
   bool    sensorActive = sensor && sensor->active();
   if (sensorActive) {
-    alarm = new SensorAlarm(&alarmAction, s->buzz ? &buzzAction : nullptr, sensor, s->value, s->buzzValue, s->getAlarmMode());
+    alarm = new SensorAlarm(&alarmAction, sensor, s->value, s->buzzMargin, s->getAlarmMode());
     switch(s->sensorType) {
       case MEASURE_WEIGHT: alarmDesc.weightToString(alarm->alarmValue) ; break;
       case MEASURE_TEMP  : alarmDesc.tempToString(alarm->alarmValue)   ; break;
@@ -138,7 +137,7 @@ void FollowRecipe::update() {
       case PRESS_BUTTON  : alarmDesc.flashToString(F("press button"))  ; break;
     }
   } else if (s->timeoutIfNoSensor > 0) {
-    alarm = new SensorAlarm(&timeoutAction, nullptr, &measureTimeout, s->timeoutIfNoSensor, -1, Alarm::crossingUp);
+    alarm = new SensorAlarm(&timeoutAction, &measureTimeout, s->timeoutIfNoSensor, -1, Alarm::crossingUp);
     measureTimeout.start();
     alarmDesc.flashToString(F("wait or skip"));
   } else {

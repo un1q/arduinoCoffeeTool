@@ -24,5 +24,5 @@ int  MeasureWeight::get() {
 }
 
 bool MeasureWeight::active() {
-  return false;
+  return false;//scale->is_ready();
 }

@@ -1,33 +1,44 @@
 #include "sensor_alarm.h"
 
+#include "melody.h"
+#include "pitches.h"
 #include <Arduino.h>
 
-SensorAlarm::SensorAlarm(Action *alarmAction, Action *buzzAction, Sensor *sensor, int value, int buzzValue, Alarm::Mode mode) 
+static unsigned long SensorAlarm::nextBuzz = 0ul;
+
+SensorAlarm::SensorAlarm(Action *alarmAction, Sensor *sensor, int value, int buzzMargin, Alarm::Mode mode) 
 : Alarm(alarmAction, value, mode) {
   this->sensor = sensor;
-  if (buzzAction)
-    buzzAlarm =  new Alarm(buzzAction, buzzValue, mode);
+  this->buzzMargin = buzzMargin;
 }
 
 SensorAlarm::~SensorAlarm() {
-  if (buzzAlarm) {
-    delete(buzzAlarm);
-  }
 }
 
 void SensorAlarm::reset() {
-  if (buzzAlarm)
-    buzzAlarm->reset();
   Alarm::reset();
 }
 
+#define BUZZ_DUR_MAX    2000
+#define BUZZ_DUR_MIN    100
 bool SensorAlarm::check() {
   if (!sensor || !sensor->active()) 
     return false;
   int value = sensor->get();
-  if (buzzAlarm)
-    buzzAlarm->check(value);
-  return Alarm::check(value);
+  if (Alarm::check(value))
+    return true;
+  if (buzzMargin > 0 && abs(alarmValue-value) <= buzzMargin) {
+    if ((mode == Alarm::crossingUp && alarmValue <= value ) || (mode == Alarm::crossingDown && alarmValue >= value ))
+      return;
+    unsigned long now = millis();
+    if (now < SensorAlarm::nextBuzz)
+      return;
+    int d = buzzMargin - abs(alarmValue-value);
+    int freq = NOTE_A3;
+    Melody::playTone(freq, 100);
+    SensorAlarm::nextBuzz = now + (BUZZ_DUR_MAX - ((BUZZ_DUR_MAX-BUZZ_DUR_MIN) / buzzMargin) * d);
+  }
+  return false;
 }
 
 bool SensorAlarm::activeSensor() {

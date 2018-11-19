@@ -15,9 +15,9 @@ extern MeasureWeight      measureWeight ;
 extern MeasureTemperature measureTemp   ;
 extern MeasureTime        measureTime   ;
 extern Melody             alarmMelody   ;
-extern Melody             buzzMelody    ;
+//extern Melody             buzzMelody    ;
 extern ActionMelody       alarmAction   ;
-extern ActionMelody       buzzAction    ;
+//extern ActionMelody       buzzAction    ;
 extern ActionMelody       timeoutAction ;
 extern MeasureTime        measureTimeout;
 

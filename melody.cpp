@@ -3,28 +3,39 @@
 
 #include <Arduino.h>
 
-Melody::Melody(int buzz_pin, int* notes, int* notesDuration, int notesCount) : 
-  buzz_pin(buzz_pin),
+static int Melody::buzzPin;
+
+static void Melody::setPin(int buzzPin) {
+  Melody::buzzPin = buzzPin;
+  pinMode(buzzPin, OUTPUT);
+}
+
+Melody::Melody(int* notes, int* notesDuration, int notesCount) : 
   notes(notes), 
   notesDuration(notesDuration), 
   notesCount(notesCount)
   {
 }
 
-
 Melody::~Melody() {
 }
 
 void Melody::play() {
   for (int thisNote = 0; thisNote < notesCount; thisNote++) {
-    // to calculate the note duration, take one second divided by the note type.
-    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-    int noteDuration = 1000 / notesDuration[thisNote];
-    tone(buzz_pin, notes[thisNote], noteDuration);
-    // to distinguish the notes, set a minimum time between them.
-    // the note's duration + 30% seems to work well:
-    int pauseBetweenNotes = noteDuration * 1.30;
-    delay(pauseBetweenNotes);
-    noTone(buzz_pin);
+    playNote(notes[thisNote], notesDuration[thisNote]);
   }
+}
+
+static void Melody::playNote(int note, int noteDuration) {
+  int duration = 1000 / noteDuration;
+  tone(buzzPin, note, duration);
+  // to distinguish the notes, set a minimum time between them.
+  // the note's duration + 30% seems to work well:
+  int pauseBetweenNotes = duration * 1.30;
+  delay(pauseBetweenNotes);
+  noTone(buzzPin);
+}
+
+static void Melody::playTone(int freq, int duration) {
+  tone(buzzPin, freq, duration);
 }

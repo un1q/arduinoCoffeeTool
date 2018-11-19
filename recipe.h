@@ -10,14 +10,13 @@ enum OnStart    {ONSTART_NOTHING=0, ONSTART_TARE, ONSTART_START_TIMER};
 struct RecipeStep {
   OnStart    onStart          ;
   FlashAddr  text             ;
-  bool       buzz             ;
   SensorType sensorType       ;
   int        value            ;
-  int        buzzValue        ;
+  int        buzzMargin       ;
   int        timeoutIfNoSensor;
   bool       autoNext         ;
   
-  RecipeStep(OnStart onStart, FlashAddr text, SensorType sensorType, int value, int buzzValue, bool buzz, int timeoutIfNoSensor, bool autoNext);
+  RecipeStep(OnStart onStart, FlashAddr text, SensorType sensorType, int value, int buzzMargin, int timeoutIfNoSensor, bool autoNext);
   ~RecipeStep();
   Sensor*     getSensor();
   Alarm::Mode getAlarmMode();

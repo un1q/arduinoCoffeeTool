@@ -7,7 +7,7 @@
 class Alarm : public AlarmAbstract {
   public:
     enum Mode {crossing, crossingUp, crossingDown};
-  private:
+  protected:
     int  direction = 0;
     Mode mode      = crossing;
   public:

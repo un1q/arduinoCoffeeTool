@@ -8,10 +8,13 @@
 //TODO: timeoutIfNoSensor
 
 class SensorAlarm : public Alarm {
-    Alarm  *buzzAlarm = nullptr;
+  private:
+    static unsigned long nextBuzz;
+  private:
+    int    buzzMargin = 0;
     Sensor *sensor    = nullptr;
   public:
-    SensorAlarm(Action *alarmAction, Action *buzzAction, Sensor *sensor, int value, int buzz, Alarm::Mode mode = Alarm::crossing);
+    SensorAlarm(Action *alarmAction, Sensor *sensor, int value, int buzzMargin, Alarm::Mode mode = Alarm::crossing);
     ~SensorAlarm();
     void reset();
     bool check();
