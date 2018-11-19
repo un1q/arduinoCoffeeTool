@@ -48,3 +48,27 @@ char* StringBuffer::flashToString(FlashAddr flashAddr) {
   buffer[bufferSize-1] = '\0'; //just in case buffer is to small: I'd rather get truncated string, then trash
   return buffer;
 }
+
+char* StringBuffer::flashToString(const __FlashStringHelper *flashAddr) {
+  strncpy_P(buffer, (PGM_P)flashAddr, bufferSize);
+  //memcpy_P(buffer, flashAddr, bufferSize);
+  buffer[bufferSize-1] = '\0'; //just in case buffer is to small: I'd rather get truncated string, then trash
+  return buffer;
+}
+
+char* StringBuffer::tempToString(int temp) {
+  return intToString(temp < -99 ? -99 : temp, "%03dC");
+}
+
+char* StringBuffer::weightToString(int weight) {
+  return intToString(weight, "%03dg");
+}
+
+char* StringBuffer::emptyString() {
+  buffer[0]='\0';
+  return buffer;
+}
+
+char* StringBuffer::get() {
+  return buffer;
+}

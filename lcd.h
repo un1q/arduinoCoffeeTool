@@ -7,9 +7,7 @@ class Lcd {
       int temp   = 0;
       int time   = 0;
       int weight = 0;
-      char* tempAlarm   = nullptr;
-      char* timeAlarm   = nullptr;
-      char* weightAlarm = nullptr;
+      char* alarmDesc   = nullptr;
       char* step        = nullptr;
       char* nextStep    = nullptr;
     };

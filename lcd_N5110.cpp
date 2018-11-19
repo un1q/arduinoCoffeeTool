@@ -24,12 +24,12 @@ void Lcd_N5110::print(Lcd::Info *info) {
     return;
   lastRefreshTime = time;
   display->clearDisplay();
-  print(POS_TEMP        , tempStringBuffer  .intToString(info->temp < -99 ? -99 : info->temp, "%03dC"), false);
-  print(POS_WEIGHT      , weightStringBuffer.intToString(info->weight, "%03dg"), false);
+  print(POS_TEMP        , tempStringBuffer  .tempToString(info->temp), false);
+  print(POS_WEIGHT      , weightStringBuffer.weightToString(info->weight), false);
   print(POS_TIMER       , timeStringBuffer  .secondsToString(info->time, 5), false);
-  print(POS_ALARM_TEMP  , info->tempAlarm, false);
-  print(POS_ALARM_WEIGHT, info->weightAlarm, false);
-  print(POS_ALARM_TIMER , info->timeAlarm, false);
+  display->writeFastHLine(0, positions[POS_ALARM][1]-4, 96, BLACK);
+  display->writeFastHLine(0, positions[POS_ALARM][1]+8+2, 96, BLACK);
+  print(POS_ALARM       , info->alarmDesc, false);
   display->setTextColor(WHITE,BLACK);
   print(POS_STEP        , info->step, false);
   display->setTextColor(BLACK,WHITE);

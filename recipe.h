@@ -37,9 +37,12 @@ struct Recipe {
 };
 
 class FollowRecipe {
-    int         step    = -1;
-    Recipe      *recipe = nullptr;
-    SensorAlarm *alarm  = nullptr;
+  public:
+    StringBuffer alarmDesc;
+  private:
+    int          step       = -1;
+    Recipe       *recipe    = nullptr;
+    SensorAlarm  *alarm     = nullptr;
   public:
     FollowRecipe();
     ~FollowRecipe();
@@ -49,9 +52,12 @@ class FollowRecipe {
     void         foreward();
     void         backward();
     bool         check(); //returns true if step is finished
-    char*        getText(StringBuffer *buffer);
-    char*        getTextNext(StringBuffer *buffer);
+    char*        getText     (StringBuffer *buffer);
+    char*        getTextNext (StringBuffer *buffer);
+    char*        getAlarmDesc(StringBuffer *buffer);
     RecipeStep*  getStep();
     SensorAlarm* getAlarm();
+  private:
+    void         deleteAlarm();
 };
 #endif

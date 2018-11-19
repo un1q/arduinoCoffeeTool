@@ -81,8 +81,7 @@ Alarm::Mode RecipeStep::getAlarmMode() {
 FollowRecipe::FollowRecipe() {}
 
 FollowRecipe::~FollowRecipe() {
-  if (alarm)
-    delete(alarm);
+  deleteAlarm();
 }
 
 
@@ -101,40 +100,43 @@ void FollowRecipe::stop(){
   this->step   = -1;
 }
 
-void FollowRecipe::foreward(){
-  Serial.print(F("*****************freeMemory()=")); Serial.println(freeMemory()); Serial.flush();
-  if (recipe == nullptr)
-    return;
+void FollowRecipe::deleteAlarm(){
   if (alarm)
     delete(alarm);
   alarm = nullptr;
-  if (step >= recipe->stepsCount-1 || step < -1) 
+  alarmDesc.emptyString();
+}
+  
+void FollowRecipe::foreward(){
+  if (recipe == nullptr || step >= recipe->stepsCount-1 || step < -1) 
     return;
   step++;
+  deleteAlarm();
   RecipeStep* s = getStep();
   if (!s)
     return;
-  Serial.print(F("step: ")); Serial.println(StringBuffer::global.flashToString(s->text)); Serial.flush();
   Sensor* sensor       = s->getSensor();
   bool    sensorActive = sensor && sensor->active();
   if (sensorActive) {
-    Serial.println(F("sensor is active"));  Serial.flush();
     alarm = new SensorAlarm(&alarmAction, s->buzz ? &buzzAction : nullptr, sensor, s->value, s->buzzValue, s->getAlarmMode());
+    switch(s->sensorType) {
+      case MEASURE_WEIGHT: alarmDesc.weightToString(alarm->alarmValue) ; break;
+      case MEASURE_TEMP  : alarmDesc.tempToString(alarm->alarmValue)   ; break;
+      case MEASURE_TIME  : alarmDesc.secondsToString(alarm->alarmValue); break;
+      case PRESS_BUTTON  : alarmDesc.flashToString(F("press button"))  ; break;
+    }
   } else if (s->timeoutIfNoSensor > 0) {
-    Serial.print(F("sensor is not active, timeout=")); Serial.println(s->timeoutIfNoSensor);  Serial.flush();
     alarm = new SensorAlarm(&timeoutAction, nullptr, &measureTimeout, s->timeoutIfNoSensor, -1);
     measureTimeout.start();
+    alarmDesc.flashToString(F("wait or skip"));
+  } else if (s->timeoutIfNoSensor < 0) {
+    alarmDesc.flashToString(F("skip manually"));
   }
-  else 
-    Serial.print(F("sensor is not active and timeout is:"));Serial.println(s->timeoutIfNoSensor); Serial.flush();
   if ( s->onStart == ONSTART_TARE ) {
-    Serial.println(F("onStart: tare")); Serial.flush();
     measureWeight.tare();
   } else if( s->onStart == ONSTART_START_TIMER ) {
-    Serial.println(F("onStart: start timer")); Serial.flush();
     measureTime.start();
   }
-  Serial.println(F("step prepared"));  Serial.flush();
   if (!sensorActive && s->timeoutIfNoSensor == 0)
     foreward();
 }

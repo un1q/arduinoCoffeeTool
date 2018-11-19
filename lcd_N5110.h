@@ -18,24 +18,20 @@
 
 class Lcd_N5110 : public Lcd {
     unsigned long lastRefreshTime = 0;
-    int positions[8][2] = { //some important positions (x,y)
+    int positions[6][2] = { //some important positions (x,y)
       { 0, 0},
-      { 0, 9},
-      { 0,18},
-      {48, 0},
-      {48, 9},
-      {48,18},
-      {0 ,27},
-      {0 ,36}
+      {28, 0},
+      {56, 0},
+      { 0, 9+4},
+      { 0,27},
+      { 0,36}
     };
     const int POS_TEMP          = 0; // position index of temperature
     const int POS_WEIGHT        = 1; // position index
     const int POS_TIMER         = 2; // position index
-    const int POS_ALARM_TEMP    = 3; // position index
-    const int POS_ALARM_WEIGHT  = 4; // position index
-    const int POS_ALARM_TIMER   = 5; // position index
-    const int POS_STEP          = 6; // position index
-    const int POS_NEXT_STEP     = 7; // position index
+    const int POS_ALARM         = 3; // position index
+    const int POS_STEP          = 4; // position index
+    const int POS_NEXT_STEP     = 5; // position index
     const int rowHeight         = 8;
     const int menuPadding       = 16;
     StringBuffer tempStringBuffer  ;
