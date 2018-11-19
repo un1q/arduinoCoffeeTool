@@ -18,11 +18,11 @@ const char str_gotowe[]         PROGMEM = "gotowe"        ;
 
 const Recipe Recipe::drip = Recipe("drip", 10, 
   new RecipeStep[10] { //it's like 160 bytes, so maybe we should keep it in flash memory?
-    RecipeStep(ONSTART_TARE       , str_odmierz_kawe  , MEASURE_WEIGHT , 18 , -1 , false, 0 , false),
-    RecipeStep(ONSTART_NOTHING    , str_podgrzej_wode , MEASURE_TEMP   , 85 , 75 , true , 0 , false),
+    RecipeStep(ONSTART_TARE       , str_odmierz_kawe  , MEASURE_WEIGHT , 18 , -1 , false, 2 , false),
+    RecipeStep(ONSTART_NOTHING    , str_podgrzej_wode , MEASURE_TEMP   , 85 , 75 , true , 2 , false),
     RecipeStep(ONSTART_NOTHING    , str_przygotuj_drip, PRESS_BUTTON   , -1 , -1 , false, -1, false),
-    RecipeStep(ONSTART_TARE       , str_zacznij_lac   , MEASURE_WEIGHT , 2  , -1 , false, 5 , true ),
-    RecipeStep(ONSTART_START_TIMER, str_preinfuzja    , MEASURE_WEIGHT , 40 , -1 , false, 0 , true ),
+    RecipeStep(ONSTART_TARE       , str_zacznij_lac   , MEASURE_WEIGHT , 2  , -1 , false, 2 , true ),
+    RecipeStep(ONSTART_START_TIMER, str_preinfuzja    , MEASURE_WEIGHT , 40 , -1 , false, 2 , true ),
     RecipeStep(ONSTART_NOTHING    , str_czekaj        , MEASURE_TIME   , 30 , 20 , true , -1, true ),
     RecipeStep(ONSTART_NOTHING    , str_dolej         , MEASURE_WEIGHT , 150, -1 , false, 10, true ),
     RecipeStep(ONSTART_NOTHING    , str_czekaj        , MEASURE_TIME   , 90 , 80 , true , -1, true ),
@@ -91,7 +91,7 @@ void FollowRecipe::prepare(const Recipe *recipe){
 }
 
 void FollowRecipe::start(){
-  this->step   = -1;
+  this->step = -1;
   foreward();
 }
 
@@ -111,6 +111,18 @@ void FollowRecipe::foreward(){
   if (recipe == nullptr || step >= recipe->stepsCount-1 || step < -1) 
     return;
   step++;
+  update();
+}
+
+void FollowRecipe::backward(){
+  if (recipe == nullptr)
+    return;
+  if (step > 0)
+    step--;
+  update();
+}
+
+void FollowRecipe::update() {
   deleteAlarm();
   RecipeStep* s = getStep();
   if (!s)
@@ -126,10 +138,10 @@ void FollowRecipe::foreward(){
       case PRESS_BUTTON  : alarmDesc.flashToString(F("press button"))  ; break;
     }
   } else if (s->timeoutIfNoSensor > 0) {
-    alarm = new SensorAlarm(&timeoutAction, nullptr, &measureTimeout, s->timeoutIfNoSensor, -1);
+    alarm = new SensorAlarm(&timeoutAction, nullptr, &measureTimeout, s->timeoutIfNoSensor, -1, Alarm::crossingUp);
     measureTimeout.start();
     alarmDesc.flashToString(F("wait or skip"));
-  } else if (s->timeoutIfNoSensor < 0) {
+  } else {
     alarmDesc.flashToString(F("skip manually"));
   }
   if ( s->onStart == ONSTART_TARE ) {
@@ -137,21 +149,12 @@ void FollowRecipe::foreward(){
   } else if( s->onStart == ONSTART_START_TIMER ) {
     measureTime.start();
   }
-  if (!sensorActive && s->timeoutIfNoSensor == 0)
-    foreward();
-}
-
-void FollowRecipe::backward(){
-  if (recipe == nullptr)
-    return;
-  if (step > 0)
-    step--;
 }
 
 bool FollowRecipe::check() {
   RecipeStep* s = getStep();
   bool result = !alarm || alarm->check();
-  if (result && s && s->autoNext)
+  if (result && s && (s->autoNext || alarm->alarmAction == &timeoutAction))
     foreward();
   return result;
 }

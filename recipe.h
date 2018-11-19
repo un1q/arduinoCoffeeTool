@@ -59,5 +59,6 @@ class FollowRecipe {
     SensorAlarm* getAlarm();
   private:
     void         deleteAlarm();
+    void         update();
 };
 #endif
