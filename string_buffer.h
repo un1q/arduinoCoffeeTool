@@ -23,6 +23,7 @@ class StringBuffer {
     char* weightToString(int weight);
     char* emptyString();
     char* get();
+    char* center();
 };
 
 #endif

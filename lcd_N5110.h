@@ -20,8 +20,8 @@ class Lcd_N5110 : public Lcd {
     unsigned long lastRefreshTime = 0;
     int positions[6][2] = { //some important positions (x,y)
       { 0, 0},
-      {28, 0},
-      {56, 0},
+      {24, 0},
+      {54, 0},
       { 0, 9+4},
       { 0,27},
       { 0,36}

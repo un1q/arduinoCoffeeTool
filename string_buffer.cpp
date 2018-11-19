@@ -10,7 +10,7 @@ char* StringBuffer::secondsToString(int secTotal) {
 }
 
 int StringBuffer::nSecondsToString(int secTotal) {
-  char* format = "%d:%02d";
+  char* format = "%02d:%02d";
   if (secTotal < 0) {
     format = "-%d:%02d";
     secTotal *= -1;
@@ -57,7 +57,7 @@ char* StringBuffer::flashToString(const __FlashStringHelper *flashAddr) {
 }
 
 char* StringBuffer::tempToString(int temp) {
-  return intToString(temp < -99 ? -99 : temp, "%03dC");
+  return intToString(temp < -9 ? -9 : temp, "%02dC");
 }
 
 char* StringBuffer::weightToString(int weight) {
@@ -70,5 +70,18 @@ char* StringBuffer::emptyString() {
 }
 
 char* StringBuffer::get() {
+  return buffer;
+}
+
+char* StringBuffer::center() {
+  buffer[bufferSize-1] = '\0'; //just in case buffer is not initialized
+  int len = strlen(buffer);
+  if (len == 0)
+    return buffer;
+  int dest = (bufferSize-1-len)/2;
+  if (dest == 0)
+    return buffer;
+  memmove(buffer+dest, buffer, len+1);
+  memset(buffer, ' ', dest);
   return buffer;
 }
