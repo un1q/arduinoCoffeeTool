@@ -4,32 +4,48 @@
 Sensor* checkButton = nullptr;
 
 //all recipes definition
-const char str_odmierz_kawe[]   PROGMEM = "odmierz kawe"  ;
-const char str_podgrzej_wode[]  PROGMEM = "podgrzej wode" ;
+const char str_odmierz_kawe  [] PROGMEM = "odmierz kawe"  ;
+const char str_podgrzej_wode [] PROGMEM = "podgrzej wode" ;
 const char str_przygotuj_drip[] PROGMEM = "przygotuj drip";
-const char str_zacznij_lac[]    PROGMEM = "zacznij lac"   ;
-const char str_preinfuzja[]     PROGMEM = "preinfuzja"    ;
-const char str_czekaj[]         PROGMEM = "czekaj"        ;
-const char str_dolej[]          PROGMEM = "dolej"         ;
-const char str_gotowe[]         PROGMEM = "gotowe"        ;
+const char str_zacznij_lac   [] PROGMEM = "zacznij lac"   ;
+const char str_preinfuzja    [] PROGMEM = "preinfuzja"    ;
+const char str_czekaj        [] PROGMEM = "czekaj"        ;
+const char str_dolej         [] PROGMEM = "dolej"         ;
+const char str_gotowe        [] PROGMEM = "gotowe"        ;
+const char str_wsyp_kawe     [] PROGMEM = "wsyp kawe"     ;
+const char str_wlej_50g_wody [] PROGMEM = "wlej 50g wody" ;
+const char str_mieszaj       [] PROGMEM = "mieszaj"       ;
+const char str_wycisnij      [] PROGMEM = "wycisnij"      ;
 
 const Recipe Recipe::drip = Recipe("drip", 10, 
   new RecipeStep[10] { //it's like 160 bytes, so maybe we should keep it in flash memory?
     RecipeStep(ONSTART_TARE       , str_odmierz_kawe  , MEASURE_WEIGHT , 18 , -1 , 2 , false),
     RecipeStep(ONSTART_NOTHING    , str_podgrzej_wode , MEASURE_TEMP   , 85 , 10 , 2 , false),
     RecipeStep(ONSTART_NOTHING    , str_przygotuj_drip, PRESS_BUTTON   , -1 , -1 , -1, false),
-    RecipeStep(ONSTART_TARE       , str_zacznij_lac   , MEASURE_WEIGHT , 2  , -1 , 2 , true ),
+    RecipeStep(ONSTART_TARE       , str_zacznij_lac   , MEASURE_WEIGHT ,  2 , -1 , 2 , true ),
     RecipeStep(ONSTART_START_TIMER, str_preinfuzja    , MEASURE_WEIGHT , 40 , -1 , 2 , true ),
     RecipeStep(ONSTART_NOTHING    , str_czekaj        , MEASURE_TIME   , 30 , 10 , -1, true ),
-    RecipeStep(ONSTART_NOTHING    , str_dolej         , MEASURE_WEIGHT , 150, -1 , 10, true ),
+    RecipeStep(ONSTART_NOTHING    , str_dolej         , MEASURE_WEIGHT ,150 , -1 , 10, true ),
     RecipeStep(ONSTART_NOTHING    , str_czekaj        , MEASURE_TIME   , 90 , 10 , -1, true ),
-    RecipeStep(ONSTART_NOTHING    , str_dolej         , MEASURE_WEIGHT , 250, -1 , 10, true ),
-    RecipeStep(ONSTART_NOTHING    , str_gotowe        , MEASURE_TIME   , 210, 10 , -1, false)
+    RecipeStep(ONSTART_NOTHING    , str_dolej         , MEASURE_WEIGHT ,250 , -1 , 10, true ),
+    RecipeStep(ONSTART_NOTHING    , str_gotowe        , MEASURE_TIME   ,210 , 10 , -1, false)
   }
 );
 
-const int     Recipe::allCount = 1;
-const Recipe* Recipe::all[Recipe::allCount] = { &drip };
+const Recipe Recipe::fellow = Recipe("fellow", 7, 
+  new RecipeStep[7] { //it's like 160 bytes, so maybe we should keep it in flash memory?
+    RecipeStep(ONSTART_TARE       , str_odmierz_kawe  , MEASURE_WEIGHT , 20, -1,  2, false),
+    RecipeStep(ONSTART_NOTHING    , str_podgrzej_wode , MEASURE_TEMP   , 95, 10,  2, false),
+    RecipeStep(ONSTART_NOTHING    , str_wsyp_kawe     , PRESS_BUTTON   , -1, -1, -1, false),
+    RecipeStep(ONSTART_TARE       , str_wlej_50g_wody , MEASURE_WEIGHT , 50, -1, 10, true ),
+    RecipeStep(ONSTART_START_TIMER, str_mieszaj       , MEASURE_TIME   , 10, 10, -1, true ),
+    RecipeStep(ONSTART_NOTHING    , str_czekaj        , MEASURE_TIME   , 70, 10, -1, true ),
+    RecipeStep(ONSTART_NOTHING    , str_wycisnij      , PRESS_BUTTON   , -1, 01, -1, false)
+  }
+);
+
+const int     Recipe::allCount = 2;
+const Recipe* Recipe::all[Recipe::allCount] = { &drip, &fellow };
 
 //Recipe
 Recipe::Recipe(char* name, int stepsCount, RecipeStep *steps) {

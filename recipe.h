@@ -25,6 +25,7 @@ struct RecipeStep {
 
 struct Recipe {
   const static Recipe  drip;
+  const static Recipe  fellow;
   const static int     allCount;
   const static Recipe* all[];
   
