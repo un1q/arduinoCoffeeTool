@@ -9,6 +9,7 @@
 #include "globals.h"
 #include "core.h"
 #include "recipe.h"
+#include "follow_recipe.h"
 
 class CoreMain : public Core {
     FollowRecipe  followRecipe;

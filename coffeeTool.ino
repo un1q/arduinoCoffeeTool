@@ -33,17 +33,14 @@ byte colPins[3] = {8, 7, 6};
 
 //temperature sensor is on PIN 10, use 4.7R)
 
-Melody               alarmMelody  (new int[8] {NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4}, new int[8] {4, 8, 8, 4, 4, 4, 4, 4}, 8);
-//Melody               buzzMelody   (new int[2] {NOTE_C4, NOTE_C4}, new int[2] {4,4}, 2);
-Melody               timeoutMelody(new int[1] {NOTE_C3}, new int[1] {8}, 1);
+Melody               alarmMelody     (new int[8] {NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4}, new int[8] {4, 8, 8, 4, 4, 4, 4, 4}, 8);
+Melody               timerStartMelody(new int[3] {NOTE_C3, NOTE_D3, NOTE_E3}, new int[3] {8, 8, 4}, 3);
 Lcd                  *lcd           = new Lcd_N5110(A1,A2,A3,A4,-1);
 Keyboard             keyboard       = Keyboard(rowPins, colPins);
 MeasureWeight        measureWeight  = MeasureWeight(SCALE_DOUT, SCALE_CLK, scaleCalibrationFactor);
 MeasureTemperature   measureTemp    = MeasureTemperature();
 MeasureTime          measureTime    = MeasureTime();
 ActionMelody         alarmAction    = ActionMelody(&alarmMelody);
-//ActionMelody         buzzAction     = ActionMelody(&buzzMelody);
-ActionMelody         timeoutAction  = ActionMelody(&timeoutMelody);
 MeasureTime          measureTimeout = MeasureTime();
 
 
