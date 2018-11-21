@@ -44,3 +44,10 @@ bool SensorAlarm::check() {
 bool SensorAlarm::activeSensor() {
   return sensor && sensor->active();
 }
+
+int  SensorAlarm::remains() {
+  if (!sensor || !sensor->active()) 
+    return 0;
+  return alarmValue - sensor->get();
+
+}

@@ -18,11 +18,20 @@ class Lcd {
       int    selected = -1;
     };
     
+    struct OneAlarm {
+      int  temp   = 0;
+      int  time   = 0;
+      int  weight = 0;
+      char *bigText    = nullptr;
+      char *normalText = nullptr;
+    };
+    
     virtual ~Lcd();
-    virtual void setup()           = 0;
-    virtual void print(Info *info) = 0;
-    virtual void print(Menu *menu) = 0;
-    virtual void clear()           = 0;
+    virtual void setup()                   = 0;
+    virtual void print(Info *info)         = 0;
+    virtual void print(Menu *menu)         = 0;
+    virtual void print(OneAlarm *oneAlarm) = 0;
+    virtual void clear()                   = 0;
 };
 
 #endif

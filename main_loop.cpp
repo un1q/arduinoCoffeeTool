@@ -3,6 +3,7 @@
 #include "recipe.h"
 #include "core_follow_recipe.h"
 #include "core_main_menu.h"
+#include "core_timer.h"
 
 Core  *core      = nullptr;
 int   actualCore = -1;
@@ -35,6 +36,9 @@ void changeCore(int coreId) {
   switch (coreId) {
     case Core::MAIN_MENU:
       core = new CoreMainMenu();
+      break;
+    case Core::CORE_TIMER:
+      core = new CoreTimer();
       break;
     default:
       if (coreId >= 0 && coreId < Recipe::allCount) {

@@ -19,6 +19,7 @@ class SensorAlarm : public Alarm {
     void reset();
     bool check();
     bool activeSensor();
+    int  remains();
 };
 
 #endif

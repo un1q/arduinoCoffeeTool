@@ -18,7 +18,7 @@ class Alarm : public AlarmAbstract {
     virtual ~Alarm();
     virtual void reset();
     virtual bool check(int value);
-    virtual int  remains(int value);
+    void changeValue(int value);
 };
 
 #endif

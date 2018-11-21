@@ -20,7 +20,7 @@ void Lcd_N5110::setup() {
 
 void Lcd_N5110::print(Lcd::Info *info) {
   unsigned long time = millis();
-  if (time > lastRefreshTime && time - lastRefreshTime < 200)
+  if (time > lastRefreshTime && time - lastRefreshTime < 50)
     return;
   lastRefreshTime = time;
   display->clearDisplay();
@@ -55,10 +55,39 @@ void Lcd_N5110::print(Lcd::Menu *menu) {
   display->display();
 }
 
+void Lcd_N5110::print(OneAlarm *oneAlarm) {
+  unsigned long time = millis();
+  if (time > lastRefreshTime && time - lastRefreshTime < 50)
+    return;
+  lastRefreshTime = time;
+  display->clearDisplay();
+  print(POS_TEMP        , tempStringBuffer  .tempToString(oneAlarm->temp), false);
+  print(POS_WEIGHT      , weightStringBuffer.weightToString(oneAlarm->weight), false);
+  print(POS_TIMER       , timeStringBuffer  .secondsToString(oneAlarm->time, 5), false);
+  int alarmY = positions[POS_ALARM][1];
+  display->writeFastHLine(0, alarmY-4, 96, BLACK);
+  display->writeFastHLine(0, alarmY+16+2, 96, BLACK);
+  printBigCentered(alarmY, oneAlarm->bigText, false);
+  printCentered(positions[POS_NEXT_STEP][1], oneAlarm->normalText, false);
+  display->display();
+}
+
 void Lcd_N5110::print(int positionIndex, const char* text, bool refresh) {
   int* pos = positions[positionIndex];
   print(pos[0], pos[1], text, refresh);
 }
+
+void Lcd_N5110::printBig(int x, int y, const char* text, bool refresh) {
+  if (text == nullptr)
+    return;
+  display->setCursor(x, y);
+  display->setTextSize(2);
+  display->print(text);
+  display->setTextSize(1);
+  if (refresh)
+    display->display();
+}
+
 
 void Lcd_N5110::print(int x, int y, const char* text, bool refresh) {
   if (text == nullptr)
@@ -72,6 +101,11 @@ void Lcd_N5110::print(int x, int y, const char* text, bool refresh) {
 void Lcd_N5110::printCentered(int y, const char* text, bool refresh) {
   int x = (14-strlen(text)) * 3;
   print(x, y, text, refresh);
+}
+
+void Lcd_N5110::printBigCentered(int y, const char* text, bool refresh) {
+  int x = (7-strlen(text)) * 6;
+  printBig(x, y, text, refresh);
 }
 
 void Lcd_N5110::clear() {

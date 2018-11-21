@@ -52,7 +52,6 @@ void CoreFollowRecipe::useRecipe(int i) {
 }
 
 void CoreFollowRecipe::printMainScreen() {
-  SensorAlarm *alarm = followRecipe.getAlarm();
   lcdInfo.temp        = measureTemp.get();
   lcdInfo.time        = measureTime.get();
   lcdInfo.weight      = measureWeight.get();

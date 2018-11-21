@@ -9,6 +9,7 @@ class Core {
   public:
     static const int FOLLOW_RECIPE_END = 31;
     static const int MAIN_MENU         = 32;
+    static const int CORE_TIMER        = 33;
   public:
     virtual ~Core();
     virtual int  update(char key) = 0; //return core type device should be switched to; everything below FOLLOW_RECIPE_END is a number of recipe; -1 means no change

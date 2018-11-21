@@ -8,6 +8,8 @@ Alarm::Alarm(Action *alarmAction, int alarmValue, Mode mode) {
   this->mode        = mode;
 }
 
+Alarm::~Alarm() {}
+
 void Alarm::reset() {
   direction = 0;
 }
@@ -35,8 +37,6 @@ bool Alarm::check(int value) {
   return false;
 }
 
-int Alarm::remains(int value) {
-  return value - alarmValue;
+void Alarm::changeValue(int value) {
+  alarmValue = value;
 }
-
-Alarm::~Alarm() {}

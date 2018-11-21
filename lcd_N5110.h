@@ -44,12 +44,15 @@ class Lcd_N5110 : public Lcd {
     ~Lcd_N5110();
     void print(Lcd::Info *info);
     void print(Lcd::Menu *menu);
+    void print(Lcd::OneAlarm *oneAlarm);
     void setup();
     void clear();
   private:
     void print(int positionIndex, const char* text, bool refresh);
     void print(int x, int y, const char* text, bool refresh);
     void printCentered(int y, const char* text, bool refresh);
+    void printBig(int x, int y, const char* text, bool refresh);
+    void printBigCentered(int y, const char* text, bool refresh);
 };
 
 #endif

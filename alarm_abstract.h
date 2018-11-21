@@ -8,7 +8,6 @@ class AlarmAbstract {
     virtual ~AlarmAbstract();
     virtual void reset()            = 0;
     virtual bool check(int value)   = 0;
-    virtual int  remains(int value) = 0;
 };
 
 #endif
