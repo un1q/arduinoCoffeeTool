@@ -64,9 +64,10 @@ const RecipeStep fellowSteps[fellowStepsCount] PROGMEM = {
 const Recipe Recipe::fellow = Recipe("fellow", fellowStepsCount, fellowSteps);
 
 
-const int teaStepsCount = 2;
+const int teaStepsCount = 3;
 const RecipeStep teaSteps[teaStepsCount] PROGMEM = {
-  {ONSTART_TARE       , str_zalej         , MEASURE_WEIGHT , 02  , -1,  2, false},
+  {ONSTART_NOTHING    , str_podgrzej_wode , MEASURE_TEMP   , 80  , 10,  2, false},
+  {ONSTART_TARE       , str_zalej         , MEASURE_WEIGHT , 02  , -1,  2, true},
   {ONSTART_START_TIMER, str_wyjmij_szczura, MEASURE_TIME   , 4*60, 10, -1, false}
 };
 const Recipe Recipe::tea = Recipe("tea", teaStepsCount, teaSteps);
