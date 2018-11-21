@@ -6,11 +6,14 @@
 typedef const char* FlashAddr;
 
 class StringBuffer {
-    static const int bufferSize = 15;
-    char buffer[bufferSize];
+    int   bufferSize = 15;
+    char* buffer;
     
   public:
     static StringBuffer global;
+    
+    StringBuffer(int size = 15);
+    ~StringBuffer();
     
     int   nSecondsToString(int secTotal);
     char* secondsToString(int secTotal);

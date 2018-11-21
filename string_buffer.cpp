@@ -2,7 +2,16 @@
 
 #include <Arduino.h>
 
-StringBuffer StringBuffer::global;
+StringBuffer StringBuffer::global = StringBuffer(15);
+
+StringBuffer::StringBuffer(int size = 15) {
+  this->bufferSize = size;
+  this->buffer = new char[size];
+}
+
+StringBuffer::~StringBuffer() {
+  delete buffer;
+}
 
 char* StringBuffer::secondsToString(int secTotal) {
   nSecondsToString(secTotal);
