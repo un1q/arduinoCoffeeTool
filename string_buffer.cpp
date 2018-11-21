@@ -73,15 +73,15 @@ char* StringBuffer::get() {
   return buffer;
 }
 
-char* StringBuffer::center() {
-  buffer[bufferSize-1] = '\0'; //just in case buffer is not initialized
-  int len = strlen(buffer);
-  if (len == 0)
-    return buffer;
-  int dest = (bufferSize-1-len)/2;
-  if (dest == 0)
-    return buffer;
-  memmove(buffer+dest, buffer, len+1);
-  memset(buffer, ' ', dest);
-  return buffer;
-}
+//char* StringBuffer::center() {
+//  buffer[bufferSize-1] = '\0'; //just in case buffer is not initialized
+//  int len = strlen(buffer);
+//  if (len == 0)
+//    return buffer;
+//  int dest = (bufferSize-1-len)/2;
+//  if (dest == 0)
+//    return buffer;
+//  memmove(buffer+dest, buffer, len+1);
+//  memset(buffer, ' ', dest);
+//  return buffer;
+//}

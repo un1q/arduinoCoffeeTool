@@ -47,8 +47,9 @@ class Lcd_N5110 : public Lcd {
     void setup();
     void clear();
   private:
-    void print(int positionIndex, char* text, bool refresh);
-    void print(int x, int y, char* text, bool refresh);
+    void print(int positionIndex, const char* text, bool refresh);
+    void print(int x, int y, const char* text, bool refresh);
+    void printCentered(int y, const char* text, bool refresh);
 };
 
 #endif

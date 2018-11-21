@@ -69,7 +69,7 @@ void FollowRecipe::update() {
   } else {
     alarmDesc.flashToString(F("skip manually"));
   }
-  alarmDesc.center();
+  //alarmDesc.center();
   if ( s->onStart == ONSTART_TARE ) {
     measureWeight.tare();
   } else if( s->onStart == ONSTART_START_TIMER ) {
