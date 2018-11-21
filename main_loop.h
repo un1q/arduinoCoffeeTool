@@ -11,11 +11,7 @@
 #include "core_main_menu.h"
 #include "core.h"
 
-extern CoreMain     coreMain;
-extern CoreMainMenu coreMainMenu;
-extern Core         *core;
-
-void changeCore(Core *core);
+void changeCore(int coreId);
 
 void mainLoopStartup();
 void mainLoop();

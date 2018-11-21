@@ -3,6 +3,10 @@
 CoreMain::CoreMain() {
 }
 
+CoreMain::CoreMain(int recipeId) {
+  useRecipe(recipeId);
+}
+
 CoreMain::~CoreMain() {
 }
 
@@ -11,15 +15,15 @@ void CoreMain::start() {
   lcd->clear();
 }
 
-void CoreMain::update(char key) {
+int CoreMain::update(char key) {
   switch (key) {
     case k_CLEAR: //k_CLEAR is shifted k_ENTER
       followRecipe.foreward();
       break;
     case '0': 
     case '.': 
-      followRecipe.stop();
-      measureWeight.tare();
+      followRecipe.start();
+      //measureWeight.tare();
       break;
     case k_F1: useRecipe(0); break;
     case k_F2: useRecipe(1); break;
@@ -27,12 +31,14 @@ void CoreMain::update(char key) {
     case k_F4: useRecipe(3); break;
     case k_F5: useRecipe(4); break;
     case k_DOWN: followRecipe.foreward(); break;
+    case k_RIGHT:
     case k_UP  : followRecipe.backward(); break;
-    case k_LEFT: followRecipe.stop(); gotoMenu(); return;
+    case k_LEFT: followRecipe.stop(); return Core::MAIN_MENU; return;
   }
   measureTemp.loop();
   followRecipe.check();
   printMainScreen();
+  return -1;
 }
 
 void CoreMain::useRecipe(int i) {

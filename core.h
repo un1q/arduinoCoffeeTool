@@ -2,19 +2,16 @@
 #define CORE_H_
 
 // Abstract class
-// Each core classes is responsible for one screen (like main screen, main menu screen, options screen, etc.)
-// including:
-// - checking all sensors used on this screen
-// - updating all informations on LCD
-// - reaction to keypad (keypad is handled in main loop and key is passed as argument)
-// - reaction to other inputs if necessary
-// if Core implementation wants to stop, it can provide some function pointer, for example
-//   void (*gotoMenu)() = {};
-// this function can be handled in main loop
+// Each core classes is responsible for one screen (like main screen, main menu screen, options screen, timer screen etc.)
+// update(key) should be colled each loop
 
 class Core {
   public:
-    virtual void update(char key) = 0;
+    static const int FOLLOW_RECIPE_END = 31;
+    static const int MAIN_MENU         = 32;
+  public:
+    virtual ~Core();
+    virtual int  update(char key) = 0; //return core type device should be switched to; everything below FOLLOW_RECIPE_END is a number of recipe; -1 means no change
     virtual void start()          = 0;
 };
 

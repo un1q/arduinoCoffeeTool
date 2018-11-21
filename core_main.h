@@ -17,10 +17,10 @@ class CoreMain : public Core {
     
     void printMainScreen();
   public:
-    void (*gotoMenu)() = {};
     CoreMain();
+    CoreMain(int recipeId);
     ~CoreMain();
-    void update(char key);
+    int  update(char key);
     void start();
     void useRecipe(int i);
 };

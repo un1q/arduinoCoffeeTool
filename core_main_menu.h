@@ -16,10 +16,9 @@ class CoreMainMenu : public Core {
     Lcd::Menu     menu;
     void printMainScreen();
   public:
-    void (*selected)(int) = {};
     CoreMainMenu();
     ~CoreMainMenu();
-    void update(char key);
+    int  update(char key);
     void start();
 };
 
