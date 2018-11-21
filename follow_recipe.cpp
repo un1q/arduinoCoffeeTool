@@ -4,7 +4,7 @@
 FollowRecipe::FollowRecipe() {}
 
 FollowRecipe::~FollowRecipe() {
-  deleteAlarm();
+  clean();
 }
 
 
@@ -23,13 +23,24 @@ void FollowRecipe::stop(){
   this->stepNr   = -1;
 }
 
-void FollowRecipe::deleteAlarm(){
+void FollowRecipe::clean(){
   if (alarm)
     delete(alarm);
   alarm = nullptr;
-  alarmDesc.emptyString();
-}
   
+  if (alarmDescBuffer);
+    delete(alarmDescBuffer);
+  alarmDescBuffer = nullptr;
+  
+  if (textBuffer);
+    delete(textBuffer);
+  textBuffer = nullptr;
+  
+  if (nextTextBuffer);
+    delete(nextTextBuffer);
+  nextTextBuffer = nullptr;
+}
+
 void FollowRecipe::foreward(){
   if (recipe == nullptr || stepNr >= recipe->stepsCount-1 || stepNr < -1) 
     return;
@@ -45,63 +56,70 @@ void FollowRecipe::backward(){
   update();
 }
 
+#define NEW_F_STRING_BUFFER(strBufPointer, str) strBufPointer = new StringBuffer(sizeof(str)); strBufPointer->flashToString(F(str));
+
 void FollowRecipe::update() {
-  deleteAlarm();
-  RecipeStep* s = getStep();
-  if (!s)
+  clean();
+  if (recipe == nullptr || !recipe->getStep(stepNr, &actualStep)) {
+    stepNr = -1;
     return;
+  }
   isTimeout = false;
-  Sensor* sensor       = s->getSensor();
+  Sensor* sensor       = actualStep.getSensor();
   bool    sensorActive = sensor && sensor->active();
   if (sensorActive) {
-    alarm = new SensorAlarm(&alarmAction, sensor, s->value, s->buzzMargin, s->getAlarmMode());
-    switch(s->sensorType) {
-      case MEASURE_WEIGHT: alarmDesc.weightToString(alarm->alarmValue) ; break;
-      case MEASURE_TEMP  : alarmDesc.tempToString(alarm->alarmValue)   ; break;
-      case MEASURE_TIME  : alarmDesc.secondsToString(alarm->alarmValue); break;
-      case PRESS_BUTTON  : alarmDesc.flashToString(F("press button"))  ; break;
+    alarm = new SensorAlarm(&alarmAction, sensor, actualStep.value, actualStep.buzzMargin, actualStep.getAlarmMode());
+    switch(actualStep.sensorType) {
+      case MEASURE_TEMP  : alarmDescBuffer = new StringBuffer(tempStringLength   ); alarmDescBuffer->tempToString(alarm->alarmValue)   ; break;
+      case MEASURE_WEIGHT: alarmDescBuffer = new StringBuffer(weightStringLength ); alarmDescBuffer->weightToString(alarm->alarmValue) ; break;
+      case MEASURE_TIME  : alarmDescBuffer = new StringBuffer(timeStringLength   ); alarmDescBuffer->secondsToString(alarm->alarmValue); break;
+      case PRESS_BUTTON  : NEW_F_STRING_BUFFER(alarmDescBuffer, "press button"); break;
     }
-  } else if (s->timeoutIfNoSensor > 0) {
-    alarm = new SensorAlarm(nullptr, &measureTimeout, s->timeoutIfNoSensor, -1, Alarm::crossingUp);
+  } else if (actualStep.timeoutIfNoSensor > 0) {
+    alarm = new SensorAlarm(nullptr, &measureTimeout, actualStep.timeoutIfNoSensor, -1, Alarm::crossingUp);
     isTimeout = true;
     measureTimeout.start();
-    alarmDesc.flashToString(F("wait or skip"));
+    NEW_F_STRING_BUFFER(alarmDescBuffer, "wait or skip");
   } else {
-    alarmDesc.flashToString(F("skip manually"));
+    NEW_F_STRING_BUFFER(alarmDescBuffer, "skip manually");
   }
-  //alarmDesc.center();
-  if ( s->onStart == ONSTART_TARE ) {
+  if ( actualStep.onStart == ONSTART_TARE ) {
     measureWeight.tare();
-  } else if( s->onStart == ONSTART_START_TIMER ) {
+  } else if( actualStep.onStart == ONSTART_START_TIMER ) {
     measureTime.start();
     timerStartMelody.play();
   }
+  textBuffer = new StringBuffer((FlashAddr)actualStep.text);
+  RecipeStep nextStep;
+  if (recipe->getStep(stepNr+1, &nextStep))
+    nextTextBuffer = new StringBuffer((FlashAddr)nextStep.text);
 }
 
 bool FollowRecipe::check() {
-  RecipeStep* s = getStep();
+  if (stepNr < 0)
+    return false;
   bool result = !alarm || alarm->check();
-  if (result && s && (s->autoNext || isTimeout))
+  if (result && (actualStep.autoNext || isTimeout))
     foreward();
   return result;
 }
 
-char* FollowRecipe::getText(StringBuffer *buffer) {
-  RecipeStep* s = getStep();
-  return s ? buffer->flashToString(s->text) : nullptr;
+char* FollowRecipe::getText() {
+  if (!textBuffer)
+    return nullptr;
+  return textBuffer->get();
 }
 
-char* FollowRecipe::getTextNext(StringBuffer *buffer) {
-  RecipeStep nextStep;
-  if (recipe == nullptr || !recipe->getStep(stepNr+1, &nextStep))
+char* FollowRecipe::getTextNext() {
+  if (!nextTextBuffer)
     return nullptr;
-  return buffer->flashToString(nextStep.text);
+  return nextTextBuffer->get();
 }
 
-RecipeStep* FollowRecipe::getStep() {
-  if (recipe == nullptr || !recipe->getStep(stepNr, &actualStep))
+char* FollowRecipe::getAlarmDesc() {
+  if (!alarmDescBuffer)
     return nullptr;
-  return &actualStep;
+  return alarmDescBuffer->get();
 }
 
 SensorAlarm* FollowRecipe::getAlarm() {

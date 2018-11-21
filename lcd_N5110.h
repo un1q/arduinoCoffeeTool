@@ -34,9 +34,9 @@ class Lcd_N5110 : public Lcd {
     const int POS_NEXT_STEP     = 5; // position index
     const int rowHeight         = 8;
     const int menuPadding       = 16;
-    StringBuffer tempStringBuffer   = StringBuffer(4);
-    StringBuffer weightStringBuffer = StringBuffer(5);
-    StringBuffer timeStringBuffer   = StringBuffer(6);
+    StringBuffer tempStringBuffer   = StringBuffer(tempStringLength   );
+    StringBuffer weightStringBuffer = StringBuffer(weightStringLength );
+    StringBuffer timeStringBuffer   = StringBuffer(timeStringLength   );
     Adafruit_PCD8544 *display;
   public:
     Lcd_N5110();

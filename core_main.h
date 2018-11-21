@@ -16,9 +16,6 @@ class CoreMain : public Core {
     Lcd::Info     lcdInfo;
     
     void printMainScreen();
-    StringBuffer stepTextBuffer;
-    StringBuffer nextStepTextBuffer;
-    StringBuffer alarmBuffer;
   public:
     void (*gotoMenu)() = {};
     CoreMain();

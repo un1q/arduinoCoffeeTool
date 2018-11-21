@@ -5,6 +5,13 @@
 
 typedef const char* FlashAddr;
 
+#define TempLength 
+
+#define tempStringLength   4
+#define weightStringLength 5
+#define timeStringLength   6
+
+
 class StringBuffer {
     int   bufferSize = 15;
     char* buffer;
@@ -13,6 +20,7 @@ class StringBuffer {
     static StringBuffer global;
     
     StringBuffer(int size = 15);
+    StringBuffer(FlashAddr flashStringAddress);
     ~StringBuffer();
     
     int   nSecondsToString(int secTotal);
@@ -26,7 +34,6 @@ class StringBuffer {
     char* weightToString(int weight);
     char* emptyString();
     char* get();
-    //char* center();
 };
 
 #endif

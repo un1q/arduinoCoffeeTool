@@ -6,14 +6,15 @@
 #include "string_buffer.h"
 
 class FollowRecipe {
-  public:
-    StringBuffer alarmDesc;
   private:
-    int          stepNr     = -1;
-    Recipe       *recipe    = nullptr;
-    SensorAlarm  *alarm     = nullptr;
-    bool         isTimeout  = false;
     RecipeStep   actualStep;
+    int          stepNr           = -1;
+    Recipe       *recipe          = nullptr;
+    SensorAlarm  *alarm           = nullptr;
+    bool         isTimeout        = false;
+    StringBuffer *textBuffer      = nullptr;
+    StringBuffer *nextTextBuffer  = nullptr;
+    StringBuffer *alarmDescBuffer = nullptr;
   public:
     FollowRecipe();
     ~FollowRecipe();
@@ -23,13 +24,13 @@ class FollowRecipe {
     void         foreward();
     void         backward();
     bool         check(); //returns true if step is finished
-    char*        getText     (StringBuffer *buffer);
-    char*        getTextNext (StringBuffer *buffer);
-    char*        getAlarmDesc(StringBuffer *buffer);
+    char*        getText     ();
+    char*        getTextNext ();
+    char*        getAlarmDesc();
     RecipeStep*  getStep();
     SensorAlarm* getAlarm();
   private:
-    void         deleteAlarm();
+    void         clean();
     void         update();
 };
 #endif

@@ -50,8 +50,8 @@ void CoreMain::printMainScreen() {
   lcdInfo.temp        = measureTemp.get();
   lcdInfo.time        = measureTime.get();
   lcdInfo.weight      = measureWeight.get();
-  lcdInfo.alarmDesc   = followRecipe.alarmDesc.get();
-  lcdInfo.step        = followRecipe.getText(&stepTextBuffer);
-  lcdInfo.nextStep    = followRecipe.getTextNext(&nextStepTextBuffer);
+  lcdInfo.alarmDesc   = followRecipe.getAlarmDesc();
+  lcdInfo.step        = followRecipe.getText();
+  lcdInfo.nextStep    = followRecipe.getTextNext();
   lcd->print(&lcdInfo);
 }

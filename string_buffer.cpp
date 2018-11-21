@@ -9,6 +9,12 @@ StringBuffer::StringBuffer(int size = 15) {
   this->buffer = new char[size];
 }
 
+StringBuffer::StringBuffer(FlashAddr flashStringAddress) {
+  this->bufferSize = max(15, strlen_P(flashStringAddress)+1);
+  this->buffer = new char[bufferSize];
+  flashToString(flashStringAddress);
+}
+
 StringBuffer::~StringBuffer() {
   delete buffer;
 }
@@ -53,14 +59,12 @@ char* StringBuffer::intToString(int value) {
 
 char* StringBuffer::flashToString(FlashAddr flashAddr) {
   strncpy_P(buffer, flashAddr, bufferSize);
-  //memcpy_P(buffer, flashAddr, bufferSize);
   buffer[bufferSize-1] = '\0'; //just in case buffer is to small: I'd rather get truncated string, then trash
   return buffer;
 }
 
 char* StringBuffer::flashToString(const __FlashStringHelper *flashAddr) {
   strncpy_P(buffer, (PGM_P)flashAddr, bufferSize);
-  //memcpy_P(buffer, flashAddr, bufferSize);
   buffer[bufferSize-1] = '\0'; //just in case buffer is to small: I'd rather get truncated string, then trash
   return buffer;
 }
@@ -81,16 +85,3 @@ char* StringBuffer::emptyString() {
 char* StringBuffer::get() {
   return buffer;
 }
-
-//char* StringBuffer::center() {
-//  buffer[bufferSize-1] = '\0'; //just in case buffer is not initialized
-//  int len = strlen(buffer);
-//  if (len == 0)
-//    return buffer;
-//  int dest = (bufferSize-1-len)/2;
-//  if (dest == 0)
-//    return buffer;
-//  memmove(buffer+dest, buffer, len+1);
-//  memset(buffer, ' ', dest);
-//  return buffer;
-//}
