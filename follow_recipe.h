@@ -24,13 +24,38 @@ class FollowRecipe {
     void         foreward();
     void         backward();
     bool         check(); //returns true if step is finished
-    char*        getText     ();
-    char*        getTextNext ();
-    char*        getAlarmDesc();
     RecipeStep*  getStep();
-    SensorAlarm* getAlarm();
+    inline char*        getText     ();
+    inline char*        getTextNext ();
+    inline char*        getAlarmDesc();
+    inline SensorAlarm* getAlarm();
   private:
     void         clean();
     void         update();
 };
+
+//inline methods:
+
+inline SensorAlarm* FollowRecipe::getAlarm() {
+  return alarm;
+}
+
+char* FollowRecipe::getText() {
+  if (!textBuffer)
+    return nullptr;
+  return textBuffer->get();
+}
+
+char* FollowRecipe::getTextNext() {
+  if (!nextTextBuffer)
+    return nullptr;
+  return nextTextBuffer->get();
+}
+
+char* FollowRecipe::getAlarmDesc() {
+  if (!alarmDescBuffer)
+    return nullptr;
+  return alarmDescBuffer->get();
+}
+
 #endif

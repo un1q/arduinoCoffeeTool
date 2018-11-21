@@ -84,27 +84,11 @@ Recipe::Recipe(char* name, int stepsCount, FlashRecipeSteps steps) {
 bool Recipe::getStep(int i, RecipeStep *dest) {
   if (i<0 || i >= stepsCount)
     return false;
-  SerialLog(sizeof(RecipeStep)*i);
   memcpy_P(dest, &steps[i] , sizeof(RecipeStep));
   return true;
 }
 
 Recipe::~Recipe() {}
-
-////RecipeStep
-//RecipeStep::RecipeStep() {}
-//
-//RecipeStep::RecipeStep(OnStart onStart, FlashAddr text, SensorType sensorType, int value, int buzzMargin, int timeoutIfNoSensor, bool autoNext) {
-//  this->onStart           = onStart          ;
-//  this->text              = text             ;
-//  this->sensorType        = sensorType       ;
-//  this->value             = value            ;
-//  this->buzzMargin        = buzzMargin        ;
-//  this->timeoutIfNoSensor = timeoutIfNoSensor;
-//  this->autoNext          = autoNext         ;
-//}
-//
-//RecipeStep::~RecipeStep() {}
 
 Sensor* RecipeStep::getSensor() {
   switch (sensorType) {

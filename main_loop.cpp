@@ -1,4 +1,5 @@
 #include "main_loop.h"
+#include "debug.h"
 
 CoreMain     coreMain     = CoreMain    ();
 CoreMainMenu coreMainMenu = CoreMainMenu();
@@ -17,6 +18,8 @@ void mainLoop() {
   keyboard.loop();
   char key = keyboard.getKey();
   core->update(key);
+  if (key == k_SHIFT)
+    SerialFreeMemLog();
 }
 
 

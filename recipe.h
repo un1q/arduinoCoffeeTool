@@ -18,9 +18,6 @@ struct RecipeStep {
   int        timeoutIfNoSensor;
   bool       autoNext         ;
   
-  //RecipeStep();
-  //RecipeStep(OnStart onStart, FlashAddr text, SensorType sensorType, int value, int buzzMargin, int timeoutIfNoSensor, bool autoNext);
-  //~RecipeStep();
   Sensor*     getSensor();
   Alarm::Mode getAlarmMode();
 };

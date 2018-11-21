@@ -95,6 +95,8 @@ void FollowRecipe::update() {
     nextTextBuffer = new StringBuffer((FlashAddr)nextStep.text);
 }
 
+#undef NEW_F_STRING_BUFFER
+
 bool FollowRecipe::check() {
   if (stepNr < 0)
     return false;
@@ -102,26 +104,4 @@ bool FollowRecipe::check() {
   if (result && (actualStep.autoNext || isTimeout))
     foreward();
   return result;
-}
-
-char* FollowRecipe::getText() {
-  if (!textBuffer)
-    return nullptr;
-  return textBuffer->get();
-}
-
-char* FollowRecipe::getTextNext() {
-  if (!nextTextBuffer)
-    return nullptr;
-  return nextTextBuffer->get();
-}
-
-char* FollowRecipe::getAlarmDesc() {
-  if (!alarmDescBuffer)
-    return nullptr;
-  return alarmDescBuffer->get();
-}
-
-SensorAlarm* FollowRecipe::getAlarm() {
-  return alarm;
 }
