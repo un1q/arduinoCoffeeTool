@@ -7,11 +7,10 @@
 
 class FollowRecipe {
   private:
-    RecipeStep   actualStep;
     int          stepNr           = -1;
     Recipe       *recipe          = nullptr;
     SensorAlarm  *alarm           = nullptr;
-    bool         isTimeout        = false;
+    bool         autoNext         = false;
     StringBuffer *textBuffer      = nullptr;
     StringBuffer *nextTextBuffer  = nullptr;
     StringBuffer *alarmDescBuffer = nullptr;

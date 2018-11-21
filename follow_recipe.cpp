@@ -59,12 +59,13 @@ void FollowRecipe::backward(){
 #define NEW_F_STRING_BUFFER(strBufPointer, str) strBufPointer = new StringBuffer(sizeof(str)); strBufPointer->flashToString(F(str));
 
 void FollowRecipe::update() {
+  RecipeStep actualStep;
   clean();
   if (recipe == nullptr || !recipe->getStep(stepNr, &actualStep)) {
     stepNr = -1;
     return;
   }
-  isTimeout = false;
+  autoNext = actualStep.autoNext;
   Sensor* sensor       = actualStep.getSensor();
   bool    sensorActive = sensor && sensor->active();
   if (sensorActive) {
@@ -77,7 +78,7 @@ void FollowRecipe::update() {
     }
   } else if (actualStep.timeoutIfNoSensor > 0) {
     alarm = new SensorAlarm(nullptr, &measureTimeout, actualStep.timeoutIfNoSensor, -1, Alarm::crossingUp);
-    isTimeout = true;
+    autoNext = true;
     measureTimeout.start();
     NEW_F_STRING_BUFFER(alarmDescBuffer, "wait or skip");
   } else {
@@ -101,7 +102,7 @@ bool FollowRecipe::check() {
   if (stepNr < 0)
     return false;
   bool result = !alarm || alarm->check();
-  if (result && (actualStep.autoNext || isTimeout))
+  if (result && autoNext)
     foreward();
   return result;
 }
