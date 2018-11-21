@@ -6,10 +6,9 @@
 // Knows with screen is active (main screen, main menu screen, etc) and
 // calls right Core class (CoreMain, CoreMainMenu, etc)
 
-#include "globals.h"
-#include "core_main.h"
-#include "core_main_menu.h"
 #include "core.h"
+
+extern Core         *core;
 
 void changeCore(int coreId);
 

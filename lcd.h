@@ -19,7 +19,7 @@ class Lcd {
     };
     
     virtual ~Lcd();
-    virtual void setup() = 0;
+    virtual void setup()           = 0;
     virtual void print(Info *info) = 0;
     virtual void print(Menu *menu) = 0;
     virtual void clear()           = 0;

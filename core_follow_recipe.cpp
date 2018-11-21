@@ -1,21 +1,21 @@
-#include "core_main.h"
+#include "core_follow_recipe.h"
 
-CoreMain::CoreMain() {
+CoreFollowRecipe::CoreFollowRecipe() {
 }
 
-CoreMain::CoreMain(int recipeId) {
+CoreFollowRecipe::CoreFollowRecipe(int recipeId) {
   useRecipe(recipeId);
 }
 
-CoreMain::~CoreMain() {
+CoreFollowRecipe::~CoreFollowRecipe() {
 }
 
-void CoreMain::start() {
+void CoreFollowRecipe::start() {
   keyboard.setShiftMode(shift_always);
   lcd->clear();
 }
 
-int CoreMain::update(char key) {
+int CoreFollowRecipe::update(char key) {
   switch (key) {
     case k_CLEAR: //k_CLEAR is shifted k_ENTER
       followRecipe.foreward();
@@ -41,7 +41,7 @@ int CoreMain::update(char key) {
   return -1;
 }
 
-void CoreMain::useRecipe(int i) {
+void CoreFollowRecipe::useRecipe(int i) {
   if (i < 0 || i >= Recipe::allCount)
     return;
   Recipe* p = Recipe::all[i];
@@ -51,7 +51,7 @@ void CoreMain::useRecipe(int i) {
   }
 }
 
-void CoreMain::printMainScreen() {
+void CoreFollowRecipe::printMainScreen() {
   SensorAlarm *alarm = followRecipe.getAlarm();
   lcdInfo.temp        = measureTemp.get();
   lcdInfo.time        = measureTime.get();

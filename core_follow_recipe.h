@@ -1,5 +1,5 @@
-#ifndef CORE_MAIN_H_
-#define CORE_MAIN_H_
+#ifndef CORE_FOLLOW_RECIPE_H_
+#define CORE_FOLLOW_RECIPE_H_
 
 // Main screen
 // Presents all sensors output and all alarms on LCD
@@ -11,15 +11,15 @@
 #include "recipe.h"
 #include "follow_recipe.h"
 
-class CoreMain : public Core {
+class CoreFollowRecipe : public Core {
     FollowRecipe  followRecipe;
     Lcd::Info     lcdInfo;
     
     void printMainScreen();
   public:
-    CoreMain();
-    CoreMain(int recipeId);
-    ~CoreMain();
+    CoreFollowRecipe();
+    CoreFollowRecipe(int recipeId);
+    ~CoreFollowRecipe();
     int  update(char key);
     void start();
     void useRecipe(int i);

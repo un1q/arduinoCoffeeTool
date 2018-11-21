@@ -1,15 +1,17 @@
 #include "main_loop.h"
 #include "debug.h"
 #include "recipe.h"
+#include "core_follow_recipe.h"
+#include "core_main_menu.h"
 
 Core  *core      = nullptr;
 int   actualCore = -1;
 
-CoreMain *corePreheat = nullptr; //preheat
+CoreFollowRecipe *corePreheat = nullptr; //preheat
 
 void mainLoopStartup() {
   changeCore(Core::MAIN_MENU);
-  corePreheat = new CoreMain(0);
+  corePreheat = new CoreFollowRecipe(0);
   SerialFreeMemLog();
 }
 
@@ -42,7 +44,7 @@ void changeCore(int coreId) {
             corePreheat->useRecipe(coreId);
           corePreheat = nullptr;
         } else {
-          core = new CoreMain(coreId);
+          core = new CoreFollowRecipe(coreId);
         }
       } else {
         core = new CoreMainMenu();
