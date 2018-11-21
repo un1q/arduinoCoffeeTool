@@ -10,17 +10,17 @@ FollowRecipe::~FollowRecipe() {
 
 void FollowRecipe::prepare(const Recipe *recipe){
   this->recipe = recipe;
-  this->step   = -1;
+  this->stepNr   = -1;
 }
 
 void FollowRecipe::start(){
-  this->step = -1;
+  this->stepNr = -1;
   foreward();
 }
 
 void FollowRecipe::stop(){
   this->recipe = nullptr;
-  this->step   = -1;
+  this->stepNr   = -1;
 }
 
 void FollowRecipe::deleteAlarm(){
@@ -31,17 +31,17 @@ void FollowRecipe::deleteAlarm(){
 }
   
 void FollowRecipe::foreward(){
-  if (recipe == nullptr || step >= recipe->stepsCount-1 || step < -1) 
+  if (recipe == nullptr || stepNr >= recipe->stepsCount-1 || stepNr < -1) 
     return;
-  step++;
+  stepNr++;
   update();
 }
 
 void FollowRecipe::backward(){
   if (recipe == nullptr)
     return;
-  if (step > 0)
-    step--;
+  if (stepNr > 0)
+    stepNr--;
   update();
 }
 
@@ -92,16 +92,16 @@ char* FollowRecipe::getText(StringBuffer *buffer) {
 }
 
 char* FollowRecipe::getTextNext(StringBuffer *buffer) {
-  int step = this->step + 1;
-  if (!recipe || step < 0 || step >= recipe->stepsCount)
+  RecipeStep nextStep;
+  if (recipe == nullptr || !recipe->getStep(stepNr+1, &nextStep))
     return nullptr;
-  return buffer->flashToString(recipe->steps[step].text);
+  return buffer->flashToString(nextStep.text);
 }
 
 RecipeStep* FollowRecipe::getStep() {
-  if (recipe == nullptr || step < 0 || step >= recipe->stepsCount )
+  if (recipe == nullptr || !recipe->getStep(stepNr, &actualStep))
     return nullptr;
-  return &recipe->steps[step];
+  return &actualStep;
 }
 
 SensorAlarm* FollowRecipe::getAlarm() {

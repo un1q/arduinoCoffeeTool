@@ -9,10 +9,11 @@ class FollowRecipe {
   public:
     StringBuffer alarmDesc;
   private:
-    int          step       = -1;
+    int          stepNr     = -1;
     Recipe       *recipe    = nullptr;
     SensorAlarm  *alarm     = nullptr;
     bool         isTimeout  = false;
+    RecipeStep   actualStep;
   public:
     FollowRecipe();
     ~FollowRecipe();
