@@ -1,4 +1,5 @@
 #include "keyboard.h"
+#include "debug.h"
 
 Keyboard::Keyboard(byte* rowPins, byte* colPins) :
     rowPins(rowPins),
@@ -19,11 +20,11 @@ char Keyboard::getKey() {
 void Keyboard::loop() {
   key = keypad->getKey();
   if (key == k_SHIFT) {
-    if (shiftMode == shift_normal || shiftMode == shift_sticky)
+    if (shiftMode == shift_normal || shiftMode == shift_sticky) {
       shiftPressed = !shiftPressed;
-  } else {
-    if (shiftMode != shift_sticky)
+    } else if (shiftMode != shift_sticky) {
       shiftPressed = false;
+    }
   }
   updateShiftState();
 }
@@ -33,6 +34,7 @@ void Keyboard::setShiftState(bool state) {
     return;
   shifted = state;
   keypad->begin(shifted ? keymapShifted : keymap);
+  SerialLog(shifted);
 }
 
 void Keyboard::updateShiftState() {
@@ -56,4 +58,5 @@ void Keyboard::setShiftMode(ShiftMode shiftMode) {
   this->shiftMode = shiftMode;
   shiftPressed = false;
   updateShiftState();
+  SerialLog(shiftMode);
 }

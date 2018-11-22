@@ -8,6 +8,7 @@
 //   '4','5','6'
 //   '7','8','9'
 //   '*','0','#'
+// '#' is also known as k_ENTER
 //
 // '*' may work like shift
 // if shift mode is on, '*' changes keypad into:
