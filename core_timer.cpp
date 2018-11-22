@@ -2,24 +2,37 @@
 #include "globals.h"
 
 CoreTimer::~CoreTimer() {
+  destroyAlarm();
+}
+
+void CoreTimer::destroyAlarm() {
   if (alarm)
     delete(alarm);
   alarm = nullptr;
 }
 
 void CoreTimer::start() {
-  keyboard.setShiftMode(shift_off);
+  keyboard.setShiftMode(shift_normal);
 }
 
 int  CoreTimer::update(char key) {
   switch (key) {
     case k_ENTER:
       measureTime.start();
+      destroyAlarm();
       alarm = new SensorAlarm(&alarmAction, &measureTime, getValue(), 10, Alarm::crossingUp);
       timerStartMelody.play();
       break;
     case k_LEFT: 
       return Core::MAIN_MENU;
+    case k_CLEAR: 
+      input[0]='0';
+      input[1]='0';
+      input[3]='0';
+      input[4]='0';
+      destroyAlarm();
+      measureTime.stop();
+      break;
     default:
       if (key >= '0' && key <= '9') {
         input[0]=input[1];

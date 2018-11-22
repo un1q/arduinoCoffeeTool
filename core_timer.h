@@ -20,6 +20,7 @@ class CoreTimer : public Core {
   private:
     void printScreen();
     int  getValue();
+    void destroyAlarm();
 };
 
 #endif
