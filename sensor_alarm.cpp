@@ -29,10 +29,10 @@ bool SensorAlarm::check() {
     return true;
   if (buzzMargin > 0 && abs(alarmValue-value) <= buzzMargin) {
     if ((mode == Alarm::crossingUp && alarmValue <= value ) || (mode == Alarm::crossingDown && alarmValue >= value ))
-      return;
+      return false;
     unsigned long now = millis();
     if (now < SensorAlarm::nextBuzz)
-      return;
+      return false;
     int d = buzzMargin - abs(alarmValue-value);
     int freq = NOTE_A3;
     Melody::playTone(freq, 100);
