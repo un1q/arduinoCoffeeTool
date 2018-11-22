@@ -23,6 +23,11 @@ void CoreMainMenu::start() {
 
 int CoreMainMenu::update(char key) {
   switch (key) {
+    case k_F1: if (0 <= menu.size - 1) return 0; break;
+    case k_F2: if (1 <= menu.size - 1) return 1; break;
+    case k_F3: if (2 <= menu.size - 1) return 2; break;
+    case k_F4: if (3 <= menu.size - 1) return 3; break;
+    case k_F5: if (4 <= menu.size - 1) return 4; break;
     case k_UP   : menu.selected = menu.selected == 0 ? menu.size-1 : menu.selected-1 ; break;
     case k_DOWN : menu.selected = menu.selected == menu.size-1 ? 0 : menu.selected+1 ; break;
     case k_RIGHT:
