@@ -14,6 +14,7 @@ class FollowRecipe {
     StringBuffer *textBuffer      = nullptr;
     StringBuffer *nextTextBuffer  = nullptr;
     StringBuffer *alarmDescBuffer = nullptr;
+    bool         sensorActive     = false;
   public:
     FollowRecipe();
     ~FollowRecipe();
@@ -24,20 +25,15 @@ class FollowRecipe {
     void         backward();
     bool         check(); //returns true if step is finished
     RecipeStep*  getStep();
+    char*        getAlarmDesc();
     inline char*        getText     ();
     inline char*        getTextNext ();
-    inline char*        getAlarmDesc();
-    inline SensorAlarm* getAlarm();
   private:
     void         clean();
     void         update();
 };
 
 //inline methods:
-
-inline SensorAlarm* FollowRecipe::getAlarm() {
-  return alarm;
-}
 
 char* FollowRecipe::getText() {
   if (!textBuffer)
@@ -49,12 +45,6 @@ char* FollowRecipe::getTextNext() {
   if (!nextTextBuffer)
     return nullptr;
   return nextTextBuffer->get();
-}
-
-char* FollowRecipe::getAlarmDesc() {
-  if (!alarmDescBuffer)
-    return nullptr;
-  return alarmDescBuffer->get();
 }
 
 #endif

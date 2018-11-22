@@ -57,6 +57,7 @@ void FollowRecipe::backward(){
 }
 
 #define NEW_F_STRING_BUFFER(strBufPointer, str) strBufPointer = new StringBuffer(sizeof(str)); strBufPointer->flashToString(F(str));
+#define NEW_F_STRING_BUFFER_PLUS(strBufPointer, str, plus) strBufPointer = new StringBuffer(sizeof(str)+plus); strBufPointer->flashToString(F(str));
 
 void FollowRecipe::update() {
   RecipeStep actualStep;
@@ -66,23 +67,23 @@ void FollowRecipe::update() {
     return;
   }
   autoNext = actualStep.autoNext;
-  Sensor* sensor       = actualStep.getSensor();
-  bool    sensorActive = sensor && sensor->active();
+  Sensor* sensor = actualStep.getSensor();
+  sensorActive = sensor && sensor->active();
+  switch(actualStep.sensorType) {
+    case MEASURE_TEMP  : alarmDescBuffer = new StringBuffer(tempStringLength   + 4); alarmDescBuffer->tempToString   (actualStep.value); break;
+    case MEASURE_WEIGHT: alarmDescBuffer = new StringBuffer(weightStringLength + 4); alarmDescBuffer->weightToString (actualStep.value); break;
+    case MEASURE_TIME  : alarmDescBuffer = new StringBuffer(timeStringLength   + 4); alarmDescBuffer->secondsToString(actualStep.value); break;
+    default: NEW_F_STRING_BUFFER_PLUS(alarmDescBuffer, "---", 4); break;
+  }
   if (sensorActive) {
     alarm = new SensorAlarm(&alarmAction, sensor, actualStep.value, actualStep.buzzMargin, actualStep.getAlarmMode());
-    switch(actualStep.sensorType) {
-      case MEASURE_TEMP  : alarmDescBuffer = new StringBuffer(tempStringLength   ); alarmDescBuffer->tempToString(alarm->alarmValue)   ; break;
-      case MEASURE_WEIGHT: alarmDescBuffer = new StringBuffer(weightStringLength ); alarmDescBuffer->weightToString(alarm->alarmValue) ; break;
-      case MEASURE_TIME  : alarmDescBuffer = new StringBuffer(timeStringLength   ); alarmDescBuffer->secondsToString(alarm->alarmValue); break;
-      case PRESS_BUTTON  : NEW_F_STRING_BUFFER(alarmDescBuffer, "press button"); break;
-    }
   } else if (actualStep.timeoutIfNoSensor > 0) {
     alarm = new SensorAlarm(nullptr, &measureTimeout, actualStep.timeoutIfNoSensor, -1, Alarm::crossingUp);
     autoNext = true;
     measureTimeout.start();
-    NEW_F_STRING_BUFFER(alarmDescBuffer, "wait or skip");
-  } else {
-    NEW_F_STRING_BUFFER(alarmDescBuffer, "skip manually");
+//    NEW_F_STRING_BUFFER(alarmDescBuffer, "wait or skip");
+//  } else {
+//    NEW_F_STRING_BUFFER(alarmDescBuffer, "skip manually");
   }
   if ( actualStep.onStart == ONSTART_TARE ) {
     measureWeight.tare();
@@ -97,6 +98,7 @@ void FollowRecipe::update() {
 }
 
 #undef NEW_F_STRING_BUFFER
+#undef NEW_F_STRING_BUFFER_PLUS
 
 bool FollowRecipe::check() {
   if (stepNr < 0)
@@ -105,4 +107,19 @@ bool FollowRecipe::check() {
   if (result && autoNext)
     foreward();
   return result;
+}
+
+char* FollowRecipe::getAlarmDesc() {
+  if (!alarmDescBuffer)
+    return nullptr;
+  char* str = alarmDescBuffer->get();
+  int i = alarmDescBuffer->getSize() - 5;
+  if (sensorActive || i <= 0)
+    return str;
+  str[i++] = ' ';
+  str[i++] = '[';
+  str[i++] = alarm == nullptr ? 'X' : '0'+min(9, alarm->remains());
+  str[i++] = ']';
+  str[i]   = '\0';
+  return str;
 }

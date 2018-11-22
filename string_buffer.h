@@ -34,6 +34,11 @@ class StringBuffer {
     char* weightToString(int weight);
     char* emptyString();
     char* get();
+    inline int getSize();
 };
+
+inline int StringBuffer::getSize() {
+  return bufferSize;
+}
 
 #endif
