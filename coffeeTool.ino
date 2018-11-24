@@ -12,6 +12,7 @@
 #include "pitches.h"
 #include "main_loop.h"
 #include "globals.h"
+#include "debug.h"
 
 #include <Keypad.h>
 
@@ -25,6 +26,7 @@
 //weight pins
 #define SCALE_DOUT 12
 #define SCALE_CLK  11
+#define SCALE_CHK  9
 const float scaleCalibrationFactor = 850;
 
 //4x3 keypad PINs:
@@ -37,7 +39,7 @@ Melody               alarmMelody     (new int[8] {NOTE_C4, NOTE_G3, NOTE_G3, NOT
 Melody               timerStartMelody(new int[3] {NOTE_C3, NOTE_D3, NOTE_E3}, new int[3] {8, 8, 4}, 3);
 Lcd                  *lcd           = new Lcd_N5110(A1,A2,A3,A4,-1);
 Keyboard             keyboard       = Keyboard(rowPins, colPins);
-MeasureWeight        measureWeight  = MeasureWeight(SCALE_DOUT, SCALE_CLK, scaleCalibrationFactor);
+MeasureWeight        measureWeight  = MeasureWeight(SCALE_DOUT, SCALE_CLK, scaleCalibrationFactor, SCALE_CHK);
 MeasureTemperature   measureTemp    = MeasureTemperature();
 MeasureTime          measureTime    = MeasureTime();
 ActionMelody         alarmAction    = ActionMelody(&alarmMelody);
@@ -47,7 +49,9 @@ MeasureTime          measureTimeout = MeasureTime();
 void setup() {
   Melody::setPin(PIN_BUZZ);
   Serial.begin(9600);
-  Serial.println("SETUP");
+  SerialMsg("BEGIN");
+  SerialFreeMemLog();
+
   lcd->setup();
   measureWeight.setup();
   mainLoopStartup();

@@ -25,20 +25,27 @@ int CoreFollowRecipe::update(char key) {
       followRecipe.start();
       //measureWeight.tare();
       break;
-    case k_F1: useRecipe(0); break;
-    case k_F2: useRecipe(1); break;
-    case k_F3: useRecipe(2); break;
-    case k_F4: useRecipe(3); break;
-    case k_F5: useRecipe(4); break;
+    //case k_F1: useRecipe(0); break;
+    //case k_F2: useRecipe(1); break;
+    //case k_F3: useRecipe(2); break;
+    //case k_F4: useRecipe(3); break;
+    //case k_F5: useRecipe(4); break;
     case k_DOWN: followRecipe.foreward(); break;
     case k_RIGHT:
     case k_UP  : followRecipe.backward(); break;
     case k_LEFT: followRecipe.stop(); return Core::MAIN_MENU; return;
   }
   measureTemp.loop();
-  followRecipe.check();
+  if (followRecipe.check())
+    logStep();
   printMainScreen();
   return -1;
+}
+
+void CoreFollowRecipe::logStep() {
+  Serial.print(">[step]");
+  Serial.println(followRecipe.getText());
+  Serial.flush();
 }
 
 void CoreFollowRecipe::useRecipe(int i) {
@@ -46,15 +53,18 @@ void CoreFollowRecipe::useRecipe(int i) {
     return;
   Recipe* p = Recipe::all[i];
   if (p != nullptr) {
+    Serial.print(">start:");
+    Serial.println(p->name);
     followRecipe.prepare(p);
     followRecipe.start();
+    logStep();
   }
 }
 
 void CoreFollowRecipe::printMainScreen() {
-  lcdInfo.temp        = measureTemp.get();
-  lcdInfo.time        = measureTime.get();
-  lcdInfo.weight      = measureWeight.get();
+  //lcdInfo.temp        = measureTemp.get()  ;
+  //lcdInfo.time        = measureTime.get()  ;
+  //lcdInfo.weight      = measureWeight.get();
   lcdInfo.alarmDesc   = followRecipe.getAlarmDesc();
   lcdInfo.step        = followRecipe.getText();
   lcdInfo.nextStep    = followRecipe.getTextNext();

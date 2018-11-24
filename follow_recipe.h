@@ -7,14 +7,14 @@
 
 class FollowRecipe {
   private:
-    int          stepNr           = -1;
-    Recipe       *recipe          = nullptr;
-    SensorAlarm  *alarm           = nullptr;
-    bool         autoNext         = false;
-    StringBuffer *textBuffer      = nullptr;
-    StringBuffer *nextTextBuffer  = nullptr;
-    StringBuffer *alarmDescBuffer = nullptr;
-    bool         sensorActive     = false;
+    int           stepNr           = -1;
+    Recipe        *recipe          = nullptr;
+    SensorAlarm   *alarm           = nullptr;
+    bool          autoNext         = false;
+    StringBuffer  *textBuffer      = nullptr;
+    StringBuffer  *nextTextBuffer  = nullptr;
+    StringBuffer  *alarmDescBuffer = nullptr;
+    bool          sensorActive     = false;
   public:
     FollowRecipe();
     ~FollowRecipe();
@@ -26,8 +26,8 @@ class FollowRecipe {
     bool         check(); //returns true if step is finished
     RecipeStep*  getStep();
     char*        getAlarmDesc();
-    inline char*        getText     ();
-    inline char*        getTextNext ();
+    inline char* getText     ();
+    inline char* getTextNext ();
   private:
     void         clean();
     void         update();

@@ -1,8 +1,11 @@
 #include "measure_weight.h"
 
-MeasureWeight::MeasureWeight(int DOUT, int CLK, float calibrationFactor) {
+MeasureWeight::MeasureWeight(int DOUT, int CLK, float calibrationFactor, int CHK = -1) {
   this->calibrationFactor = calibrationFactor;
   scale = new HX711(DOUT, CLK);
+  this->CHK = CHK;
+  if (CHK != -1)
+    pinMode(CHK, INPUT_PULLUP);
 }
 
 MeasureWeight::~MeasureWeight() {
@@ -10,6 +13,8 @@ MeasureWeight::~MeasureWeight() {
 }
 
 void MeasureWeight::setup() {
+  if (CHK != -1)
+    pinMode(CHK, INPUT_PULLUP);
   scale->set_scale(calibrationFactor);
   scale->tare();
 }
@@ -24,5 +29,5 @@ int  MeasureWeight::get() {
 }
 
 bool MeasureWeight::active() {
-  return false;//scale->is_ready();
+  return (CHK == -1 || digitalRead(CHK) == LOW ) && scale->is_ready();
 }

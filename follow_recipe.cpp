@@ -103,10 +103,11 @@ void FollowRecipe::update() {
 bool FollowRecipe::check() {
   if (stepNr < 0)
     return false;
-  bool result = !alarm || alarm->check();
-  if (result && autoNext)
+  if ((!alarm || alarm->check()) && autoNext) {
     foreward();
-  return result;
+    return true;
+  }
+  return false;
 }
 
 char* FollowRecipe::getAlarmDesc() {

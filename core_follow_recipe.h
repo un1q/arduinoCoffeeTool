@@ -23,6 +23,7 @@ class CoreFollowRecipe : public Core {
     int  update(char key);
     void start();
     void useRecipe(int i);
+    void logStep();
 };
 
 #endif

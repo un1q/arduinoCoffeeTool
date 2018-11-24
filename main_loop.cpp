@@ -10,9 +10,13 @@ int   actualCore = -1;
 
 CoreFollowRecipe *corePreheat = nullptr; //preheat
 
+unsigned long lastLogTime = 0;
+static const unsigned long logFreq = 1000ul;
+
+
 void mainLoopStartup() {
+  //corePreheat = new CoreFollowRecipe(0);
   changeCore(Core::MAIN_MENU);
-  corePreheat = new CoreFollowRecipe(0);
   SerialFreeMemLog();
 }
 
@@ -23,8 +27,8 @@ void mainLoop() {
   changeCore( newCoreId );
   if (key == k_SHIFT)
     SerialFreeMemLog();
+  logSensors();
 }
-
 
 void changeCore(int coreId) {
   if (coreId == -1 || actualCore == coreId)
@@ -56,4 +60,20 @@ void changeCore(int coreId) {
       break;
   }
   core->start();
+}
+
+void logSensors() {
+  unsigned long now = millis();
+  if (now < lastLogTime || now - lastLogTime >= logFreq) {
+    lastLogTime = now;
+    Serial.print(F("[sensors];"));
+    Serial.print(now);
+    Serial.print(';');
+    Serial.print(measureTemp.get());
+    Serial.print(';');
+    Serial.print(measureTime.get());
+    Serial.print(';');
+    Serial.println(measureWeight.get());
+    Serial.flush();
+  }
 }

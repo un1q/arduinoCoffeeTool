@@ -14,5 +14,6 @@ void changeCore(int coreId);
 
 void mainLoopStartup();
 void mainLoop();
+void logSensors();
 
 #endif

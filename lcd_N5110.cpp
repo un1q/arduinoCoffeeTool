@@ -1,4 +1,5 @@
 #include "lcd_N5110.h"
+#include "globals.h"
 
 Lcd_N5110::Lcd_N5110() : Lcd_N5110(A1,A2,A3,A4,A5) {}
 
@@ -24,9 +25,13 @@ void Lcd_N5110::print(Lcd::Info *info) {
     return;
   lastRefreshTime = time;
   display->clearDisplay();
-  print(POS_TEMP        , tempStringBuffer  .tempToString(info->temp), false);
-  print(POS_WEIGHT      , weightStringBuffer.weightToString(info->weight), false);
-  print(POS_TIMER       , timeStringBuffer  .secondsToString(info->time, 5), false);
+  StringBuffer strBuf = StringBuffer(6);
+  print(POS_TEMP  , measureTemp  .active() ? strBuf.tempToString   (measureTemp  .get()) : "-", false);
+  print(POS_WEIGHT, measureWeight.active() ? strBuf.weightToString (measureWeight.get()) : "-", false);
+  print(POS_TIMER , measureTime  .active() ? strBuf.secondsToString(measureTime  .get()) : "-", false);
+  //print(POS_TEMP        , tempStringBuffer  .tempToString(info->temp), false);
+  //print(POS_WEIGHT      , weightStringBuffer.weightToString(info->weight), false);
+  //print(POS_TIMER       , timeStringBuffer  .secondsToString(info->time, 5), false);
   int alarmY = positions[POS_ALARM][1];
   display->writeFastHLine(0, alarmY-4, 96, BLACK);
   display->writeFastHLine(0, alarmY+8+2, 96, BLACK);

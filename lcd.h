@@ -4,9 +4,9 @@
 class Lcd {
   public:
     struct Info {
-      int temp   = 0;
-      int time   = 0;
-      int weight = 0;
+      //int temp   = 0;
+      //int time   = 0;
+      //int weight = 0;
       char* alarmDesc   = nullptr;
       char* step        = nullptr;
       char* nextStep    = nullptr;
