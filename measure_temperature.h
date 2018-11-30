@@ -8,7 +8,7 @@
 #include <DallasTemperature.h>
 
 
-#define TEMP_PIN 10
+#define TEMP_PIN 12
 //(a 4.7K resistor is necessary)
 
 class MeasureTemperature : public Sensor {

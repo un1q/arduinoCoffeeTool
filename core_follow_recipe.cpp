@@ -30,8 +30,8 @@ int CoreFollowRecipe::update(char key) {
     //case k_F3: useRecipe(2); break;
     //case k_F4: useRecipe(3); break;
     //case k_F5: useRecipe(4); break;
-    case k_DOWN: followRecipe.foreward(); break;
     case k_RIGHT:
+    case k_DOWN: followRecipe.foreward(); break;
     case k_UP  : followRecipe.backward(); break;
     case k_LEFT: followRecipe.stop(); return Core::MAIN_MENU; return;
   }

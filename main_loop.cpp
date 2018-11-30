@@ -23,6 +23,7 @@ void mainLoopStartup() {
 void mainLoop() {
   keyboard.loop();
   char key = keyboard.getKey();
+  SerialLogIf(key > 0, key);
   int newCoreId = core->update(key);
   changeCore( newCoreId );
   if (key == k_SHIFT)
