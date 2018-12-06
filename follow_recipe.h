@@ -28,6 +28,7 @@ class FollowRecipe {
     char*        getAlarmDesc();
     inline char* getText     ();
     inline char* getTextNext ();
+    void         stopBuzz();
   private:
     void         clean();
     void         update();

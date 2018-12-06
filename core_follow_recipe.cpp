@@ -22,14 +22,15 @@ int CoreFollowRecipe::update(char key) {
       break;
     case '0': 
     case '.': 
-      followRecipe.start();
-      //measureWeight.tare();
+      followRecipe.stopBuzz(); break;
       break;
     //case k_F1: useRecipe(0); break;
     //case k_F2: useRecipe(1); break;
     //case k_F3: useRecipe(2); break;
     //case k_F4: useRecipe(3); break;
     //case k_F5: useRecipe(4); break;
+    case k_F5: useRecipe(4); break;
+      followRecipe.stopBuzz(); break;
     case k_RIGHT:
     case k_DOWN: followRecipe.foreward(); break;
     case k_UP  : followRecipe.backward(); break;

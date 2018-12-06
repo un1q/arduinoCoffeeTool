@@ -51,3 +51,7 @@ int  SensorAlarm::remains() {
   return alarmValue - sensor->get();
 
 }
+
+void SensorAlarm::disableBuzz() {
+  buzzMargin = -1;
+}

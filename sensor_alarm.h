@@ -20,6 +20,7 @@ class SensorAlarm : public Alarm {
     bool check();
     bool activeSensor();
     int  remains();
+    void disableBuzz();
 };
 
 #endif

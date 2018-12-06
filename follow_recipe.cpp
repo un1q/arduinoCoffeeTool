@@ -124,3 +124,9 @@ char* FollowRecipe::getAlarmDesc() {
   str[i]   = '\0';
   return str;
 }
+
+
+void FollowRecipe::stopBuzz() {
+  if (alarm)
+    alarm->disableBuzz();
+}
