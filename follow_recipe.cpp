@@ -1,6 +1,8 @@
 #include "follow_recipe.h"
 #include "globals.h"
 
+ActionStartTimer startTimerAction;
+
 FollowRecipe::FollowRecipe() {}
 
 FollowRecipe::~FollowRecipe() {
@@ -28,6 +30,10 @@ void FollowRecipe::clean(){
     delete(alarm);
   alarm = nullptr;
   
+  if (alarm2)
+    delete(alarm2);
+  alarm2 = nullptr;
+  
   if (alarmDescBuffer);
     delete(alarmDescBuffer);
   alarmDescBuffer = nullptr;
@@ -45,6 +51,8 @@ void FollowRecipe::foreward(){
   if (recipe == nullptr || stepNr >= recipe->stepsCount-1 || stepNr < -1) 
     return;
   stepNr++;
+  if (alarm2 && !alarm2->isClicked())
+    alarm2->doIt();
   update();
 }
 
@@ -85,11 +93,15 @@ void FollowRecipe::update() {
 //  } else {
 //    NEW_F_STRING_BUFFER(alarmDescBuffer, "skip manually");
   }
-  if ( actualStep.onStart == ONSTART_TARE ) {
+  if ( actualStep.onStart & ONSTART_TARE ) {
     measureWeight.tare();
-  } else if( actualStep.onStart == ONSTART_START_TIMER ) {
-    measureTime.start();
-    timerStartMelody.play();
+    if( actualStep.onStart & ONSTART_START_TIMER ) {
+      alarm2 = new SensorAlarm(&startTimerAction, &measureWeight, 2, -1, Alarm::crossingUp);
+    }
+  } else if( actualStep.onStart & ONSTART_START_TIMER ) {
+    startTimerAction.doIt();
+    //measureTime.start();
+    //timerStartMelody.play();
   }
   textBuffer = new StringBuffer((FlashAddr)actualStep.text);
   RecipeStep nextStep;
@@ -107,6 +119,8 @@ bool FollowRecipe::check() {
     foreward();
     return true;
   }
+  if (alarm2)
+    alarm2->check();
   return false;
 }
 

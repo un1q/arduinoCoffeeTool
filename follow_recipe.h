@@ -4,17 +4,19 @@
 #include "recipe.h"
 #include "sensor_alarm.h"
 #include "string_buffer.h"
+#include "action_start_timer.h"
 
 class FollowRecipe {
   private:
-    int           stepNr           = -1;
-    Recipe        *recipe          = nullptr;
-    SensorAlarm   *alarm           = nullptr;
-    bool          autoNext         = false;
-    StringBuffer  *textBuffer      = nullptr;
-    StringBuffer  *nextTextBuffer  = nullptr;
-    StringBuffer  *alarmDescBuffer = nullptr;
-    bool          sensorActive     = false;
+    int           stepNr                   = -1;
+    Recipe        *recipe                  = nullptr;
+    SensorAlarm   *alarm                   = nullptr;
+    SensorAlarm   *alarm2                  = nullptr;
+    bool          autoNext                 = false;
+    StringBuffer  *textBuffer              = nullptr;
+    StringBuffer  *nextTextBuffer          = nullptr;
+    StringBuffer  *alarmDescBuffer         = nullptr;
+    bool          sensorActive             = false;
   public:
     FollowRecipe();
     ~FollowRecipe();

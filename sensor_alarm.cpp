@@ -40,6 +40,8 @@ bool SensorAlarm::check() {
   }
   return false;
 }
+#undef BUZZ_DUR_MAX
+#undef BUZZ_DUR_MIN
 
 bool SensorAlarm::activeSensor() {
   return sensor && sensor->active();

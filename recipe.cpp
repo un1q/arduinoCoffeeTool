@@ -8,7 +8,6 @@ Sensor* checkButton = nullptr;
 const char str_odmierz_kawe  [] PROGMEM = "odmierz kawe"  ;
 const char str_podgrzej_wode [] PROGMEM = "podgrzej wode" ;
 const char str_przygotuj_drip[] PROGMEM = "przygotuj drip";
-const char str_zacznij_lac   [] PROGMEM = "zacznij lac"   ;
 const char str_preinfuzja    [] PROGMEM = "preinfuzja"    ;
 const char str_czekaj        [] PROGMEM = "czekaj"        ;
 const char str_dolej         [] PROGMEM = "dolej"         ;
@@ -21,34 +20,46 @@ const char str_przygotuj_chem[] PROGMEM = "przygotuj sie ";
 const char str_zalej         [] PROGMEM = "zalej"         ;
 const char str_wyjmij_szczura[] PROGMEM = "wyjmij szczura";
 
-const int dripStepsCount = 10;
+const int dripStepsCount = 9;
 const RecipeStep dripSteps[dripStepsCount] PROGMEM = {
-  {ONSTART_TARE       , str_odmierz_kawe  , MEASURE_WEIGHT , 18 , -1 , 2 , false},
-  {ONSTART_NOTHING    , str_podgrzej_wode , MEASURE_TEMP   , 85 , 10 , 2 , false},
-  {ONSTART_NOTHING    , str_przygotuj_drip, PRESS_BUTTON   , -1 , -1 , -1, false},
-  {ONSTART_TARE       , str_zacznij_lac   , MEASURE_WEIGHT ,  2 , -1 , 2 , true },
-  {ONSTART_START_TIMER, str_preinfuzja    , MEASURE_WEIGHT , 40 , -1 , 2 , true },
-  {ONSTART_NOTHING    , str_czekaj        , MEASURE_TIME   , 30 , 10 , -1, true },
-  {ONSTART_NOTHING    , str_dolej         , MEASURE_WEIGHT ,150 , -1 , 10, true },
-  {ONSTART_NOTHING    , str_czekaj        , MEASURE_TIME   , 90 , 10 , -1, true },
-  {ONSTART_NOTHING    , str_dolej         , MEASURE_WEIGHT ,250 , -1 , 10, true },
-  {ONSTART_NOTHING    , str_gotowe        , MEASURE_TIME   ,210 , 10 , -1, false}
+  {ONSTART_TARE          , str_odmierz_kawe  , MEASURE_WEIGHT , 18 , -1 , 2 , false},
+  {ONSTART_NOTHING       , str_podgrzej_wode , MEASURE_TEMP   , 85 , 10 , 2 , false},
+  {ONSTART_NOTHING       , str_przygotuj_drip, PRESS_BUTTON   , -1 , -1 , -1, false},
+  {ONSTART_TARE_AND_TIMER, str_preinfuzja    , MEASURE_WEIGHT , 40 , -1 , 2 , true },
+  {ONSTART_NOTHING       , str_czekaj        , MEASURE_TIME   , 30 , 10 , -1, true },
+  {ONSTART_NOTHING       , str_dolej         , MEASURE_WEIGHT ,150 , -1 , 10, true },
+  {ONSTART_NOTHING       , str_czekaj        , MEASURE_TIME   , 90 , 10 , -1, true },
+  {ONSTART_NOTHING       , str_dolej         , MEASURE_WEIGHT ,250 , -1 , 10, true },
+  {ONSTART_NOTHING       , str_gotowe        , MEASURE_TIME   ,210 , 10 , -1, false}
 };
 const Recipe Recipe::drip = Recipe("drip", dripStepsCount, dripSteps);
 
 
-const int chemexStepsCount = 8;
+const int chemexStepsCount = 7;
 const RecipeStep chemexSteps[chemexStepsCount] PROGMEM = {
-    {ONSTART_TARE       , str_odmierz_kawe  , MEASURE_WEIGHT , 35 , -1 , 2 , false},
-    {ONSTART_NOTHING    , str_podgrzej_wode , MEASURE_TEMP   , 85 , 10 , 2 , false},
-    {ONSTART_NOTHING    , str_przygotuj_chem, PRESS_BUTTON   , -1 , -1 , -1, false},
-    {ONSTART_TARE       , str_zacznij_lac   , MEASURE_WEIGHT ,  2 , -1 , 2 , true },
-    {ONSTART_START_TIMER, str_preinfuzja    , MEASURE_WEIGHT , 60 , -1 , 2 , true },
-    {ONSTART_NOTHING    , str_czekaj        , MEASURE_TIME   , 30 , 10 , -1, true },
-    {ONSTART_NOTHING    , str_dolej         , MEASURE_WEIGHT ,500 , -1 , 10, true },
-    {ONSTART_NOTHING    , str_gotowe        , MEASURE_TIME   ,210 , 10 , -1, false}
+    {ONSTART_TARE          , str_odmierz_kawe  , MEASURE_WEIGHT , 35 , -1 , 2 , false},
+    {ONSTART_NOTHING       , str_podgrzej_wode , MEASURE_TEMP   , 85 , 10 , 2 , false},
+    {ONSTART_NOTHING       , str_przygotuj_chem, PRESS_BUTTON   , -1 , -1 , -1, false},
+    {ONSTART_TARE_AND_TIMER, str_preinfuzja    , MEASURE_WEIGHT , 60 , -1 , 2 , true },
+    {ONSTART_NOTHING       , str_czekaj        , MEASURE_TIME   , 30 , 10 , -1, true },
+    {ONSTART_NOTHING       , str_dolej         , MEASURE_WEIGHT ,500 , -1 , 10, true },
+    {ONSTART_NOTHING       , str_gotowe        , MEASURE_TIME   ,210 , 10 , -1, false}
 };
 const Recipe Recipe::chemex = Recipe("chemex", chemexStepsCount, chemexSteps);
+
+
+const int aeroStepsCount = 8;
+const RecipeStep aeroSteps[aeroStepsCount] PROGMEM = {
+  {ONSTART_TARE          , str_odmierz_kawe  , MEASURE_WEIGHT , 18   , -1,  2, false},
+  {ONSTART_NOTHING       , str_podgrzej_wode , MEASURE_TEMP   , 88   , 10,  2, false},
+  {ONSTART_NOTHING       , str_wsyp_kawe     , PRESS_BUTTON   , -1   , -1, -1, false},
+  {ONSTART_TARE_AND_TIMER, str_preinfuzja    , MEASURE_WEIGHT , 50   , -1 , 2 , true },
+  {ONSTART_NOTHING       , str_czekaj        , MEASURE_TIME   , 30   , 10, -1, true },
+  {ONSTART_NOTHING       , str_dolej         , MEASURE_WEIGHT ,240   , -1, 10, true },
+  {ONSTART_NOTHING       , str_czekaj        , MEASURE_TIME   ,60+40 , 10, -1, true },
+  {ONSTART_NOTHING       , str_wycisnij      , MEASURE_TIME   ,120+40, 10, -1, true },
+};
+const Recipe Recipe::aero = Recipe("aero", aeroStepsCount, aeroSteps);
 
 
 const int fellowStepsCount = 7;
@@ -72,8 +83,8 @@ const RecipeStep teaSteps[teaStepsCount] PROGMEM = {
 };
 const Recipe Recipe::tea = Recipe("tea", teaStepsCount, teaSteps);
 
-const int     Recipe::allCount = 4;
-const Recipe* Recipe::all[Recipe::allCount] = { &drip, &chemex, &fellow, &tea };
+const int     Recipe::allCount = 5;
+const Recipe* Recipe::all[Recipe::allCount] = { &drip, &chemex, &aero, &fellow, &tea };
 
 //Recipe
 Recipe::Recipe(char* name, int stepsCount, FlashRecipeSteps steps) {

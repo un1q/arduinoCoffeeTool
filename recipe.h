@@ -5,8 +5,8 @@
 #include "sensor.h"
 #include "alarm.h"
 
-enum SensorType {MEASURE_WEIGHT=0, MEASURE_TEMP, MEASURE_TIME, PRESS_BUTTON};
-enum OnStart    {ONSTART_NOTHING=0, ONSTART_TARE, ONSTART_START_TIMER};
+enum SensorType {MEASURE_WEIGHT = 0, MEASURE_TEMP, MEASURE_TIME, PRESS_BUTTON};
+enum OnStart    {ONSTART_NOTHING = 0, ONSTART_TARE = 1, ONSTART_START_TIMER = 2, ONSTART_TARE_AND_TIMER = 1+2};
 
 
 struct RecipeStep {
@@ -28,6 +28,7 @@ class Recipe {
   public:
     const static Recipe  drip;
     const static Recipe  chemex;
+    const static Recipe  aero;
     const static Recipe  fellow;
     const static Recipe  tea;
     const static int     allCount;
