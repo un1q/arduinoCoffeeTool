@@ -6,12 +6,19 @@ Alarm::Alarm(Action *alarmAction, int alarmValue, Mode mode) {
   this->alarmAction = alarmAction;
   this->alarmValue  = alarmValue;
   this->mode        = mode;
+  switch (mode) {
+    case crossing:     direction =  0; return;
+    case crossingUp:   direction =  1; return;
+    case crossingDown: direction = -1; return;
+  }
+
 }
 
 Alarm::~Alarm() {}
 
 void Alarm::reset() {
   direction = 0;
+  clicked = false;
 }
 
 bool Alarm::check(int value) {
@@ -24,15 +31,18 @@ bool Alarm::check(int value) {
     return false;
   }
   if (direction * (alarmValue - value) <= 0) {
-    int oldDirection = direction;
-    direction = 0;
-    if (alarmAction)
-      alarmAction->doIt();
+    bool result = false;
     switch (mode) {
-      case crossing:     return true;
-      case crossingUp:   return oldDirection > 0;
-      case crossingDown: return oldDirection < 0;
+      case crossing:     result = true         ; break;
+      case crossingUp:   result = direction > 0; break;
+      case crossingDown: result = direction < 0; break;
     }
+    direction = 0;
+    if (result) {
+      clicked = true;
+      doIt();
+    }
+    return result;
   }
   return false;
 }

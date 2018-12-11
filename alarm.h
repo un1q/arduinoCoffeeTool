@@ -10,6 +10,7 @@ class Alarm : public AlarmAbstract {
   protected:
     int  direction = 0;
     Mode mode      = crossing;
+    bool clicked   = false;
   public:
     int    alarmValue;
     Action *alarmAction;
@@ -19,6 +20,9 @@ class Alarm : public AlarmAbstract {
     virtual void reset();
     virtual bool check(int value);
     void changeValue(int value);
+    
+    inline bool isClicked() { return clicked; };
+    inline void doIt() { if (alarmAction) alarmAction->doIt(); };
 };
 
 #endif
